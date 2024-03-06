@@ -4,6 +4,7 @@
     //error_reporting(0);
     mb_internal_encoding('UTF-8');
     define("DB_MASTER","soticomm_VIDO_MASTER");
+    define("DB_KLYNS","soticomm_VIDO_KLYNS");
     
     // <editor-fold defaultstate="collapsed" desc="ValidarConexion">
 

@@ -95,7 +95,7 @@
 
 function LoginClaveRol($USUARIO, $PASS)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_MASTER);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
     $provUsuario = null;
     if ($conn) {
 
@@ -129,7 +129,7 @@ function LoginClaveRol($USUARIO, $PASS)
 
 function LoginUsuario($USUARIO)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_MASTER);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
     $provUsuario = null;
     if ($conn) {
 
@@ -157,7 +157,7 @@ function LoginUsuario($USUARIO)
 }
 function LoginNombreUsuario($USUARIO)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_MASTER);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
     $NombreUsuario = "";
     if ($conn) {
 
@@ -285,7 +285,7 @@ $server->register(
 
 function MostrarHoraInicioFinModulos($USUARIO, $SUCURSAL_ID, $FECHA)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_MASTER);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
     $result = null;
     if ($conn) {
         /*--------------CADUCIDADES------------- */
