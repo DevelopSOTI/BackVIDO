@@ -1,6 +1,6 @@
 <?php
 function SucursalesUsuario($USUARIO){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
     $result=null;
     if ($conn){  
         $sucursalesid="";
