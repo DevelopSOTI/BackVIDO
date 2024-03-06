@@ -1,6 +1,6 @@
 <?php
     date_default_timezone_set("America/Monterrey");
-    error_reporting(E_ALL ^ E_DEPRECATED);
+    error_reporting(0);
     set_time_limit(0);
 
     function conectaDb($index)
