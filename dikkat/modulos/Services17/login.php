@@ -24,6 +24,7 @@
             $select .= "and u.PASS = '" . $PASSWORD . "' ";
             $select .= "";
 
+            echo $select;
             $stmt = mysqli_query($con, $select);
 
             if ($stmt) {
