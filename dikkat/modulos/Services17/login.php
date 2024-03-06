@@ -53,7 +53,7 @@
 
 
     $server->wsdl->addComplexType(
-        'getTipoUsuario',
+        'tipoUsuario',
         'complexType',
         'struct',
         'all',
@@ -65,7 +65,32 @@
             'DESCRIPCION' => array('name' => 'DESCRIPCION', 'type' => 'xsd:string')
         )
     );
-    #endregion
+    $server->wsdl->addComplexType(
+        'tipoUsuarioArray',
+        'complexType',
+        'array',
+        '',
+        'SOAP-ENC:Array',
+        array(),
+        array(array('ref' => 'SOAP-ENC:arrayType', 'wsdl:arrayType' => 'tns:tipoUsuario[]')),
+        'tns:tipoUsuario'
+    );
+    
+    
+    $server->register(
+        'getTipoUsuario',
+        array(
+            'USUARIO' => 'xsd:string',
+            'PASS' => 'xsd:string'
+        ),
+        array('return' => 'tns:tipoUsuarioArray'),
+        $namespace,
+        false,
+        'rpc',
+        false,
+        'Devuelve un arreglo con los tipos asignados al usuario'
+    );
+    #region
 
 function LoginClaveRol($USUARIO, $PASS)
 {
