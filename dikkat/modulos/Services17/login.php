@@ -3,99 +3,203 @@
 
 //use JetBrains\PhpStorm\Internal\ReturnTypeContract;
 
-    #region consultar el usuario en la tabla maestra
+#region consultar el usuario en la tabla maestra
 
-    function getUserMaestro($USUARIO,$PASSWORD) {
-        $con = ABRIR_CONEXION_MYSQL(FALSE,DB_MASTER);  //Conexion a base de datos
-
-    }
-
-    function getTipoUsuario($USUARIO,$PASSWORD) {
-        $con = ABRIR_CONEXION_MYSQL(FALSE,DB_MASTER);  //Conexion a base de datos
-        $tipoUsuario = [];
-        if($con){
-            $select = "select u.USUARIO_ID ";
-            $select .= ", u.USUARIO ";
-            $select .= " , r.CLAVE , r.DESCRIPCION ";
-            $select .= "from USUARIOS u ";
-            $select .= "join ROLES_USUARIOS ru on ru.USUARIO_ID = u.USUARIO_ID ";
-            $select .= "join ROLES r on r.ROL_ID = ru.ROL_ID ";
-            $select .= "where u.usuario = '" . $USUARIO . "' ";
-            $select .= "and u.PASS = '" . $PASSWORD . "' ";
-            $select .= "";
-
-           //echo $select;
-            $stmt = mysqli_query($con, $select);
-
-            if ($stmt) {
-
-                while ($row = mysqli_fetch_assoc($stmt)) {
-                    $prov["USUARIO_ID"] =   $row["USUARIO_ID"];
-                    $prov["USUARIO"] =      $row["USUARIO"];
-                    $prov["CLAVE"] =        $row["CLAVE"];
-                    $prov["DESCRIPCION"] =  $row["DESCRIPCION"];
-                    $tipoUsuario[] = $prov;
+function getBDEmpresa($USUARIO, $PASSWORD)
+{
+    $con = ABRIR_CONEXION_MYSQL(FALSE, DB_MASTER);  //Conexion a base de datos
+    if ($con) {
+        //checamos el permiso
+        $tipoUsuario = getTipoUsuario($USUARIO, $PASSWORD);
+        $esSa = false;
+        $tipos[] = null;
+        $listadoCliente[] = null;
+        // Verificamos si el arreglo no está vacío
+        if (!empty($tipoUsuario)) {
+            // Recorremos el arreglo
+            foreach ($tipoUsuario as $tipo) {
+                // Verificamos si la CLAVE del usuario es igual a "SA"
+                if ($tipo["CLAVE"] === "SA") {
+                    $esSa = true;
+                    break;
                 }
-    
-            } else {
-    
-                mysqli_close($con);
-                return null;
+                else{
+                    $tipos[] = $tipo["CLAVE"];
+                }
+            }
+        } 
+        //hacemos la consulta
+        $select = "select c.CLIENTE_ID, c.NOMBRE, c.NOMBRE_DB ";
+        if(!$esSa){
+            $select .= "  ,u.USUARIO ";
+        }
+        $select .= " from CLIENTES c ";
+        if(!$esSa){
+            $select .= " join USUARIOS_CLIENTES uc on uc.CLIENTE_ID = c.CLIENTE_ID ";
+            $select .= " join USUARIOS u on u.USUARIO_ID = uc.USUARIO_ID ";
+
+        }
+        $select .= " where c.NOMBRE_DB is not null ";
+        if(!$esSa){
+            $select .= " and u.USUARIO = '" . $USUARIO . "' ";
+            $select .= " and u.PASS = '" . $PASSWORD . "' ";
+        }
+
+        //echo $select;
+        $stmt = mysqli_query($con, $select);
+
+        if ($stmt) {
+
+            while ($row = mysqli_fetch_assoc($stmt)) {
+                $prov["CLIENTE_ID"] = $row["CLIENTE_ID"];
+                $prov["NOMBRE"] = $row["NOMBRE"];
+                $prov["NOMBRE_DB"] = $row["NOMBRE_DB"];
+                $prov["USUARIO"] = $row["USUARIO"];
+                $listadoCliente[] = $prov;
             }
 
-        }
-        else {
-            // FALLO LA CONEXION
+        } else {
+
+            mysqli_close($con);
             return null;
         }
-        mysqli_close($con);
-        return $tipoUsuario;
+
+
     }
+    else {
+        // FALLO LA CONEXION
+        return null;
+    }
+    mysqli_close($con);
+    return $listadoCliente;
+
+}
+
+$server->wsdl->addComplexType(
+    'listadoCliente',
+    'complexType',
+    'struct',
+    'all',
+    '',
+    array(
+        'CLIENTE_ID' => array('name' => 'CLIENTE_ID', 'type' => 'xsd:int'),
+        'NOMBRE' => array('name' => 'NOMBRE', 'type' => 'xsd:string'),
+        'NOMBRE_DB' => array('name' => 'NOMBRE_DB', 'type' => 'xsd:string'),
+        'USUARIO' => array('name' => 'USUARIO', 'type' => 'xsd:string')
+    )
+);
+$server->wsdl->addComplexType(
+    'listadoClienteArray',
+    'complexType',
+    'array',
+    '',
+    'SOAP-ENC:Array',
+    array(),
+    array(array('ref' => 'SOAP-ENC:arrayType', 'wsdl:arrayType' => 'tns:listadoCliente[]')),
+    'tns:listadoCliente'
+);
 
 
-    $server->wsdl->addComplexType(
-        'tipoUsuario',
-        'complexType',
-        'struct',
-        'all',
-        '',
-        array(
-            'USUARIO_ID' => array('name' => 'USUARIO_ID', 'type' => 'xsd:int'),
-            'USUARIO' => array('name' => 'USUARIO', 'type' => 'xsd:string'),
-            'CLAVE' => array('name' => 'CLAVE', 'type' => 'xsd:string'),
-            'DESCRIPCION' => array('name' => 'DESCRIPCION', 'type' => 'xsd:string')
-        )
-    );
-    $server->wsdl->addComplexType(
-        'tipoUsuarioArray',
-        'complexType',
-        'array',
-        '',
-        'SOAP-ENC:Array',
-        array(),
-        array(array('ref' => 'SOAP-ENC:arrayType', 'wsdl:arrayType' => 'tns:tipoUsuario[]')),
-        'tns:tipoUsuario'
-    );
-    
-    
-    $server->register(
-        'getTipoUsuario',
-        array(
-            'USUARIO' => 'xsd:string',
-            'PASS' => 'xsd:string'
-        ),
-        array('return' => 'tns:tipoUsuarioArray'),
-        $namespace,
-        false,
-        'rpc',
-        false,
-        'Devuelve un arreglo con los tipos asignados al usuario'
-    );
-    #region
+$server->register(
+    'getBDEmpresa',
+    array(
+        'USUARIO' => 'xsd:string',
+        'PASS' => 'xsd:string'
+    ),
+    array('return' => 'tns:listadoClienteArray'),
+    $namespace,
+    false,
+    'rpc',
+    false,
+    'Devuelve un arreglo con las empresas que debe acceder el cliente'
+);
+
+function getTipoUsuario($USUARIO, $PASSWORD)
+{
+    $con = ABRIR_CONEXION_MYSQL(FALSE, DB_MASTER);  //Conexion a base de datos
+    $tipoUsuario = [];
+    if ($con) {
+        $select = "select u.USUARIO_ID ";
+        $select .= ", u.USUARIO ";
+        $select .= " , r.CLAVE , r.DESCRIPCION ";
+        $select .= "from USUARIOS u ";
+        $select .= "join ROLES_USUARIOS ru on ru.USUARIO_ID = u.USUARIO_ID ";
+        $select .= "join ROLES r on r.ROL_ID = ru.ROL_ID ";
+        $select .= "where u.usuario = '" . $USUARIO . "' ";
+        $select .= "and u.PASS = '" . $PASSWORD . "' ";
+        $select .= "";
+
+        //echo $select;
+        $stmt = mysqli_query($con, $select);
+
+        if ($stmt) {
+
+            while ($row = mysqli_fetch_assoc($stmt)) {
+                $prov["USUARIO_ID"] = $row["USUARIO_ID"];
+                $prov["USUARIO"] = $row["USUARIO"];
+                $prov["CLAVE"] = $row["CLAVE"];
+                $prov["DESCRIPCION"] = $row["DESCRIPCION"];
+                $tipoUsuario[] = $prov;
+            }
+
+        } else {
+
+            mysqli_close($con);
+            return null;
+        }
+
+    } else {
+        // FALLO LA CONEXION
+        return null;
+    }
+    mysqli_close($con);
+    return $tipoUsuario;
+}
+
+
+$server->wsdl->addComplexType(
+    'tipoUsuario',
+    'complexType',
+    'struct',
+    'all',
+    '',
+    array(
+        'USUARIO_ID' => array('name' => 'USUARIO_ID', 'type' => 'xsd:int'),
+        'USUARIO' => array('name' => 'USUARIO', 'type' => 'xsd:string'),
+        'CLAVE' => array('name' => 'CLAVE', 'type' => 'xsd:string'),
+        'DESCRIPCION' => array('name' => 'DESCRIPCION', 'type' => 'xsd:string')
+    )
+);
+$server->wsdl->addComplexType(
+    'tipoUsuarioArray',
+    'complexType',
+    'array',
+    '',
+    'SOAP-ENC:Array',
+    array(),
+    array(array('ref' => 'SOAP-ENC:arrayType', 'wsdl:arrayType' => 'tns:tipoUsuario[]')),
+    'tns:tipoUsuario'
+);
+
+
+$server->register(
+    'getTipoUsuario',
+    array(
+        'USUARIO' => 'xsd:string',
+        'PASS' => 'xsd:string'
+    ),
+    array('return' => 'tns:tipoUsuarioArray'),
+    $namespace,
+    false,
+    'rpc',
+    false,
+    'Devuelve un arreglo con los tipos asignados al usuario'
+);
+#region
 
 function LoginClaveRol($USUARIO, $PASS)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_KLYNS);
     $provUsuario = null;
     if ($conn) {
 
@@ -129,7 +233,7 @@ function LoginClaveRol($USUARIO, $PASS)
 
 function LoginUsuario($USUARIO)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_KLYNS);
     $provUsuario = null;
     if ($conn) {
 
@@ -157,7 +261,7 @@ function LoginUsuario($USUARIO)
 }
 function LoginNombreUsuario($USUARIO)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_KLYNS);
     $NombreUsuario = "";
     if ($conn) {
 
@@ -285,7 +389,7 @@ $server->register(
 
 function MostrarHoraInicioFinModulos($USUARIO, $SUCURSAL_ID, $FECHA)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_KLYNS);
     $result = null;
     if ($conn) {
         /*--------------CADUCIDADES------------- */
