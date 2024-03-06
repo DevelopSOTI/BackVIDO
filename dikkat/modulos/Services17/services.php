@@ -47,8 +47,9 @@
         'Funcion que valida si hace la conexi��n al sistema de InMex.');
 
 
+        //MAURO------------------------------------------------------------
     include './usuarios.php';
-    include './login.php';
+    include './login.php'; //esta no modificar
     include './sucursales.php';
     include './direcciones_sucursales.php';
     //include './clientes.php';
@@ -62,6 +63,9 @@
     include './programacion_visita_det.php';
     include './promotores.php';
     include './sucursales_proveedores_dias.php';
+          //MAURO------------------------------------------------------------
+
+          //DARIO-------------------------------------------------------------
     include './producto_precio.php';
     include './faltantes_shopper.php';
     include './caducidades.php';
@@ -72,6 +76,7 @@
     include './barrido.php';
     include './dominios.php';
     include './checar_asistencia.php';
+              //DARIO-------------------------------------------------------------
     
     $post = file_get_contents('php://input');
     $server->service($post);
