@@ -1,7 +1,7 @@
 <?php
 // <editor-fold defaultstate="collapsed" desc="Inserta las sucursales del sistema">
-    function InsertarSucursal($CLIENTE_ID,$NOMBRE,$DIR_SUC_ID,$GEO_CERCA,$UBICACION,$REFERENCIA,$USUARIO_CREADOR,$FECHA_HORA_CREACION){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function InsertarSucursal($CLIENTE_ID,$NOMBRE,$DIR_SUC_ID,$GEO_CERCA,$UBICACION,$REFERENCIA,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -51,8 +51,8 @@
     }
     // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Actualiza las sucursales del sistema">
-function ActualizaSucursal($SUCURSAL_ID,$CLIENTE_ID,$NOMBRE,$DIR_SUC_ID,$GEO_CERCA,$UBICACION,$REFERENCIA,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaSucursal($SUCURSAL_ID,$CLIENTE_ID,$NOMBRE,$DIR_SUC_ID,$GEO_CERCA,$UBICACION,$REFERENCIA,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -187,7 +187,8 @@ return $result;
             'UBICACION'=>'xsd:string',
             'REFERENCIA'=>'xsd:string',
             'USUARIO_CREADOR'=>'xsd:string',
-            'FECHA_HORA_CREACION'=>'xsd:string'
+            'FECHA_HORA_CREACION'=>'xsd:string',
+            'BD' => 'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -207,7 +208,8 @@ return $result;
                 'PASS'=>'xsd:string',
                 'ESTATUS'=>'xsd:string',
                 'USUARIOMODIFICACION'=>'xsd:string',
-                'FECHAMODIFICACION'=>'xsd:string'
+                'FECHAMODIFICACION'=>'xsd:string',
+                'BD' => 'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
