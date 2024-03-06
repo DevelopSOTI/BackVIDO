@@ -3,12 +3,13 @@
     require_once './nusoap-master/src/nusoap.php';
     //error_reporting(0);
     mb_internal_encoding('UTF-8');
+    define("DB_MASTER","soticomm_VIDO_MASTER");
     
     // <editor-fold defaultstate="collapsed" desc="ValidarConexion">
 
     function ValidarConexion()
     {
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_MASTER);
 
         if ($conn)
         {

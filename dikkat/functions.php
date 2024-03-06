@@ -54,7 +54,7 @@
             return FALSE;
         }
     }
-    function ABRIR_CONEXION_MYSQL($index)
+    function ABRIR_CONEXION_MYSQL($index, $database)
     {
         $file = $index === FALSE ? "../../data/conexion_mysql.csv" : "./data/conexion_mysql.csv";
 
@@ -88,7 +88,7 @@
                 if ($conexion != FALSE)
                 {
                     // INDICAMOS LA BASE DE DATOS A LA CUAL CONECTARSE
-                    mysqli_select_db($conexion, $base);
+                    mysqli_select_db($conexion, $database);
                     return $conexion;
                 }
                 else
@@ -108,7 +108,7 @@
         }
     }
 
-    function ABRIR_CONEXION_MYSQLI($index)
+    function ABRIR_CONEXION_MYSQLI($index,$database)
     {
         $file = $index === FALSE ? "../../data/conexion_mysql.csv" : "./data/conexion_mysql.csv";
 
@@ -142,7 +142,7 @@
                 if ($conexion != FALSE)
                 {
                     // INDICAMOS LA BASE DE DATOS A LA CUAL CONECTARSE
-                    mysqli_select_db($conexion, $base);
+                    mysqli_select_db($conexion, $database);
                     return $conexion;
                 }
                 else
