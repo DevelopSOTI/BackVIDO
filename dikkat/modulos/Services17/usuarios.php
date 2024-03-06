@@ -1,7 +1,7 @@
 <?php
 // <editor-fold defaultstate="collapsed" desc="Inserta los usuarios del sistema">
-    function InsertarUsuario($NOMBRE,$APELLIDOP,$APELLIDOM,$USUARIO,$PASS,$USUARIOCREADOR,$FECHACREACION){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function InsertarUsuario($NOMBRE,$APELLIDOP,$APELLIDOM,$USUARIO,$PASS,$USUARIOCREADOR,$FECHACREACION,$BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -28,8 +28,8 @@
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="Actualiza los usuarios del sistema">
-    function ActualizaUsuario($USUARIOID,$NOMBRE,$APELLIDOP,$APELLIDOM,$USUARIO,$PASS,$ESTATUS,$USUARIOMODIFICACION,$FECHAMODIFICACION){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function ActualizaUsuario($USUARIOID,$NOMBRE,$APELLIDOP,$APELLIDOM,$USUARIO,$PASS,$ESTATUS,$USUARIOMODIFICACION,$FECHAMODIFICACION,$BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -59,8 +59,8 @@
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Muestra los usuarios del sistema">
-    function MostrarUsuarios(){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function MostrarUsuarios($BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         if ($conn){  
                     // <editor-fold defaultstate="collapsed" desc="SELECCION DE TODOS LOS USUARIOS">                 
@@ -96,7 +96,8 @@
         'PASS'=>'xsd:string',
         'ESTATUS'=>'xsd:string',
         'USUARIOCREADOR'=>'xsd:string',
-        'FECHACREACION'=>'xsd:string'
+        'FECHACREACION'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -116,7 +117,8 @@
             'PASS'=>'xsd:string',
             'ESTATUS'=>'xsd:string',
             'USUARIOMODIFICACION'=>'xsd:string',
-            'FECHAMODIFICACION'=>'xsd:string'
+            'FECHAMODIFICACION'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -157,8 +159,10 @@
             );
             $server->register(
                 'MostrarUsuarios',
-                array(),
-                array('return'=> 'tns:MostrarUsuariosArray'),
+                array(
+                    'BD'=>'xsd:string'
+                ),//parametros de entrada
+                array('return'=> 'tns:MostrarUsuariosArray'),//retornar
                 $namespace,
                 false,
                 'rpc',
