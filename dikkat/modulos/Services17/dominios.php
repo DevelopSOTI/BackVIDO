@@ -1,7 +1,7 @@
 <?php
-function MostrarDominios()
+function MostrarDominios($BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $Dominios = null;
     if ($conn) {
 
@@ -28,9 +28,9 @@ function MostrarDominios()
     mysqli_close($conn);
     return $Dominios;
 }
-function InsertarDominio($NOMBRE, $RUTA)
+function InsertarDominio($NOMBRE, $RUTA, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn) {
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
@@ -49,9 +49,9 @@ function InsertarDominio($NOMBRE, $RUTA)
     }
     return $result;
 }
-function ActualizarDominio($DOMINIO_ID, $NOMBRE, $RUTA, $ESTATUS)
+function ActualizarDominio($DOMINIO_ID, $NOMBRE, $RUTA, $ESTATUS, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn) {
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
@@ -94,7 +94,8 @@ $server->wsdl->addComplexType(
 $server->register(
     'MostrarDominios',
     array(),
-    array('return' => 'tns:MostrarDominiosArray'),
+    array('return' => 'tns:MostrarDominiosArray',
+    'BD'=>'xsd:string'),
     $namespace,
     false,
     'rpc',
@@ -105,7 +106,8 @@ $server->register(
     'InsertarDominio',
     array(
         'NOMBRE' => 'xsd:string',
-        'RUTA' => 'xsd:string'
+        'RUTA' => 'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'xsd:boolean'),
     $namespace,
@@ -121,7 +123,8 @@ $server->register(
         'DOMINIO_ID' => 'xsd:int',
         'NOMBRE' => 'xsd:string',
         'RUTA' => 'xsd:string',
-        'ESTATUS' => 'xsd:string'
+        'ESTATUS' => 'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'xsd:boolean'),
     $namespace,

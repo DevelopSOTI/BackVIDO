@@ -1,7 +1,7 @@
 <?php
-function InsertarChecada($USUARIO_ID, $SUCURSAL_ID, $TIPO, $HORA)
+function InsertarChecada($USUARIO_ID, $SUCURSAL_ID, $TIPO, $HORA, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn) {
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
@@ -28,9 +28,9 @@ function InsertarChecada($USUARIO_ID, $SUCURSAL_ID, $TIPO, $HORA)
     }
     return $result;
 }
-function MostrarChecadas($USUARIO_ID)
+function MostrarChecadas($USUARIO_ID, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn) {
         $select  = "SELECT CHECADA_ID, USUARIO_ID, SUCURSAL_ID, FECHA, TIPO FROM CHECADA ";
@@ -92,7 +92,8 @@ $server->wsdl->addComplexType(
 $server->register(
     'MostrarChecadas',
     array(
-        'USUARIO_ID' => 'xsd:int'
+        'USUARIO_ID' => 'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'tns:MostrarChecadasArray'),
     $namespace,
@@ -108,7 +109,8 @@ $server->register(
         'USUARIO_ID' => 'xsd:int',
         'SUCURSAL_ID' => 'xsd:int',
         'TIPO' => 'xsd:string',
-        'HORA' => 'xsd:string'
+        'HORA' => 'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'xsd:boolean'),
     $namespace,

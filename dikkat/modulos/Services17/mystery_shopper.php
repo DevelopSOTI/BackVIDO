@@ -1,6 +1,6 @@
 <?php
-function MostrarMysteryShopper($SUCURSAL_ID,$FECHA_REVISION,$USUARIO_ASIGNADO){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarMysteryShopper($SUCURSAL_ID,$FECHA_REVISION,$USUARIO_ASIGNADO, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){
         $select  = " SELECT MS.MYSTERY_SHOPPER_ID,MSD.MYSTERY_SHOPPER_DETALLE_ID,MSD.TAREA_DET_ID,MSD.ESTATUS,T.NOMBRE AS GRUPO_TAREA,TD.DESCRIPCION ";
@@ -50,8 +50,8 @@ function MostrarMysteryShopper($SUCURSAL_ID,$FECHA_REVISION,$USUARIO_ASIGNADO){
         return null; 
     }
 }
-function MostrarMysteryShopperGrupoTarea($SUCURSAL_ID,$FECHA_REVISION,$USUARIO_ASIGNADO,$GRUPO_TAREA){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarMysteryShopperGrupoTarea($SUCURSAL_ID,$FECHA_REVISION,$USUARIO_ASIGNADO,$GRUPO_TAREA, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){
         $select  = " SELECT MS.MYSTERY_SHOPPER_ID,MSD.MYSTERY_SHOPPER_DETALLE_ID,MSD.TAREA_DET_ID,MSD.ESTATUS,T.NOMBRE AS GRUPO_TAREA,TD.DESCRIPCION , TD.CLAVE ";
@@ -167,7 +167,7 @@ function MostrarMysteryShopperGrupoTarea($SUCURSAL_ID,$FECHA_REVISION,$USUARIO_A
     }
     return $result;  
 }*/
-function SubirImgMysteryShopper($FECHA, $IMAGEN, $NOMBRE_IMAGEN, $MYSTERY_SHOPPER_ID, $RESPUESTA_TAREA_DETALLE_ID)
+function SubirImgMysteryShopper($FECHA, $IMAGEN, $NOMBRE_IMAGEN, $MYSTERY_SHOPPER_ID, $RESPUESTA_TAREA_DETALLE_ID, $BD)
 {
     $result = -1;
     $hostname = "../../../";
@@ -176,7 +176,7 @@ function SubirImgMysteryShopper($FECHA, $IMAGEN, $NOMBRE_IMAGEN, $MYSTERY_SHOPPE
     $actualPath = "";
     $MODULO = "MYSTERY_SHOPPER";
     $RUTA_IMAGEN = "";
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
 
     if (!stristr($NOMBRE_IMAGEN, '/', true)) {
@@ -289,8 +289,8 @@ function SubirImgMysteryShopper($FECHA, $IMAGEN, $NOMBRE_IMAGEN, $MYSTERY_SHOPPE
         return $result;
     }
 }
-function InsertarMysteryShopperRespuestaTarea($TAREA_DET_ID,$SUCURSAL_ID,$MYSTERY_SHOPPER_DETALLE_ID,$TIPO_DATO,$RESULTADO,$USUARIO_CREADOR,$FECHA_HORA_CREACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarMysteryShopperRespuestaTarea($TAREA_DET_ID,$SUCURSAL_ID,$MYSTERY_SHOPPER_DETALLE_ID,$TIPO_DATO,$RESULTADO,$USUARIO_CREADOR,$FECHA_HORA_CREACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     $respuesta=0;
     $RESPUESTA_TAREA_DETALLE_ID=0;
@@ -391,8 +391,8 @@ function InsertarMysteryShopperRespuestaTarea($TAREA_DET_ID,$SUCURSAL_ID,$MYSTER
     }
 return $result;
 }
-function ActualizarEstatusMysteryShopper($MYSTERY_SHOPPER_ID,$ESTATUS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizarEstatusMysteryShopper($MYSTERY_SHOPPER_ID,$ESTATUS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
@@ -418,8 +418,8 @@ function ActualizarEstatusMysteryShopper($MYSTERY_SHOPPER_ID,$ESTATUS,$USUARIO_M
 return $result;
 }
 
-function BuscarMysteryShopperRespuestaTarea($TAREA_DET_ID,$SUCURSAL_ID,$MYSTERY_SHOPPER_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarMysteryShopperRespuestaTarea($TAREA_DET_ID,$SUCURSAL_ID,$MYSTERY_SHOPPER_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     if ($conn){
         if ($conn){
@@ -444,8 +444,8 @@ function BuscarMysteryShopperRespuestaTarea($TAREA_DET_ID,$SUCURSAL_ID,$MYSTERY_
     }
 return $result;
 }
-function ActualizarHoraInicioFinMysteryShopper($TIPO,$HORA,$MYSTERY_SHOPPER_ID,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizarHoraInicioFinMysteryShopper($TIPO,$HORA,$MYSTERY_SHOPPER_ID,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $TIPO_ACTUALIZACION="";$WHERE_COMPLEMENTO="";
     if(is_null($HORA)||strlen($HORA)===0){
@@ -487,8 +487,8 @@ function ActualizarHoraInicioFinMysteryShopper($TIPO,$HORA,$MYSTERY_SHOPPER_ID,$
     return $result;
 }
 
-function MuestraHoraInicioFinMysteryShopper($MYSTERY_SHOPPER_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MuestraHoraInicioFinMysteryShopper($MYSTERY_SHOPPER_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){
         $select  ="SELECT HORA_INICIO,HORA_FIN FROM MYSTERY_SHOPPER ";
@@ -553,7 +553,8 @@ $server->register(
         'SUCURSAL_ID'=>'xsd:int',
         'FECHA_REVISION'=>'xsd:string',
         'USUARIO_ASIGNADO'=>'xsd:string',
-        'GRUPO_TAREA'=> 'xsd:string'
+        'GRUPO_TAREA'=> 'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarMysteryShopperArray'),
     $namespace,
@@ -567,7 +568,8 @@ $server->register(
     array(
         'SUCURSAL_ID'=>'xsd:int',
         'FECHA_REVISION'=>'xsd:string',
-        'USUARIO_ASIGNADO'=>'xsd:string'
+        'USUARIO_ASIGNADO'=>'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarMysteryShopperArray'),
     $namespace,
@@ -583,7 +585,8 @@ $server->register(
         'IMAGEN'=>'xsd:string',
         'NOMBRE_IMAGEN'=>'xsd:string',
         'MYSTERY_SHOPPER_ID'=>'xsd:int',
-        'RESPUESTA_TAREA_DETALLE_ID'=>'xsd:int'
+        'RESPUESTA_TAREA_DETALLE_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=>'xsd:int'),
     $namespace,
@@ -601,7 +604,8 @@ $server->register(
         'TIPO_DATO'=>'xsd:string',
         'RESULTADO'=>'xsd:string',
         'USUARIO_CREADOR'=>'xsd:string',
-        'FECHA_HORA_CREACION'=>'xsd:string'
+        'FECHA_HORA_CREACION'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:int'),
     $namespace,
@@ -615,7 +619,8 @@ $server->register(
     array(
         'TAREA_DET_ID'=>'xsd:int',
         'SUCURSAL_ID'=>'xsd:int',
-        'MYSTERY_SHOPPER_DETALLE_ID'=>'xsd:int'
+        'MYSTERY_SHOPPER_DETALLE_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=>'xsd:int'),
     $namespace,
@@ -630,7 +635,8 @@ $server->register(
         'MYSTERY_SHOPPER_ID'=>'xsd:int',
         'ESTATUS'=>'xsd:string',
         'USUARIO_MODIFICACION'=>'xsd:string',
-        'FECHA_HORA_MODIFICACION'=>'xsd:string'
+        'FECHA_HORA_MODIFICACION'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -646,7 +652,8 @@ $server->register(
         'HORA'=>'xsd:string',
         'MYSTERY_SHOPPER_ID'=>'xsd:int',
         'USUARIO_MODIFICACION'=>'xsd:string',
-        'FECHA_HORA_MODIFICACION'=>'xsd:string'
+        'FECHA_HORA_MODIFICACION'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -678,7 +685,8 @@ $server->wsdl->addComplexType(
 $server->register(
     'MuestraHoraInicioFinMysteryShopper',
     array(
-        'MYSTERY_SHOPPER_ID'=>'xsd:int'
+        'MYSTERY_SHOPPER_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MuestraHoraInicioFinMysteryShopperArray'),
     $namespace,
@@ -687,9 +695,9 @@ $server->register(
     false,
     'Muestra la hora de inicio y fin de la tarea de mystery shopper');
     
-    function ActualizarMysteryShopperDetalleEstatus($MYSTERY_SHOPPER_DETALLE_ID)
+    function ActualizarMysteryShopperDetalleEstatus($MYSTERY_SHOPPER_DETALLE_ID, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     $respuesta = 0;
     $RESPUESTA_TAREA_DETALLE_ID = 0;
@@ -718,9 +726,9 @@ $server->register(
     return $result;
 }
 
-function ActualizaEstatusTareasMysteryShopper($MYSTERY_SHOPPER_DETALLE_ID)
+function ActualizaEstatusTareasMysteryShopper($MYSTERY_SHOPPER_DETALLE_ID, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     $id = "";
     if ($conn) {
@@ -769,7 +777,8 @@ function ActualizaEstatusTareasMysteryShopper($MYSTERY_SHOPPER_DETALLE_ID)
 $server->register(
     'ActualizarMysteryShopperDetalleEstatus',
     array(
-        'MYSTERY_SHOPPER_DETALLE_ID' => 'xsd:int'
+        'MYSTERY_SHOPPER_DETALLE_ID' => 'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'xsd:int'),
     $namespace,
@@ -781,7 +790,8 @@ $server->register(
 $server->register(
     'ActualizaEstatusTareasMysteryShopper',
     array(
-        'MYSTERY_SHOPPER_DETALLE_ID' => 'xsd:int'
+        'MYSTERY_SHOPPER_DETALLE_ID' => 'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'xsd:boolean'),
     $namespace,

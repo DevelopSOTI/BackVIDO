@@ -1,6 +1,6 @@
 <?php
-function MostrarChequeoCompetencia($FECHA_REVISION,$USUARIO_ASIGNADO,$SUCURSAL_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarChequeoCompetencia($FECHA_REVISION,$USUARIO_ASIGNADO,$SUCURSAL_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){ 
         $USUARIO_ASIGNADO=trim($USUARIO_ASIGNADO);
@@ -56,8 +56,8 @@ function MostrarChequeoCompetencia($FECHA_REVISION,$USUARIO_ASIGNADO,$SUCURSAL_I
 }
 
 function ActualizarChequeoCompetenciaDetalle( $CHEQUEO_COMPETENCIA_ID
-,$CANTIDAD_CLIENTES,$CHEQUEO_COMPETENCIA_DETALLE_ID,$SUCURSAL_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+,$CANTIDAD_CLIENTES,$CHEQUEO_COMPETENCIA_DETALLE_ID,$SUCURSAL_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){ 
         //Buscar sucursal chequeo competencia id
@@ -105,8 +105,8 @@ function ActualizarChequeoCompetenciaDetalle( $CHEQUEO_COMPETENCIA_ID
     }
         return $result;
 }
-function ActualizarEstatusChequeoCompetencia( $CHEQUEO_COMPETENCIA_ID,$ESTATUS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizarEstatusChequeoCompetencia( $CHEQUEO_COMPETENCIA_ID,$ESTATUS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){ 
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
@@ -136,8 +136,8 @@ function ActualizarEstatusChequeoCompetencia( $CHEQUEO_COMPETENCIA_ID,$ESTATUS,$
     return $result;
 }
 function InsertarCompetenciaCajas($COMPETENCIA_CAJAS_CANTIDAD,$COMPETENCIA_CAJAS_ABIERTAS,$COMPETENCIA_CAJAS_CERRADAS
-,$COMPETENCIA_CAJAS_MAS4CLIENTES,$CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+,$COMPETENCIA_CAJAS_MAS4CLIENTES,$CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);               
@@ -161,8 +161,8 @@ function InsertarCompetenciaCajas($COMPETENCIA_CAJAS_CANTIDAD,$COMPETENCIA_CAJAS
     }
     return $result;
 }
-function BuscarCompetenciaCajas($CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarCompetenciaCajas($CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     if ($conn){
         $select  = "SELECT COMPETENCIA_CAJAS_ID FROM COMPETENCIA_CAJAS ";
@@ -188,8 +188,8 @@ function BuscarCompetenciaCajas($CHEQUEO_COMPETENCIA_DETALLE_ID){
     }
 }
 function ActualizaCompetenciaCajas($COMPETENCIA_CAJAS_CANTIDAD,$COMPETENCIA_CAJAS_ABIERTAS,$COMPETENCIA_CAJAS_CERRADAS
-,$COMPETENCIA_CAJAS_MAS4CLIENTES,$CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+,$COMPETENCIA_CAJAS_MAS4CLIENTES,$CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
@@ -216,8 +216,8 @@ function ActualizaCompetenciaCajas($COMPETENCIA_CAJAS_CANTIDAD,$COMPETENCIA_CAJA
     }
     return $result;
 }
-function InsertarPersonalAnaquel($SUCURSAL_ID,$CHEQUEO_COMPETENCIA_DETALLE_ID,$FECHA_REVISION,$USUARIO_CREADOR,$FECHA_HORA_CREACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarPersonalAnaquel($SUCURSAL_ID,$CHEQUEO_COMPETENCIA_DETALLE_ID,$FECHA_REVISION,$USUARIO_CREADOR,$FECHA_HORA_CREACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE); 
@@ -239,8 +239,8 @@ function InsertarPersonalAnaquel($SUCURSAL_ID,$CHEQUEO_COMPETENCIA_DETALLE_ID,$F
     }
     return $result;
 }
-function BuscarPersonalAnaquel($SUCURSAL_ID,$FECHA_REVISION,$CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarPersonalAnaquel($SUCURSAL_ID,$FECHA_REVISION,$CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     if ($conn){
         $select  = "SELECT PERSONAL_ANAQUEL_ID FROM PERSONAL_ANAQUEL WHERE ";
@@ -265,8 +265,8 @@ function BuscarPersonalAnaquel($SUCURSAL_ID,$FECHA_REVISION,$CHEQUEO_COMPETENCIA
         return 0; 
     }
 }
-function BuscarPersonalAnaquelDetalle($SUCURSAL_ID,$FECHA_REVISION,$CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarPersonalAnaquelDetalle($SUCURSAL_ID,$FECHA_REVISION,$CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = NULL;
     if ($conn){
         $select  = "SELECT PA.PERSONAL_ANAQUEL_ID,PAD.PERSONAL_ANAQUEL_DETALLE_ID, PAD.PROVEEROR_ID,P.NOMBRE, PAD.CANTIDAD FROM PERSONAL_ANAQUEL AS PA "; 
@@ -298,8 +298,8 @@ function BuscarPersonalAnaquelDetalle($SUCURSAL_ID,$FECHA_REVISION,$CHEQUEO_COMP
         return NULL; 
     }
 }
-function ActualizarEstatusPersonalAnaquel($SUCURSAL_ID,$CHEQUEO_COMPETENCIA_DETALLE_ID,$FECHA_REVISION,$ESTATUS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizarEstatusPersonalAnaquel($SUCURSAL_ID,$CHEQUEO_COMPETENCIA_DETALLE_ID,$FECHA_REVISION,$ESTATUS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
@@ -330,8 +330,8 @@ function ActualizarEstatusPersonalAnaquel($SUCURSAL_ID,$CHEQUEO_COMPETENCIA_DETA
     }
     return $result;
 }
-function InsertarPersonalAnaquelDetalle($PERSONAL_ANAQUEL_ID,$PROVEEROR_ID,$CANTIDAD){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarPersonalAnaquelDetalle($PERSONAL_ANAQUEL_ID,$PROVEEROR_ID,$CANTIDAD, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE); 
@@ -361,8 +361,8 @@ function InsertarPersonalAnaquelDetalle($PERSONAL_ANAQUEL_ID,$PROVEEROR_ID,$CANT
     }
     return $result;
 }
-function ActualizaPersonalAnaquelDetalle($PERSONAL_ANAQUEL_DETALLE_ID,$PERSONAL_ANAQUEL_ID,$PROVEEROR_ID,$CANTIDAD){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaPersonalAnaquelDetalle($PERSONAL_ANAQUEL_DETALLE_ID,$PERSONAL_ANAQUEL_ID,$PROVEEROR_ID,$CANTIDAD, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         $prov="";
@@ -394,8 +394,8 @@ function ActualizaPersonalAnaquelDetalle($PERSONAL_ANAQUEL_DETALLE_ID,$PERSONAL_
     }
     return $result;
 }
-function SucursalesUsuarioChequeoCompetencia($USUARIO_ASIGNADO,$FECHA_REVISION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function SucursalesUsuarioChequeoCompetencia($USUARIO_ASIGNADO,$FECHA_REVISION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result=null;
     if ($conn){ 
         $USUARIO_ASIGNADO=trim($USUARIO_ASIGNADO);
@@ -430,8 +430,8 @@ function SucursalesUsuarioChequeoCompetencia($USUARIO_ASIGNADO,$FECHA_REVISION){
     }
     return $result;
 }
-function BuscarCatalogoActividadID($NOMBRE){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarCatalogoActividadID($NOMBRE, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result="";
     if ($conn){ 
         $select = "SELECT CATALOGO_ACTIVIDADES_ID, NOMBRE, ESTATUS FROM CATALOGO_ACTIVIDADES WHERE NOMBRE='$NOMBRE' AND ESTATUS='A';";     
@@ -456,8 +456,8 @@ function BuscarCatalogoActividadID($NOMBRE){
     }
     return $result;
 }
-function BuscarCatalogoChequeoID($NOMBRE){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarCatalogoChequeoID($NOMBRE, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result="";
     if ($conn){ 
         $select = "SELECT CATALOGO_CHEQUEO_ID, NOMBRE, ESTATUS FROM CATALOGO_CHEQUEO WHERE NOMBRE='$NOMBRE' AND ESTATUS='A';";     
@@ -482,8 +482,8 @@ function BuscarCatalogoChequeoID($NOMBRE){
     }
     return $result;
 }
-function ExisteActivacion($CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ExisteActivacion($CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result=0;
     if ($conn){ 
         $select  = "SELECT ACTIVACION_ID, CHEQUEO_COMPETENCIA_DETALLE_ID, ESTATUS ";
@@ -509,8 +509,8 @@ function ExisteActivacion($CHEQUEO_COMPETENCIA_DETALLE_ID){
     }
     return $result;
 }
-function ExisteAtencionClientes($CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ExisteAtencionClientes($CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result=0;
     if ($conn){ 
         $select  = "SELECT ATENCION_CLIENTES_ID,CHEQUEO_COMPETENCIA_DETALLE_ID,ESTATUS FROM ATENCION_CLIENTES ";
@@ -536,8 +536,8 @@ function ExisteAtencionClientes($CHEQUEO_COMPETENCIA_DETALLE_ID){
     }
     return $result;
 }
-function InsertarActivacion($ESTATUS,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarActivacion($ESTATUS,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);  
@@ -568,8 +568,8 @@ function InsertarActivacion($ESTATUS,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$CHEQ
     }
     return $result;
 }
-function InsertarAtencionClientes($ESTATUS,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarAtencionClientes($ESTATUS,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $fecha = date("Y-m-d H:i:s");
     //echo $fecha;
@@ -603,8 +603,8 @@ function InsertarAtencionClientes($ESTATUS,$USUARIO_CREADOR,$FECHA_HORA_CREACION
     }
     return $result;
 }
-function InsertarActivacionDetalle($ACTIVACION_ID,$CATALOGO_CHEQUEO_ID,$VALOR){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarActivacionDetalle($ACTIVACION_ID,$CATALOGO_CHEQUEO_ID,$VALOR, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
@@ -654,8 +654,8 @@ function InsertarActivacionDetalle($ACTIVACION_ID,$CATALOGO_CHEQUEO_ID,$VALOR){
     return $result;
 }
 
-function InsertarAtencionClientesDetalle($ATENCION_CLIENTES_ID,$CATALOGO_CHEQUEO_ID,$CATALOGO_ACTIVIDADES_ID,$VALOR){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarAtencionClientesDetalle($ATENCION_CLIENTES_ID,$CATALOGO_CHEQUEO_ID,$CATALOGO_ACTIVIDADES_ID,$VALOR, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $atencionClientesDetalleID=0;
     $query="";
@@ -708,8 +708,8 @@ function InsertarAtencionClientesDetalle($ATENCION_CLIENTES_ID,$CATALOGO_CHEQUEO
     }
     return $result;
 }
-function MostrarBusquedaProveedores($NOMBRE){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarBusquedaProveedores($NOMBRE, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result=null;
     if ($conn){                             
             $select  ="SELECT PROVEEDOR_ID,NOMBRE FROM PROVEEDORES WHERE NOMBRE LIKE '%$NOMBRE%';";  
@@ -736,8 +736,8 @@ function MostrarBusquedaProveedores($NOMBRE){
     }
     return $result;
 }
-function MostrarCompetenciaCajas($CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarCompetenciaCajas($CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result=null;
     if ($conn){                             
             $select  =" SELECT COMPETENCIA_CAJAS_ID, COMPETENCIA_CAJAS_CANTIDAD, COMPETENCIA_CAJAS_ABIERTAS, "; 
@@ -770,8 +770,8 @@ function MostrarCompetenciaCajas($CHEQUEO_COMPETENCIA_DETALLE_ID){
     return $result;
 }
 /*Servico que recibe como parametro un arreglo*/
-function ModificacionPersonalAtendiendoAnaquel($SUCURSAL_ID,$FECHA_REVISION,$CHEQUEO_COMPETENCIA_DETALLE_ID,$USUARIO,$FECHA,$RegistrosPersonalAnaquel){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ModificacionPersonalAtendiendoAnaquel($SUCURSAL_ID,$FECHA_REVISION,$CHEQUEO_COMPETENCIA_DETALLE_ID,$USUARIO,$FECHA,$RegistrosPersonalAnaquel, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $cambios = 0;
     $proceso = "";
     $query="";
@@ -931,8 +931,8 @@ function ModificacionPersonalAtendiendoAnaquel($SUCURSAL_ID,$FECHA_REVISION,$CHE
     } 
     return $result;
 }
-function MostrarActivaciones($ACTIVACION_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarActivaciones($ACTIVACION_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result=null;
     if ($conn){                             
             $select  ="SELECT AD.ACTIVACION_DETALLE_ID,AD.CATALOGO_CHEQUEO_ID,CC.NOMBRE,VALOR ";
@@ -965,8 +965,8 @@ function MostrarActivaciones($ACTIVACION_ID){
     }
     return $result;
 }
-function MostrarAtencionClientes($ATENCION_CLIENTES_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarAtencionClientes($ATENCION_CLIENTES_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result=null;
     if ($conn){                             
             $select  ="SELECT ACD.ATENCION_CLIENTES_DETALLE_ID,CC.CATALOGO_CHEQUEO_ID,CC.NOMBRE AS CHEQUEO,CA.NOMBRE AS ACTIVIDAD,VALOR";  
@@ -1001,8 +1001,8 @@ function MostrarAtencionClientes($ATENCION_CLIENTES_ID){
     }
     return $result;
 }
-function ActualizarHoraInicioFinChequeoCompetencias($TIPO,$HORA,$CHEQUEO_COMPETENCIA_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizarHoraInicioFinChequeoCompetencias($TIPO,$HORA,$CHEQUEO_COMPETENCIA_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $TIPO_ACTUALIZACION="";$WHERE_COMPLEMENTO="";
     if(is_null($HORA)||strlen($HORA)===0){
@@ -1042,8 +1042,8 @@ function ActualizarHoraInicioFinChequeoCompetencias($TIPO,$HORA,$CHEQUEO_COMPETE
     }
     return $result;
 }
-function MuestraHoraInicioFinChequeoCompetencias($CHEQUEO_COMPETENCIA_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MuestraHoraInicioFinChequeoCompetencias($CHEQUEO_COMPETENCIA_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){
         $select  ="SELECT HORA_INICIO,HORA_FIN FROM CHEQUEO_COMPETENCIA ";
@@ -1066,8 +1066,8 @@ function MuestraHoraInicioFinChequeoCompetencias($CHEQUEO_COMPETENCIA_ID){
     }
     return $result;
 }
-function ActualizarHoraInicioFinTareaChequeoCompetencias($TIPO,$HORA,$TAREA,$TAREA_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizarHoraInicioFinTareaChequeoCompetencias($TIPO,$HORA,$TAREA,$TAREA_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $fecha = date("Y-m-d H:i:s");
     $TIPO_ACTUALIZACION="";$WHERE_COMPLEMENTO="";$TABLA="";$TABLA_ID="";
@@ -1142,8 +1142,8 @@ function ActualizarHoraInicioFinTareaChequeoCompetencias($TIPO,$HORA,$TAREA,$TAR
     return $result;
 }
 /* Cantidad de clientes */
-function InsertarConteoClientes($CHEQUEO_COMPETENCIA_DETALLE_ID,$CANTIDAD,$HORA_INICIO,$HORA_FIN,$USUARIO_CREADOR,$FECHA_HORA_CREACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarConteoClientes($CHEQUEO_COMPETENCIA_DETALLE_ID,$CANTIDAD,$HORA_INICIO,$HORA_FIN,$USUARIO_CREADOR,$FECHA_HORA_CREACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $horaInicio="";
     $horaFin="";
@@ -1199,8 +1199,8 @@ function InsertarConteoClientes($CHEQUEO_COMPETENCIA_DETALLE_ID,$CANTIDAD,$HORA_
     }
     return $result;
 }
-function ActualizaHoraInicioFinConteoClientes($TIPO,$HORA,$CHEQUEO_COMPETENCIA_DETALLE_ID,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaHoraInicioFinConteoClientes($TIPO,$HORA,$CHEQUEO_COMPETENCIA_DETALLE_ID,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $TIPO_ACTUALIZACION="";$WHERE_COMPLEMENTO="";
     if ($conn){
@@ -1236,8 +1236,8 @@ function ActualizaHoraInicioFinConteoClientes($TIPO,$HORA,$CHEQUEO_COMPETENCIA_D
     }
     return $result;
 }
-function ActualizaCantidadConteoClientes($CANTIDAD,$CHEQUEO_COMPETENCIA_DETALLE_ID,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaCantidadConteoClientes($CANTIDAD,$CHEQUEO_COMPETENCIA_DETALLE_ID,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     
     if ($conn){
@@ -1267,8 +1267,8 @@ function ActualizaCantidadConteoClientes($CANTIDAD,$CHEQUEO_COMPETENCIA_DETALLE_
     return $result;
     }
 
-function MostrarConteoClientes($CHEQUEO_COMPETENCIA_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarConteoClientes($CHEQUEO_COMPETENCIA_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){
         $select  = "SELECT CONTEO_CLIENTES_ID,CANTIDAD,HORA_INICIO,HORA_FIN ";
@@ -1300,8 +1300,8 @@ function MostrarConteoClientes($CHEQUEO_COMPETENCIA_DETALLE_ID){
         return null; 
     }
 }
-function MostrarHoraInicioFinActivicadesChequeoCompetencia($CHEQUEO_COMPETENCIA_DETALLE_ID, $SUCURSAL_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarHoraInicioFinActivicadesChequeoCompetencia($CHEQUEO_COMPETENCIA_DETALLE_ID, $SUCURSAL_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){
         $select  = "Select CHEQUEO_COMPETENCIA_DETALLE_ID,'PA' AS TAREA,HORA_INICIO,HORA_FIN from PERSONAL_ANAQUEL as PA WHERE CHEQUEO_COMPETENCIA_DETALLE_ID=$CHEQUEO_COMPETENCIA_DETALLE_ID; ";
@@ -1396,8 +1396,8 @@ function MostrarHoraInicioFinActivicadesChequeoCompetencia($CHEQUEO_COMPETENCIA_
         return null; 
     }
 }
-function MuestraHoraInicioFinCompetenciaCajas($COMPETENCIA_CAJAS_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MuestraHoraInicioFinCompetenciaCajas($COMPETENCIA_CAJAS_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){
         $select  ="SELECT HORA_INICIO,HORA_FIN FROM COMPETENCIA_CAJAS ";
@@ -1420,8 +1420,8 @@ function MuestraHoraInicioFinCompetenciaCajas($COMPETENCIA_CAJAS_ID){
     }
     return $result;
 }
-function ActualizarHoraInicioFinCompetenciaCajas($TIPO,$HORA,$COMPETENCIA_CAJAS_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizarHoraInicioFinCompetenciaCajas($TIPO,$HORA,$COMPETENCIA_CAJAS_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $TIPO_ACTUALIZACION="";$WHERE_COMPLEMENTO="";
     if(is_null($HORA)||strlen($HORA)===0){
@@ -1461,8 +1461,8 @@ function ActualizarHoraInicioFinCompetenciaCajas($TIPO,$HORA,$COMPETENCIA_CAJAS_
     }
     return $result;
 }
-function EliminarPersonalAtendiendoAnaquelDetalle($PERSONAL_ANAQUEL_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function EliminarPersonalAtendiendoAnaquelDetalle($PERSONAL_ANAQUEL_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if(is_null($PERSONAL_ANAQUEL_DETALLE_ID)||strlen($PERSONAL_ANAQUEL_DETALLE_ID)===0){
 
@@ -1493,7 +1493,8 @@ function EliminarPersonalAtendiendoAnaquelDetalle($PERSONAL_ANAQUEL_DETALLE_ID){
 $server->register(
     'EliminarPersonalAtendiendoAnaquelDetalle',
     array(
-        'PERSONAL_ANAQUEL_DETALLE_ID'=>'xsd:int'
+        'PERSONAL_ANAQUEL_DETALLE_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -1541,7 +1542,8 @@ $server->register(
     array(
         'FECHA_REVISION'=>'xsd:string',
         'USUARIO_ASIGNADO'=>'xsd:string',
-        'SUCURSAL_ID'=>'xsd:int'
+        'SUCURSAL_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarChequeoCompetenciaArray'),
     $namespace,
@@ -1556,7 +1558,8 @@ $server->register(
             'CHEQUEO_COMPETENCIA_ID'=>'xsd:int',
             'CANTIDAD_CLIENTES'=>'xsd:int',
             'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
-            'SUCURSAL_ID'=>'xsd:int'
+            'SUCURSAL_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1571,7 +1574,8 @@ $server->register(
             'CHEQUEO_COMPETENCIA_ID'=>'xsd:int',
             'ESTATUS'=>'xsd:string',
             'USUARIO_MODIFICACION'=>'xsd:string',
-            'FECHA_HORA_MODIFICACION'=>'xsd:string'
+            'FECHA_HORA_MODIFICACION'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1586,7 +1590,8 @@ $server->register(
             'COMPETENCIA_CAJAS_ABIERTAS'=>'xsd:int',
             'COMPETENCIA_CAJAS_CERRADAS'=>'xsd:int',
             'COMPETENCIA_CAJAS_MAS4CLIENTES'=>'xsd:int',
-            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int'
+            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1597,7 +1602,8 @@ $server->register(
 
     $server->register(
         'BuscarCompetenciaCajas',
-        array('CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int'),
+        array('CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
+        'BD'=>'xsd:string'),
         array('return'=> 'xsd:int'),
         $namespace,
         false,
@@ -1611,7 +1617,8 @@ $server->register(
             'COMPETENCIA_CAJAS_ABIERTAS'=>'xsd:int',
             'COMPETENCIA_CAJAS_CERRADAS'=>'xsd:int',
             'COMPETENCIA_CAJAS_MAS4CLIENTES'=>'xsd:int',
-            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int'
+            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1626,7 +1633,8 @@ $server->register(
             'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
             'FECHA_REVISION'=>'xsd:string',
             'USUARIO_CREADOR'=>'xsd:string',
-            'FECHA_HORA_CREACION'=>'xsd:string'
+            'FECHA_HORA_CREACION'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1640,7 +1648,8 @@ $server->register(
         array(
             'SUCURSAL_ID'=>'xsd:int',
             'FECHA_REVISION'=>'xsd:string',
-            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int'
+            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'xsd:int'),
         $namespace,
@@ -1677,7 +1686,8 @@ $server->register(
             array(
                 'SUCURSAL_ID'=>'xsd:int',
                 'FECHA_REVISION'=>'xsd:string',
-                'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int'
+                'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
+                'BD'=>'xsd:string'
             ),
             array('return'=> 'tns:BuscarPersonalAnaquelDetalleArray'),
             $namespace,
@@ -1693,7 +1703,8 @@ $server->register(
             'FECHA_REVISION'=>'xsd:string',
             'ESTATUS'=>'xsd:string',
             'USUARIO_MODIFICACION'=>'xsd:string',
-            'FECHA_HORA_MODIFICACION'=>'xsd:string'
+            'FECHA_HORA_MODIFICACION'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1707,7 +1718,8 @@ $server->register(
         array(
             'PERSONAL_ANAQUEL_ID'=>'xsd:int',
             'PROVEEROR_ID'=>'xsd:int',
-            'CANTIDAD'=>'xsd:int'
+            'CANTIDAD'=>'xsd:int',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1721,7 +1733,8 @@ $server->register(
             'PERSONAL_ANAQUEL_DETALLE_ID'=>'xsd:int',
             'PERSONAL_ANAQUEL_ID'=>'xsd:int',
             'PROVEEROR_ID'=>'xsd:int',
-            'CANTIDAD'=>'xsd:int'
+            'CANTIDAD'=>'xsd:int',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1760,6 +1773,7 @@ $server->register(
             array(
                 'USUARIO_ASIGNADO'=>'xsd:string',
                 'FECHA_REVISION'=>'xsd:string',
+                'BD'=>'xsd:string'
         ),
             array('return'=> 'tns:SucursalesUsuarioChequeoCompetenciaArray'),
             $namespace,
@@ -1771,7 +1785,8 @@ $server->register(
     $server->register(
         'BuscarCatalogoActividadID',
         array(
-            'NOMBRE'=>'xsd:string'
+            'NOMBRE'=>'xsd:string',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'xsd:string'),
         $namespace,
@@ -1783,7 +1798,8 @@ $server->register(
     $server->register(
         'BuscarCatalogoChequeoID',
         array(
-            'NOMBRE'=>'xsd:string'
+            'NOMBRE'=>'xsd:string',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'xsd:string'),
         $namespace,
@@ -1795,7 +1811,8 @@ $server->register(
     $server->register(
         'ExisteActivacion',
         array(
-            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int'
+            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'xsd:int'),
         $namespace,
@@ -1807,7 +1824,8 @@ $server->register(
     $server->register(
         'ExisteAtencionClientes',
         array(
-            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int'
+            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'xsd:int'),
         $namespace,
@@ -1822,7 +1840,8 @@ $server->register(
             'ESTATUS'=>'xsd:string',
             'USUARIO_CREADOR'=>'xsd:string',
             'FECHA_HORA_CREACION'=>'xsd:string',
-            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:string'
+            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1837,7 +1856,8 @@ $server->register(
             'ESTATUS'=>'xsd:string',
             'USUARIO_CREADOR'=>'xsd:string',
             'FECHA_HORA_CREACION'=>'xsd:string',
-            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:string'
+            'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1851,7 +1871,8 @@ $server->register(
         array(
             'ACTIVACION_ID'=>'xsd:int',
             'CATALOGO_CHEQUEO_ID'=>'xsd:int',
-            'VALOR'=>'xsd:string'
+            'VALOR'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1866,7 +1887,8 @@ $server->register(
             'ATENCION_CLIENTES_ID'=>'xsd:int',
             'CATALOGO_CHEQUEO_ID'=>'xsd:int',
             'CATALOGO_ACTIVIDADES_ID'=>'xsd:int',
-            'VALOR'=>'xsd:string'
+            'VALOR'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -1900,7 +1922,8 @@ $server->register(
     
         $server->register(
             'MostrarBusquedaProveedores',
-            array('NOMBRE'=>'xsd:string'),
+            array('NOMBRE'=>'xsd:string',
+            'BD'=>'xsd:string'),
             array('return'=> 'tns:MostrarBusquedaProveedoresArray'),
             $namespace,
             false,
@@ -1936,7 +1959,8 @@ $server->wsdl->addComplexType(
 
 $server->register(
     'MostrarCompetenciaCajas',
-    array('CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int'),
+    array('CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
+    'BD'=>'xsd:string'),
     array('return'=> 'tns:MostrarCompetenciaCajasArray'),
     $namespace,
     false,
@@ -1975,7 +1999,8 @@ $server->register(
         'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
         'USUARIO'=>'xsd:string',
         'FECHA'=>'xsd:string',
-        'soapObjects'=>'tns:RegistrosPersonalAnaquelArray'
+        'soapObjects'=>'tns:RegistrosPersonalAnaquelArray',
+        'BD'=>'xsd:string'
     ),
     array('return'=>'xsd:string'),
     $namespace,
@@ -2011,7 +2036,8 @@ $server->register(
 
     $server->register(
         'MostrarActivaciones',
-        array('ACTIVACION_ID'=>'xsd:int'),
+        array('ACTIVACION_ID'=>'xsd:int',
+        'BD'=>'xsd:string'),
         array('return'=> 'tns:MostrarActivacionesArray'),
         $namespace,
         false,
@@ -2047,7 +2073,8 @@ $server->register(
     
         $server->register(
             'MostrarAtencionClientes',
-            array('ATENCION_CLIENTES_ID'=>'xsd:int'),
+            array('ATENCION_CLIENTES_ID'=>'xsd:int',
+            'BD'=>'xsd:string'),
             array('return'=> 'tns:MostrarAtencionClientesArray'),
             $namespace,
             false,
@@ -2062,7 +2089,8 @@ $server->register(
                 'HORA'=>'xsd:string',
                 'CHEQUEO_COMPETENCIA_ID'=>'xsd:int',
                 'USARIO_MODIFICACION'=>'xsd:string',
-                'FECHA_HORA_MODIFICACION'=>'xsd:string'
+                'FECHA_HORA_MODIFICACION'=>'xsd:string',
+                'BD'=>'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
@@ -2096,7 +2124,8 @@ $server->register(
         $server->register(
             'MuestraHoraInicioFinChequeoCompetencias',
             array(
-                'CHEQUEO_COMPETENCIA_ID'=>'xsd:int'
+                'CHEQUEO_COMPETENCIA_ID'=>'xsd:int',
+                'BD'=>'xsd:string'
             ),
             array('return'=> 'tns:MuestraHoraInicioFinChequeoCompetenciasArray'),
             $namespace,
@@ -2114,7 +2143,8 @@ $server->register(
                 'TAREA'=>'xsd:string',
                 'TAREA_ID'=>'xsd:int',
                 'USARIO_MODIFICACION'=>'xsd:string',
-                'FECHA_HORA_MODIFICACION'=>'xsd:string'
+                'FECHA_HORA_MODIFICACION'=>'xsd:string',
+                'BD'=>'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
@@ -2131,7 +2161,8 @@ $server->register(
         'HORA_INICIO'=>'xsd:string',
         'HORA_FIN'=>'xsd:string',
         'USUARIO_CREADOR'=>'xsd:string',
-        'FECHA_HORA_CREACION'=>'xsd:string'
+        'FECHA_HORA_CREACION'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -2147,7 +2178,8 @@ $server->register(
             'HORA'=>'xsd:string',
             'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
             'USUARIO_MODIFICACION'=>'xsd:string',
-            'FECHA_HORA_MODIFICACION'=>'xsd:string'
+            'FECHA_HORA_MODIFICACION'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -2162,7 +2194,8 @@ $server->register(
                 'CANTIDAD'=>'xsd:int',
                 'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
                 'USUARIO_MODIFICACION'=>'xsd:string',
-                'FECHA_HORA_MODIFICACION'=>'xsd:string'
+                'FECHA_HORA_MODIFICACION'=>'xsd:string',
+                'BD'=>'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
@@ -2196,7 +2229,10 @@ $server->register(
         );
     $server->register(
         'MostrarConteoClientes',
-        array('CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int'),
+        array(
+                'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
+                'BD'=>'xsd:string'
+             ),
         array('return'=> 'tns:MostrarConteoClientesArray'),
         $namespace,
         false,
@@ -2232,7 +2268,8 @@ $server->register(
     'MostrarHoraInicioFinActivicadesChequeoCompetencia',
     array(//
         'CHEQUEO_COMPETENCIA_DETALLE_ID'=>'xsd:int',
-        'SUCURSAL_ID'=>'xsd:int'
+        'SUCURSAL_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarHoraInicioFinActivicadesChequeoCompetenciaArray'),
     $namespace,
@@ -2266,7 +2303,8 @@ $server->register(
     $server->register(
         'MuestraHoraInicioFinCompetenciaCajas',
         array(
-            'COMPETENCIA_CAJAS_ID'=>'xsd:int'
+            'COMPETENCIA_CAJAS_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MuestraHoraInicioFinCompetenciaCajasArray'),
         $namespace,
@@ -2282,7 +2320,8 @@ $server->register(
                 'HORA'=>'xsd:string',
                 'COMPETENCIA_CAJAS_ID'=>'xsd:int',
                 'USARIO_MODIFICACION'=>'xsd:string',
-                'FECHA_HORA_MODIFICACION'=>'xsd:string'
+                'FECHA_HORA_MODIFICACION'=>'xsd:string',
+                'BD'=>'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
