@@ -462,7 +462,7 @@ $server->register(
     array(
         'SUCURSAL_ID'=>'xsd:int',
         'PROVEEDOR_ID'=>'xsd:int',
-        '$BD'=>'xsd:string'
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarDiasVisitaProveedorArray'),
     $namespace,

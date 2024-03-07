@@ -220,7 +220,7 @@ return $result;
                 return 0; 
             }
     }
-    function ExisteProgramacionDetalle($conn,$FECHA_PROGRAMACION,$SUCURSAL_ID,$PROVEEDOR_ID){
+    function ExisteProgramacionDetalle($conn,$FECHA_PROGRAMACION,$SUCURSAL_ID,$PROVEEDOR_ID,$BD){
         //$conn = ABRIR_CONEXION_MYSQL(FALSE);
         $result = 0;
         if ($conn){

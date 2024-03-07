@@ -60,7 +60,7 @@ function UltimaFechaCompromiso($PROVEEDOR_ID,$SUCURSAL_ID,$BD){
     }
     return $result;
 } 
-function FechaUltimaVisita($PROVEEDOR_ID,$SUCURSAL_ID){
+function FechaUltimaVisita($PROVEEDOR_ID,$SUCURSAL_ID,$BD){
     $ultimaFecha="";
     $fechaVisita=new DateTime();
     $fechaCompromiso=new DateTime();
@@ -79,7 +79,7 @@ function FechaUltimaVisita($PROVEEDOR_ID,$SUCURSAL_ID){
     return $ultimaFecha;
     //return $result;
 }
-function FechaActualServidorPHP($UTC)
+function FechaActualServidorPHP($UTC,$BD)
 {
     if(strlen($UTC)>0){
         if($UTC==="UTC-8"){
@@ -340,7 +340,8 @@ $server->register(
     'FechaUltimaVisita',
     array(
         'PROVEEDOR_ID'=>'xsd:int',
-        'SUCURSAL_ID'=>'xsd:int'
+        'SUCURSAL_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=>'xsd:string'),
     $namespace,
@@ -352,7 +353,8 @@ $server->register(
 
 $server->register(
     'FechaActualServidorPHP',
-    array('UTC'=>'xsd:string'),
+    array('UTC'=>'xsd:string',
+          'BD'=>'xsd:string'),
     array('return'=>'xsd:string'),
     $namespace,
     false,
@@ -365,8 +367,8 @@ $server->register(
     'ObtenerUsuarioIDClave',
     array(
         'USUARIO_CLAVE'=>'xsd:string',
-        'BD'=>'xsd:string
-        '),
+        'BD'=>'xsd:string'
+        ),
     array('return'=>'xsd:int'),
     $namespace,
     false,
