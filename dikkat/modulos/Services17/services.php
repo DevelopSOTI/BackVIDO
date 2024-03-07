@@ -55,8 +55,9 @@
     //include './clientes.php';
     //include './roles.php'; 
     //include './departamentos.php';
-    include './categorias.php'; 
-    include './sucursales_usuarios.php'; 
+
+    include './categorias.php';
+    include './sucursales_usuarios.php';
     include './asistencia.php';
     include './ausencias.php';
     // include './login2.php';

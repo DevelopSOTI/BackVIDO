@@ -286,8 +286,8 @@ function MostrarPromotorProveedorRFC($RFC){
     return $result;
 }
 
-function MostrarJefesPromotores($SUCURSAL_ID,$CLAVE_PROVEEDOR){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarJefesPromotores($SUCURSAL_ID,$CLAVE_PROVEEDOR,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
             $select  =" SELECT P.PROMOTOR_JEFE FROM PROMOTORES AS P ";

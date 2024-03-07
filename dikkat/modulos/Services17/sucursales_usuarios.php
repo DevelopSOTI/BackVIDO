@@ -199,7 +199,7 @@ $server->register(
 
         $server->register(
             'MostrarTodasSucursales',
-            array(),
+            array('BD'=>'xsd:string'),
             array('return'=> 'tns:SucursalesUsuarioArray'),
             $namespace,
             false,

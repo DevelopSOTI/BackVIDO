@@ -187,7 +187,8 @@ return $result;
             'UBICACION'=>'xsd:string',
             'REFERENCIA'=>'xsd:string',
             'USUARIO_CREADOR'=>'xsd:string',
-            'FECHA_HORA_CREACION'=>'xsd:string'
+            'FECHA_HORA_CREACION'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -207,7 +208,8 @@ return $result;
                 'PASS'=>'xsd:string',
                 'ESTATUS'=>'xsd:string',
                 'USUARIOMODIFICACION'=>'xsd:string',
-                'FECHAMODIFICACION'=>'xsd:string'
+                'FECHAMODIFICACION'=>'xsd:string',
+                'BD'=>'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
@@ -326,7 +328,11 @@ $server->wsdl->addComplexType(
             );
             $server->register(
                 'MostrarProveedoresSucursal',
-                array('SUCURSAL_ID'=>'xsd:int'),
+
+                array(
+                    'SUCURSAL_ID'=>'xsd:int',
+                    'BD'=>'xsd:string'
+                ),
                 array('return'=> 'tns:MostrarProveedoresSucursalArray'),
                 $namespace,
                 false,
