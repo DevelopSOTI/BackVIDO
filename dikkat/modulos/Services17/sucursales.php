@@ -1,7 +1,7 @@
 <?php
 // <editor-fold defaultstate="collapsed" desc="Inserta las sucursales del sistema">
-    function InsertarSucursal($CLIENTE_ID,$NOMBRE,$DIR_SUC_ID,$GEO_CERCA,$UBICACION,$REFERENCIA,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$BD){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+    function InsertarSucursal($CLIENTE_ID,$NOMBRE,$DIR_SUC_ID,$GEO_CERCA,$UBICACION,$REFERENCIA,$USUARIO_CREADOR,$FECHA_HORA_CREACION){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE);
         $result = false;
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -51,8 +51,8 @@
     }
     // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Actualiza las sucursales del sistema">
-function ActualizaSucursal($SUCURSAL_ID,$CLIENTE_ID,$NOMBRE,$DIR_SUC_ID,$GEO_CERCA,$UBICACION,$REFERENCIA,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION,$BD){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+function ActualizaSucursal($SUCURSAL_ID,$CLIENTE_ID,$NOMBRE,$DIR_SUC_ID,$GEO_CERCA,$UBICACION,$REFERENCIA,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -87,8 +87,8 @@ return $result;
 }
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Muestra todas las sucursales por cliente">
-    function MostrarSucursales($CLIENTE_ID,$BD){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+    function MostrarSucursales($CLIENTE_ID){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE);
         $result = false;
         if ($conn){  
                     // <editor-fold defaultstate="collapsed" desc="SELECCION DE TODOS LAS SUCURSALES POR CLIENTE">                 
@@ -114,8 +114,8 @@ return $result;
     }
     // </editor-fold>
  // <editor-fold defaultstate="collapsed" desc="Muestra el nombre de la sucursal">
- function MostrarNombreSucursal($SUCURSAL_ID,$BD){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+ function MostrarNombreSucursal($SUCURSAL_ID){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE);
     $result = "";
     if ($conn){  
     // <editor-fold defaultstate="collapsed" desc="MUESTRA EL NOMBRE DE LA SUCURSAL">                 
@@ -142,8 +142,8 @@ return $result;
 }
 // </editor-fold>
  // <editor-fold defaultstate="collapsed" desc="Muestra el nombre de la sucursal">
- function MostrarProveedoresSucursal($SUCURSAL_ID,$BD){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+ function MostrarProveedoresSucursal($SUCURSAL_ID){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE);
     $result = null;
     if ($conn){  
     // <editor-fold defaultstate="collapsed" desc="MUESTRA EL NOMBRE DE LA SUCURSAL">                 
@@ -187,8 +187,7 @@ return $result;
             'UBICACION'=>'xsd:string',
             'REFERENCIA'=>'xsd:string',
             'USUARIO_CREADOR'=>'xsd:string',
-            'FECHA_HORA_CREACION'=>'xsd:string',
-            'BD' => 'xsd:string'
+            'FECHA_HORA_CREACION'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -208,8 +207,7 @@ return $result;
                 'PASS'=>'xsd:string',
                 'ESTATUS'=>'xsd:string',
                 'USUARIOMODIFICACION'=>'xsd:string',
-                'FECHAMODIFICACION'=>'xsd:string',
-                'BD' => 'xsd:string'
+                'FECHAMODIFICACION'=>'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
@@ -247,9 +245,7 @@ return $result;
                 );
                 $server->register(
                     'MostrarSucursales',
-                    array(
-                        'CLIENTE_ID'=>'xsd:int',
-                        'BD'=>'xsd:string'),//HAY 2 MOSTRARSUCURSALES preguntar mañana
+                    array('CLIENTE_ID'=>'xsd:int'),
                     array('return'=> 'tns:MostrarSucursalesArray'),
                     $namespace,
                     false,
@@ -260,8 +256,7 @@ return $result;
                     $server->register(
                         'MostrarNombreSucursal',
                         array(
-                            'SUCURSAL_ID'=>'xsd:int',
-                            'BD'=>'xsd:string'
+                            'SUCURSAL_ID'=>'xsd:int'
                             ),
                         array('return'=>'xsd:string'),
                         $namespace,
@@ -299,10 +294,7 @@ $server->wsdl->addComplexType(
                 );
                 $server->register(
                     'MostrarSucursales',
-                    array(
-                        'CLIENTE_ID'=>'xsd:int',
-                        'BD'=>'xsd:string'
-                    ),
+                    array('CLIENTE_ID'=>'xsd:int'),
                     array('return'=> 'tns:MostrarSucursalesArray'),
                     $namespace,
                     false,
@@ -334,10 +326,7 @@ $server->wsdl->addComplexType(
             );
             $server->register(
                 'MostrarProveedoresSucursal',
-                array(
-                    'SUCURSAL_ID'=>'xsd:int'
-                    'BD'=>'xsd:string'
-                ),
+                array('SUCURSAL_ID'=>'xsd:int'),
                 array('return'=> 'tns:MostrarProveedoresSucursalArray'),
                 $namespace,
                 false,
