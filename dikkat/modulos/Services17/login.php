@@ -197,9 +197,9 @@ $server->register(
 );
 #region
 
-function LoginClaveRol($USUARIO, $PASS)
+function LoginClaveRol($USUARIO, $PASS,$DB)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_KLYNS);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $DB);
     $provUsuario = null;
     if ($conn) {
 
@@ -231,9 +231,9 @@ function LoginClaveRol($USUARIO, $PASS)
     return $provUsuario;
 }
 
-function LoginUsuario($USUARIO)
+function LoginUsuario($USUARIO,$DB)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_KLYNS);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $DB);
     $provUsuario = null;
     if ($conn) {
 
@@ -259,9 +259,9 @@ function LoginUsuario($USUARIO)
     mysqli_close($conn);
     return $provUsuario;
 }
-function LoginNombreUsuario($USUARIO)
+function LoginNombreUsuario($USUARIO,$DB)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_KLYNS);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $DB);
     $NombreUsuario = "";
     if ($conn) {
 
@@ -355,7 +355,8 @@ $server->register(
     'LoginClaveRol',
     array(
         'USUARIO' => 'xsd:string',
-        'PASS' => 'xsd:string'
+        'PASS' => 'xsd:string',
+        'DB' => 'xsd:string'
     ),
     array('return' => 'tns:provUsuarioArray'),
     $namespace,
@@ -367,7 +368,7 @@ $server->register(
 
 $server->register(
     'LoginUsuario',
-    array('USUARIO' => 'xsd:string'),
+    array('USUARIO' => 'xsd:string','DB' => 'xsd:string'),
     array('return' => 'tns:LoginUsuarioArray'),
     $namespace,
     false,
@@ -378,7 +379,7 @@ $server->register(
 
 $server->register(
     'LoginNombreUsuario',
-    array('USUARIO' => 'xsd:string'),
+    array('USUARIO' => 'xsd:string','DB' => 'xsd:string'),
     array('return' => 'xsd:string'),
     $namespace,
     false,
@@ -387,9 +388,9 @@ $server->register(
     'Devuelve el nombre del usuario indicado'
 );
 
-function MostrarHoraInicioFinModulos($USUARIO, $SUCURSAL_ID, $FECHA)
+function MostrarHoraInicioFinModulos($USUARIO, $SUCURSAL_ID, $FECHA,$DB)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_KLYNS);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $DB);
     $result = null;
     if ($conn) {
         /*--------------CADUCIDADES------------- */
@@ -505,7 +506,8 @@ $server->register(
     array(//
         'USUARIO' => 'xsd:string',
         'SUCURSAL_ID' => 'xsd:int',
-        'FECHA' => 'xsd:string'
+        'FECHA' => 'xsd:string',
+        'DB' => 'xsd:string'
     ),
     array('return' => 'tns:MostrarHoraInicioFinModulosArray'),
     $namespace,
