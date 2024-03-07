@@ -1,7 +1,7 @@
 <?php
 // <editor-fold defaultstate="collapsed" desc="Inserta los dias de visita de un promotor">
-function InsertarDiasVisitaPromotor($SUCURSAL_ID,$PROVEEDOR_ID,$LUN,$MAR,$MIE,$JUE,$VIE,$SAB,$DOM,$ESTATUS,$HORARIO_HORA_ENTRADA1, $HORARIO_HORA_SALIDA1, $HORARIO_HORA_SALIDA2, $HORARIO_HORA_ENTRADA2){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarDiasVisitaPromotor($SUCURSAL_ID,$PROVEEDOR_ID,$LUN,$MAR,$MIE,$JUE,$VIE,$SAB,$DOM,$ESTATUS,$HORARIO_HORA_ENTRADA1, $HORARIO_HORA_SALIDA1, $HORARIO_HORA_SALIDA2, $HORARIO_HORA_ENTRADA2,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -40,8 +40,8 @@ return $result;
 }
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Actualiza los dias de visita o estatus de un promotor">
-function ActualizaDiasVisitaPromotor($SUCURSAL_ID,$PROVEEDOR_ID,$LUN,$MAR,$MIE,$JUE,$VIE,$SAB,$DOM,$ESTATUS,$HORARIO_HORA_ENTRADA1, $HORARIO_HORA_SALIDA1, $HORARIO_HORA_SALIDA2, $HORARIO_HORA_ENTRADA2){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaDiasVisitaPromotor($SUCURSAL_ID,$PROVEEDOR_ID,$LUN,$MAR,$MIE,$JUE,$VIE,$SAB,$DOM,$ESTATUS,$HORARIO_HORA_ENTRADA1, $HORARIO_HORA_SALIDA1, $HORARIO_HORA_SALIDA2, $HORARIO_HORA_ENTRADA2,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -93,8 +93,8 @@ return $result;
 }
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Actualiza los dias de visita o estatus de un promotor">
-function ActualizaVisitaProveedorDesdePromotor($SUCURSAL_ID,$PROMOTOR_ID,$FECHA_PROGRAMACION,$HORA_ENTRADA){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaVisitaProveedorDesdePromotor($SUCURSAL_ID,$PROMOTOR_ID,$FECHA_PROGRAMACION,$HORA_ENTRADA,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -122,8 +122,8 @@ function ActualizaVisitaProveedorDesdePromotor($SUCURSAL_ID,$PROMOTOR_ID,$FECHA_
 return $result;
 }
 // </editor-fold>
-function MostrarProgramacionVistaDetalleID($SUCURSAL_ID,$PROMOTOR_ID,$FECHA_PROGRAMACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarProgramacionVistaDetalleID($SUCURSAL_ID,$PROMOTOR_ID,$FECHA_PROGRAMACION,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = "";
     if ($conn){  
                 // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DIAS DE VISITA Y ESTATUS DE UN PROMOTOR">                 
@@ -159,8 +159,8 @@ function MostrarProgramacionVistaDetalleID($SUCURSAL_ID,$PROMOTOR_ID,$FECHA_PROG
                 }
 }
 // <editor-fold defaultstate="collapsed" desc="Muestra los dias de visita y estatus de un promotor">
-function MostrarDiasVisitaProveedor($SUCURSAL_ID,$PROVEEDOR_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarDiasVisitaProveedor($SUCURSAL_ID,$PROVEEDOR_ID,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = null;
     if ($conn){  
                 // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DIAS DE VISITA Y ESTATUS DE UN PROMOTOR">                 
@@ -206,8 +206,8 @@ function MostrarDiasVisitaProveedor($SUCURSAL_ID,$PROVEEDOR_ID){
                     return null; 
                 }
 }
-function MostrarHorarioProveedorSucursal($SUCURSAL_ID,$PROVEEDOR_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarHorarioProveedorSucursal($SUCURSAL_ID,$PROVEEDOR_ID,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = null;
     if ($conn){  
                 // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DIAS DE VISITA Y ESTATUS DE UN PROMOTOR">                 
@@ -287,8 +287,8 @@ return $result;
 }*/
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Actualiza las horas de entrada o salida de un proveedor">
-function ActualizaHoraEntradaSalidaProveedor($PROGRAMACION_VISITAS_DET_ID,$ENTRADA_O_SALIDA,$UNO_O_DOS,$HORA){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaHoraEntradaSalidaProveedor($PROGRAMACION_VISITAS_DET_ID,$ENTRADA_O_SALIDA,$UNO_O_DOS,$HORA,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -322,8 +322,8 @@ return $result;
 }
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Actualiza las horas de entrada o salida de un proveedor">
-function AsistioProveedor($PROGRAMACION_VISITAS_DET_ID,$ASISTIO){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function AsistioProveedor($PROGRAMACION_VISITAS_DET_ID,$ASISTIO,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -369,7 +369,8 @@ $server->register(
         'HORARIO_HORA_ENTRADA1'=>'xsd:string',
         'HORARIO_HORA_SALIDA1'=>'xsd:string',
         'HORARIO_HORA_ENTRADA2'=>'xsd:string',
-        'HORARIO_HORA_SALIDA2'=>'xsd:string'
+        'HORARIO_HORA_SALIDA2'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -384,7 +385,8 @@ $server->register(
         'SUCURSAL_ID'=>'xsd:int',
         'PROVEEDOR_ID'=>'xsd:int',
         'FECHA_PROGRAMACION'=>'xsd:string',
-        'HORA_ENTRADA'=>'xsd:string'
+        'HORA_ENTRADA'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -409,7 +411,8 @@ $server->register(
             'HORARIO_HORA_ENTRADA1'=>'xsd:string',
             'HORARIO_HORA_SALIDA1'=>'xsd:string',
             'HORARIO_HORA_ENTRADA2'=>'xsd:string',
-            'HORARIO_HORA_SALIDA2'=>'xsd:string'
+            'HORARIO_HORA_SALIDA2'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -458,7 +461,8 @@ $server->register(
     'MostrarDiasVisitaProveedor',
     array(
         'SUCURSAL_ID'=>'xsd:int',
-        'PROVEEDOR_ID'=>'xsd:int'
+        'PROVEEDOR_ID'=>'xsd:int',
+        '$BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarDiasVisitaProveedorArray'),
     $namespace,
@@ -515,7 +519,8 @@ $server->register(
         'MostrarHorarioProveedorSucursal',
         array(
             'SUCURSAL_ID'=>'xsd:int',
-            'PROVEEDOR_ID'=>'xsd:int'
+            'PROVEEDOR_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MostrarHorarioProveedorSucursalArray'),
         $namespace,
@@ -530,7 +535,8 @@ $server->register(
                 'PROGRAMACION_VISITAS_DET_ID'=>'xsd:int',
                 'ENTRADA_O_SALIDA'=>'xsd:string',
                 'UNO_O_DOS'=>'xsd:int',
-                'HORA'=>'xsd:string'
+                'HORA'=>'xsd:string',
+                'BD'=>'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
@@ -542,7 +548,8 @@ $server->register(
                 'AsistioProveedor',
                 array( 
                     'PROGRAMACION_VISITAS_DET_ID'=>'xsd:int',
-                    'ASISTIO'=>'xsd:string'
+                    'ASISTIO'=>'xsd:string',
+                    'BD'=>'xsd:string'
                     ),
                 array('return'=>'xsd:boolean'),
                 $namespace,
@@ -555,7 +562,8 @@ $server->register(
                 array( 
                     'SUCURSAL_ID'=>'xsd:int',
                     'PROMOTOR_ID'=>'xsd:int',
-                    'FECHA_PROGRAMACION'=>'xsd:string'
+                    'FECHA_PROGRAMACION'=>'xsd:string',
+                    'BD'=>'xsd:string'
                     ),
                 array('return'=>'xsd:string'),
                 $namespace,
@@ -564,8 +572,8 @@ $server->register(
                 false,
                 'Muestra el id de la programacion de visita de un proveedor en en una sucursal de una fecha determinada');
 
-function ActualizaVisitaProveedorDesdePromotor2($SUCURSAL_ID,$PROMOTOR_ID,$FECHA_PROGRAMACION,$HORA,$ENTRADA_O_SALIDA,$UNO_O_DOS){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaVisitaProveedorDesdePromotor2($SUCURSAL_ID,$PROMOTOR_ID,$FECHA_PROGRAMACION,$HORA,$ENTRADA_O_SALIDA,$UNO_O_DOS,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -608,7 +616,8 @@ $server->register(
         'FECHA_PROGRAMACION'=>'xsd:string',
         'HORA'=>'xsd:string',
         'ENTRADA_O_SALIDA'=>'xsd:string',
-        'UNO_O_DOS'=>'xsd:string'
+        'UNO_O_DOS'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -616,8 +625,8 @@ $server->register(
     'rpc',
     false,
     'Actualiza los dias de visita o estatus de un promotor');
-    function MostrarVisitaProveedorSucursalDia($SUCURSAL_ID,$DIASEMANA){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function MostrarVisitaProveedorSucursalDia($SUCURSAL_ID,$DIASEMANA,$BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = null;
         if ($conn){
 
@@ -711,7 +720,8 @@ $server->register(
     'MostrarVisitaProveedorSucursalDia',
     array(
         'SUCURSAL_ID'=>'xsd:int',
-        'DIASEMANA'=>'xsd:string'
+        'DIASEMANA'=>'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarVisitaProveedorSucursalDiaArray'),
     $namespace,

@@ -1,6 +1,6 @@
 <?php
-function SucursalesUsuario($USUARIO){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,DB_KLYNS);
+function SucursalesUsuario($USUARIO,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);//ESTABA DBKLYNS Y LO CAMBIE A BD
     $result=null;
     if ($conn){  
         $sucursalesid="";
@@ -61,8 +61,8 @@ function SucursalesUsuario($USUARIO){
     return $result;
 }
 
-function SucursalesProgramacionVisitas($SUCURSAL_ID,$FECHA_PROGRAMACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function SucursalesProgramacionVisitas($SUCURSAL_ID,$FECHA_PROGRAMACION,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
             $select  ="SELECT P.NOMBRE,PVD.PROGRAMACION_VISITAS_DET_ID,PC.CLAVE,P.PROVEEDOR_ID,PV.PROGRAMACION_VISITAS_ID ";
@@ -97,8 +97,8 @@ function SucursalesProgramacionVisitas($SUCURSAL_ID,$FECHA_PROGRAMACION){
     }
     return $result;
 }
-function MostrarTodasSucursales(){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarTodasSucursales($BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
             $select  ="SELECT S.NOMBRE,S.LAT_LONG,S.GEO_CERCA,S.SUCURSAL_ID ";
@@ -155,7 +155,8 @@ $server->wsdl->addComplexType(
     );
 $server->register(
     'SucursalesUsuario',
-    array('USUARIO'=>'xsd:string'),
+    array('USUARIO'=>'xsd:string',
+          'BD'=>'xsd:string'),
     array('return'=> 'tns:SucursalesUsuarioArray'),
     $namespace,
     false,
@@ -189,7 +190,9 @@ $server->register(
         );
     $server->register(
         'SucursalesProgramacionVisitas',
-        array('SUCURSAL_ID'=>'xsd:int','FECHA_PROGRAMACION'=>'xsd:string'),
+        array('SUCURSAL_ID'=>'xsd:int',
+              'FECHA_PROGRAMACION'=>'xsd:string',
+              'BD'=>'xsd:string'),
         array('return'=> 'tns:SucursalesProgramacionVisitasArray'),
         $namespace,
         false,
@@ -199,7 +202,7 @@ $server->register(
 
         $server->register(
             'MostrarTodasSucursales',
-            array(),
+            array('BD'='xsd:string'),
             array('return'=> 'tns:SucursalesUsuarioArray'),
             $namespace,
             false,
