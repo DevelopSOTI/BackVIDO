@@ -19,8 +19,8 @@ function BuscarBarridoID($FECHA,$SUCURSAL_ID,$conn){
         return -1; 
     }
 }
-function BuscarBarridoDetalleID($BARRIDO_ID,$ARTICULO_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarBarridoDetalleID($BARRIDO_ID,$ARTICULO_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     if ($conn){
         $select  = "SELECT FD.BARRIDO_DETALLE_ID FROM BARRIDO_DETALLE AS FD WHERE FD.BARRIDO_ID=$BARRIDO_ID AND FD.ARTICULO_ID=$ARTICULO_ID;";
@@ -43,8 +43,8 @@ function BuscarBarridoDetalleID($BARRIDO_ID,$ARTICULO_ID){
         return -1; 
     }
 }
-function InsertarBarrido($FECHA,$SUCURSAL_ID,$USUARIO_CREACION,$FECHA_HORA_CREACION,$ARTICULO_ID,$PRECIO/*,$PRECIO_ARTICULO*/){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarBarrido($FECHA,$SUCURSAL_ID,$USUARIO_CREACION,$FECHA_HORA_CREACION,$ARTICULO_ID,$PRECIO, $BD/*,$PRECIO_ARTICULO*/){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     $BARRIDO_ID=0;
     $BARRIDO_ID=BuscarBarridoID($FECHA,$SUCURSAL_ID,$conn);
@@ -89,12 +89,15 @@ function InsertarBarrido($FECHA,$SUCURSAL_ID,$USUARIO_CREACION,$FECHA_HORA_CREAC
             )){
             //buscamos el detalle
             $BARRIDO_DETALLE_ID=0;
-            $BARRIDO_DETALLE_ID=BuscarBarridoDetalleID($BARRIDO_ID,$ARTICULO_ID);
+            $BARRIDO_DETALLE_ID=BuscarBarridoDetalleID($BARRIDO_ID,$ARTICULO_ID, $BD);
             //echo " Barridos detalle_id: ".$BARRIDO_DETALLE_ID." ";
             if($BARRIDO_DETALLE_ID===0){
                 //Insertamos el detalle
                 $query   ="INSERT INTO BARRIDO_DETALLE (BARRIDO_ID,ARTICULO_ID,PRECIO/*,PRECIO_ARTICULO*/) ";
-                $query  .=" VALUES($BARRIDO_ID,$ARTICULO_ID,$PRECIO/*,'$PRECIO_ARTICULO'*/);";
+                
+                $query   =" VALUES($BARRIDO_ID,$ARTICULO_ID,$PRECIO)";
+                //$query   =" VALUES($BARRIDO_ID,$ARTICULO_ID,$PRECIO /*,$PRECIO_ARTICULO*/)";
+
                 //echo $query;
                 if (mysqli_query($conn, $query)){
                     $result = $BARRIDO_ID;
@@ -120,8 +123,8 @@ function InsertarBarrido($FECHA,$SUCURSAL_ID,$USUARIO_CREACION,$FECHA_HORA_CREAC
     }
 return $result;
 }
-function MostrarBarridos($FECHA,$SUCURSAL_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarBarridos($FECHA,$SUCURSAL_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     $hostname=$_SERVER['SERVER_NAME'];
     if ($conn){
@@ -161,8 +164,8 @@ function MostrarBarridos($FECHA,$SUCURSAL_ID){
         return $result; 
     }
 }
-function MostrarArticulosBarrido($ARTICULO_ID,$MARCA_ID,$CATEGORIA_ID,$SKU){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarArticulosBarrido($ARTICULO_ID,$MARCA_ID,$CATEGORIA_ID,$SKU, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     $where="";
     $hostname=$_SERVER['SERVER_NAME'];
@@ -220,8 +223,8 @@ function MostrarArticulosBarrido($ARTICULO_ID,$MARCA_ID,$CATEGORIA_ID,$SKU){
         return null;
     }
 }
-function ActualizarHoraInicioFinBarridos($TIPO,$HORA,$BARRIDO_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizarHoraInicioFinBarridos($TIPO,$HORA,$BARRIDO_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $TIPO_ACTUALIZACION="";$WHERE_COMPLEMENTO="";
     if(is_null($HORA)||strlen($HORA)===0){
@@ -260,8 +263,8 @@ function ActualizarHoraInicioFinBarridos($TIPO,$HORA,$BARRIDO_ID,$USARIO_MODIFIC
     }
     return $result;
 }
-function ExisteBarridos($BARRIDO_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ExisteBarridos($BARRIDO_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $HORA_INICIO="";
     if ($conn){
@@ -287,8 +290,8 @@ function ExisteBarridos($BARRIDO_ID){
     }
     return $result;
 }
-function MuestraHoraInicioFinBarridos($BARRIDO_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MuestraHoraInicioFinBarridos($BARRIDO_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){
         $select  ="SELECT HORA_INICIO,HORA_FIN FROM BARRIDO ";
@@ -310,8 +313,8 @@ function MuestraHoraInicioFinBarridos($BARRIDO_ID){
     }
     return $result;
 }
-function MuestraBitacoraBarrido($SUCURSAL_ID,$FECHA){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MuestraBitacoraBarrido($SUCURSAL_ID,$FECHA, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = "";
     if ($conn){
         $hostname=$_SERVER['SERVER_NAME'];
@@ -335,8 +338,8 @@ function MuestraBitacoraBarrido($SUCURSAL_ID,$FECHA){
     }
     return $result;
 }
-function ExisteArticuloBarridos($SUCURSAL_ID,$FECHA,$SKU){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ExisteArticuloBarridos($SUCURSAL_ID,$FECHA,$SKU, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = "";
     $BARRIDO_DETALLE_ID="";
     $ARTICULO_ID="";
@@ -381,7 +384,8 @@ $server->register(
     array(
         'SUCURSAL_ID'=>'xsd:int',
         'FECHA'=>'xsd:string',
-        'SKU'=>'xsd:string'
+        'SKU'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:string'),
     $namespace,
@@ -398,7 +402,8 @@ $server->register(
         'FECHA_HORA_CREACION'=>'xsd:string',
         'ARTICULO_ID'=>'xsd:string',
         'PRECIO'=>'xsd:string'/*,
-        'PRECIO_ARTICULO'=>'xsd:string'*/
+        'PRECIO_ARTICULO'=>'xsd:string'*/,
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:int'),
     $namespace,
@@ -439,7 +444,8 @@ $server->register(
     'MostrarBarridos',
     array(
         'FECHA'=>'xsd:string',
-        'SUCURSAL_ID'=>'xsd:int'
+        'SUCURSAL_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarBarridosArray'),
     $namespace,
@@ -484,7 +490,8 @@ $server->register(
         'ARTICULO_ID'=>'xsd:int',
         'MARCA_ID'=>'xsd:int',
         'CATEGORIA_ID'=>'xsd:int',
-        'SKU'=>'xsd:string'
+        'SKU'=>'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarArticulosBarridoArray'),
     $namespace,
@@ -500,7 +507,8 @@ $server->register(
         'HORA'=>'xsd:string',
         'BARRIDO_ID'=>'xsd:int',
         'USARIO_MODIFICACION'=>'xsd:string',
-        'FECHA_HORA_MODIFICACION'=>'xsd:string'
+        'FECHA_HORA_MODIFICACION'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -512,7 +520,8 @@ $server->register(
 $server->register(
     'ExisteBarridos',
     array(
-        'BARRIDO_ID'=>'xsd:int'
+        'BARRIDO_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -545,7 +554,8 @@ $server->wsdl->addComplexType(
 $server->register(
     'MuestraHoraInicioFinBarridos',
     array(
-        'BARRIDO_ID'=>'xsd:int'
+        'BARRIDO_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MuestraHoraInicioFinBarridosArray'),
     $namespace,
@@ -558,7 +568,8 @@ $server->register(
     'MuestraBitacoraBarrido',
     array(
         'SUCURSAL_ID'=>'xsd:int',
-        'FECHA'=>'xsd:string'
+        'FECHA'=>'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'xsd:string'),
     $namespace,

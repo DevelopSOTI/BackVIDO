@@ -27,8 +27,8 @@
             return -1; 
         }
     }
-    function BuscarFaltanteDetalleID2($FALTANTES_ID,$ARTICULO_ID){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function BuscarFaltanteDetalleID2($FALTANTES_ID,$ARTICULO_ID, $BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         $result = 0;
         if ($conn){
             // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
@@ -54,8 +54,8 @@
             return -1; 
         }
     }
-    function InsertarFaltante2($FECHA,$SUCURSAL_ID,$USUARIO_CREACION,$FECHA_HORA_CREACION,$ARTICULO_ID,$STOCK_FISICO,$PRECIO_ARTICULO){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function InsertarFaltante2($FECHA,$SUCURSAL_ID,$USUARIO_CREACION,$FECHA_HORA_CREACION,$ARTICULO_ID,$STOCK_FISICO,$PRECIO_ARTICULO, $BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         $result = 0;
         $FALTANTES_ID=0;
         $FALTANTES_ID=BuscarFaltanteID($FECHA,$SUCURSAL_ID,$conn);
@@ -100,7 +100,7 @@
                 )){
                 //buscamos el detalle
                 $FALTANTES_DETALLE_ID=0;
-                $FALTANTES_DETALLE_ID=BuscarFaltanteDetalleID($FALTANTES_ID,$ARTICULO_ID);
+                $FALTANTES_DETALLE_ID=BuscarFaltanteDetalleID($FALTANTES_ID,$ARTICULO_ID, $BD);
                 //echo " Faltantes detalle_id: ".$FALTANTES_DETALLE_ID." ";
                 if($FALTANTES_DETALLE_ID===0){
                     //Insertamos el detalle
@@ -141,7 +141,8 @@
             'FECHA_HORA_CREACION'=>'xsd:string',
             'ARTICULO_ID'=>'xsd:string',
             'STOCK_FISICO'=>'xsd:string',
-            'PRECIO_ARTICULO'=>'xsd:string'
+            'PRECIO_ARTICULO'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:int'),
         $namespace,
@@ -151,8 +152,8 @@
         'Inserta un articulo de faltante en el sistema');
 
 
-    function MostrarFaltantes2($FECHA,$SUCURSAL_ID){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function MostrarFaltantes2($FECHA,$SUCURSAL_ID, $BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         $result = null;
         $hostname=$_SERVER['SERVER_NAME'];
         if ($conn){
@@ -223,7 +224,8 @@
         'MostrarFaltantes2',
         array(
             'FECHA'=>'xsd:string',
-            'SUCURSAL_ID'=>'xsd:int'
+            'SUCURSAL_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MostrarFaltantesArray2'),
         $namespace,
@@ -232,8 +234,8 @@
         false,
         'Devuelve un arreglo con los articulos faltanes en el sistema en una fecha y sucursal determinada');
 
-    function MostrarArticulos2($ARTICULO_ID,$MARCA_ID,$CATEGORIA_ID,$SKU){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function MostrarArticulos2($ARTICULO_ID,$MARCA_ID,$CATEGORIA_ID,$SKU, $BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         $result = null;
         $where="";
         $hostname=$_SERVER['SERVER_NAME'];
@@ -331,7 +333,8 @@
             'ARTICULO_ID'=>'xsd:int',
             'MARCA_ID'=>'xsd:int',
             'CATEGORIA_ID'=>'xsd:int',
-            'SKU'=>'xsd:string'
+            'SKU'=>'xsd:string',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MostrarArticulosArray2'),
         $namespace,
@@ -340,8 +343,8 @@
         false,
         'Devuelve un arreglo con los articulos del sistema (usando "0" en articulo id, marca id y categoría id muestra todos los articulos del sistema)');
 
-        function ActualizarHoraInicioFinFaltantes2($TIPO,$HORA,$FALTANTES_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-            $conn = ABRIR_CONEXION_MYSQL(FALSE);
+        function ActualizarHoraInicioFinFaltantes2($TIPO,$HORA,$FALTANTES_ID,$USARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+            $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
             $result = false;
             $TIPO_ACTUALIZACION="";$WHERE_COMPLEMENTO="";
             if(is_null($HORA)||strlen($HORA)===0){
@@ -388,7 +391,8 @@
                 'HORA'=>'xsd:string',
                 'FALTANTES_ID'=>'xsd:int',
                 'USARIO_MODIFICACION'=>'xsd:string',
-                'FECHA_HORA_MODIFICACION'=>'xsd:string'
+                'FECHA_HORA_MODIFICACION'=>'xsd:string',
+                'BD'=>'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
@@ -397,8 +401,8 @@
             false,
             'Actualiza la hora de inicio y la hora de fin de la faltantes');
 
-    function ExisteFaltantes2($FALTANTES_ID){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function ExisteFaltantes2($FALTANTES_ID, $BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         $result = false;
         $HORA_INICIO="";
         if ($conn){
@@ -428,7 +432,8 @@
     $server->register(
         'ExisteFaltantes2',
         array(
-            'FALTANTES_ID'=>'xsd:int'
+            'FALTANTES_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -437,8 +442,8 @@
         false,
         'Verifica si existe una tarea de faltantes');
 
-        function MuestraHoraInicioFinFaltantes2($FALTANTES_ID){
-            $conn = ABRIR_CONEXION_MYSQL(FALSE);
+        function MuestraHoraInicioFinFaltantes2($FALTANTES_ID, $BD){
+            $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
             $result = null;
             if ($conn){
                 $select  ="SELECT HORA_INICIO,HORA_FIN FROM FALTANTES ";
@@ -485,7 +490,8 @@
         $server->register(
             'MuestraHoraInicioFinFaltantes2',
             array(
-                'FALTANTES_ID'=>'xsd:int'
+                'FALTANTES_ID'=>'xsd:int',
+                'BD'=>'xsd:string'
             ),
             array('return'=> 'tns:MuestraHoraInicioFinFaltantesArray2'),
             $namespace,
@@ -494,8 +500,8 @@
             false,
             'Muestra la hora de inicio y fin de la tarea de faltantes');
 
-            function MuestraBitacora2($SUCURSAL_ID,$FECHA){
-                $conn = ABRIR_CONEXION_MYSQL(FALSE);
+            function MuestraBitacora2($SUCURSAL_ID,$FECHA, $BD){
+                $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
                 $result = "";
                 if ($conn){
                     $hostname=$_SERVER['SERVER_NAME'];
@@ -524,7 +530,8 @@
                 'MuestraBitacora2',
                 array(
                     'SUCURSAL_ID'=>'xsd:int',
-                    'FECHA'=>'xsd:string'
+                    'FECHA'=>'xsd:string',
+                    'BD'=>'xsd:string'
                 ),
                 array('return'=> 'xsd:string'),
                 $namespace,

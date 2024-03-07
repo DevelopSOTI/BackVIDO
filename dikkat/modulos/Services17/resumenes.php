@@ -1,6 +1,6 @@
 <?php
-function ResumenCaducidades($SUCURSAL_ID,$FECHA,$CADUCIDAD_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ResumenCaducidades($SUCURSAL_ID,$FECHA,$CADUCIDAD_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){ 
         $select  = "SELECT C.NOMBRE, CC.FECHA_REVISION FROM CLIENTES C ";
@@ -141,7 +141,8 @@ $server->register(
     array(
         'SUCURSAL_ID'=>'xsd:int',
         'FECHA'=>'xsd:string',
-        'CADUCIDAD_ID'=>'xsd:int'
+        'CADUCIDAD_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:ResumenCaducidadesArray'),
     $namespace,
@@ -150,8 +151,8 @@ $server->register(
     false,
     'Devuelve un arreglo con los datos de resumen de caducidades de una fecha y sucursal determinada');
 
-function ResumenProductoPrecio($SUCURSAL_ID,$ASIGNACION_DETALLE_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ResumenProductoPrecio($SUCURSAL_ID,$ASIGNACION_DETALLE_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn){ 
         $select   = " select  group_concat( DISTINCT NOMBRE_CATEGORIA) AS NOMBRE_CATEGORIAS,FECHA_CAPTURA,CODIGOS_ASIGNADOS,CODIGO_EXHIBIDO,CODIGO_EXHIBIDO_ETIQUETA,CODIGO_NO_SENALIZADO,DIF_ETIQUETA_VERIFICADOR,DIF_VERIFICADOR_ETIQUETA from ( ";
@@ -226,7 +227,8 @@ $server->register(
     'ResumenProductoPrecio',
     array(
         'SUCURSAL_ID'=>'xsd:int',
-        'ASIGNACION_DETALLE_ID'=>'xsd:int'
+        'ASIGNACION_DETALLE_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:ResumenProductoPrecioArray'),
     $namespace,
@@ -235,8 +237,8 @@ $server->register(
     false,
     'Devuelve un arreglo con los datos de resumen de producto y precio en sucursal determinada');
 
-function ResumenArticulosCaducados($FECHA_REVISION,$SUCURSAL_ID,$CADUCIDAD_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ResumenArticulosCaducados($FECHA_REVISION,$SUCURSAL_ID,$CADUCIDAD_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         $select  = " SELECT ";
@@ -376,7 +378,8 @@ $server->register(
     array(
         'FECHA_REVISION'=>'xsd:string',
         'SUCURSAL_ID'=>'xsd:int',
-        'CADUCIDAD_ID'=>'xsd:int'
+        'CADUCIDAD_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:ResumenArticulosCaducadosArray'),
     $namespace,

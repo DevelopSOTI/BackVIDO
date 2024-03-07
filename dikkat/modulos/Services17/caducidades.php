@@ -1,6 +1,6 @@
 <?php
-function BuscarCaducidadID($FECHA,$SUCURSAL_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarCaducidadID($FECHA,$SUCURSAL_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     if ($conn){
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
@@ -26,8 +26,8 @@ function BuscarCaducidadID($FECHA,$SUCURSAL_ID){
         return -1; 
     }
 }
-function BuscarCaducidadDetalleID($CADUCIDAD_ID,$ARTICULO_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarCaducidadDetalleID($CADUCIDAD_ID,$ARTICULO_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     if ($conn){
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
@@ -54,8 +54,8 @@ function BuscarCaducidadDetalleID($CADUCIDAD_ID,$ARTICULO_ID){
         return -1; 
     }
 }
-function BuscarCaducidadDetalleFechaID($CADUCIDAD_ID,$ARTICULO_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function BuscarCaducidadDetalleFechaID($CADUCIDAD_ID,$ARTICULO_ID, $BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
     if ($conn){
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
@@ -111,9 +111,9 @@ function MostrarCantidadCaducidades($CADUCIDADES_DETALLE_ID,$ARTICULO_ID,$conn){
         return -1; 
     }
 }
-function ActualizaEstatusCaducidad($CADUCIDAD_ID,$ESTATUS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION)
+function ActualizaEstatusCaducidad($CADUCIDAD_ID,$ESTATUS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -141,9 +141,9 @@ function ActualizaEstatusCaducidad($CADUCIDAD_ID,$ESTATUS,$USUARIO_MODIFICACION,
     }
 return $result;
 }
-function ActualizarCaducidad( $CADUCIDADES_DETALLE_ID,$PRECIO,$CANTIDAD_PIEZAS/*,$UBICACION*/,$EXHIBIDO,$ESPACIO_ASIGNADO,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION)
+function ActualizarCaducidad( $CADUCIDADES_DETALLE_ID,$PRECIO,$CANTIDAD_PIEZAS/*,$UBICACION*/,$EXHIBIDO,$ESPACIO_ASIGNADO,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -190,7 +190,8 @@ $server->register(
         'EXHIBIDO'=>'xsd:string',
         'ESPACIO_ASIGNADO'=>'xsd:string',
         'USUARIO_MODIFICACION'=>'xsd:string',
-        'FECHA_HORA_MODIFICACION'=>'xsd:string'
+        'FECHA_HORA_MODIFICACION'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -198,9 +199,9 @@ $server->register(
     'rpc',
     false,
     'Actualiza la hora de inicio y la hora de fin de caducidades');
-function ActualizarCaducidadDetalleCantidad( $CADUCIDADES_DETALLE_ID,$CANTIDAD_PIEZAS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION)
+function ActualizarCaducidadDetalleCantidad( $CADUCIDADES_DETALLE_ID,$CANTIDAD_PIEZAS,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn){ 
         if($CANTIDAD_PIEZAS>0)
@@ -233,7 +234,7 @@ function ActualizarCaducidadDetalleCantidad( $CADUCIDADES_DETALLE_ID,$CANTIDAD_P
     }
 return $result;
 }
-function InsertarFechaCaducidadArticulo($CADUCIDADES_DETALLE_ID,$ARTICULO_ID,$ARTICULO_LOTE,$FECHA_CADUCIDAD,$CANTIDAD,$UBICACION,$PRECIO,$OBSERVACIONES,$POSICION,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION)
+function InsertarFechaCaducidadArticulo($CADUCIDADES_DETALLE_ID,$ARTICULO_ID,$ARTICULO_LOTE,$FECHA_CADUCIDAD,$CANTIDAD,$UBICACION,$PRECIO,$OBSERVACIONES,$POSICION,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD)
 {
     $result = false;
     /*$CADUCIDADES_DETALLE_ID=0;
@@ -241,7 +242,7 @@ function InsertarFechaCaducidadArticulo($CADUCIDADES_DETALLE_ID,$ARTICULO_ID,$AR
     */
     if($CADUCIDADES_DETALLE_ID>0)
     {
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         //Buscar el detalle de la caducidad
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE); 
@@ -292,9 +293,9 @@ function InsertarFechaCaducidadArticulo($CADUCIDADES_DETALLE_ID,$ARTICULO_ID,$AR
     }
     return $result;
 }
-function MostrarCaducidadesSucursal($SUCURSAL_ID,$FECHA_REVISION)
+function MostrarCaducidadesSucursal($SUCURSAL_ID,$FECHA_REVISION, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     $hostname=$_SERVER['SERVER_NAME'];
     if ($conn){
@@ -389,7 +390,8 @@ $server->register(
     'MostrarCaducidadesSucursal',
     array(
         'SUCURSAL_ID'=>'xsd:int',
-        'FECHA_REVISION'=>'xsd:string'
+        'FECHA_REVISION'=>'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return'=> 'tns:MostrarCaducidadesSucursalArray'),
     $namespace,
@@ -411,7 +413,8 @@ $server->register(
             'OBSERVACIONES'=>'xsd:string',
             'POSICION'=>'xsd:int',
             'USUARIO_MODIFICACION'=>'xsd:string',
-            'FECHA_HORA_MODIFICACION'=>'xsd:string'
+            'FECHA_HORA_MODIFICACION'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -419,8 +422,8 @@ $server->register(
         'rpc',
         false,
         'Inserta una fecha de caducidad de un articulo en el sistema');
-    function ActualizarHoraInicioFinCaducidades($TIPO,$HORA,$CADUCIDADES_ID,$SUCURSAL_ID){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function ActualizarHoraInicioFinCaducidades($TIPO,$HORA,$CADUCIDADES_ID,$SUCURSAL_ID, $BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         $result = false;
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE); 
@@ -491,7 +494,8 @@ $server->register(
             'TIPO'=>'xsd:string',
             'HORA'=>'xsd:string',
             'CADUCIDADES_ID'=>'xsd:int',
-            'SUCURSAL_ID'=>'xsd:int'
+            'SUCURSAL_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -500,8 +504,8 @@ $server->register(
         false,
         'Actualiza la hora de inicio y la hora de fin de caducidades');
 
-    function ExisteCaducidad($CADUCIDADES_ID,$SUCURSAL_ID){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function ExisteCaducidad($CADUCIDADES_ID,$SUCURSAL_ID, $BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         $result = false;
         if ($conn){
             $select  ="SELECT CADUCIDADES_DETALLE_SUCURSALES_ID FROM CADUCIDADES_DETALLE_SUCURSALES ";
@@ -526,7 +530,8 @@ $server->register(
     'ExisteCaducidad',
     array(
         'CADUCIDADES_ID'=>'xsd:int',
-        'SUCURSAL_ID'=>'xsd:int'
+        'SUCURSAL_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -535,8 +540,8 @@ $server->register(
     false,
     'Muestra si ya existe un registro de caducidades');
 
-    function CaducidadSinExistencia($CADUCIDADES_ID,$SUCURSAL_ID,$ARTICULO_ID,$PRECIO,$ESPACIO_ASIGNADO,$EXHIBIDO,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function CaducidadSinExistencia($CADUCIDADES_ID,$SUCURSAL_ID,$ARTICULO_ID,$PRECIO,$ESPACIO_ASIGNADO,$EXHIBIDO,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION, $BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         $result = false;
         if ($conn){
             if(strlen(($PRECIO)==0) || ($PRECIO==="")|| $PRECIO===" "){
@@ -580,7 +585,8 @@ $server->register(
             'ESPACIO_ASIGNADO'=>'xsd:string',
             'EXHIBIDO'=>'xsd:string',
             'USUARIO_MODIFICACION'=>'xsd:string',
-            'FECHA_HORA_MODIFICACION'=>'xsd:string'
+            'FECHA_HORA_MODIFICACION'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -589,8 +595,8 @@ $server->register(
         false,
         'Muestra si ya existe un registro de caducidades');
 
-    function MuestraHoraInicioFinCaducidad($CADUCIDADES_ID,$SUCURSAL_ID){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function MuestraHoraInicioFinCaducidad($CADUCIDADES_ID,$SUCURSAL_ID, $BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
         $result = null;
         if ($conn){
             $select  ="SELECT HORA_INICIO,HORA_FIN FROM CADUCIDADES_DETALLE_SUCURSALES ";
@@ -638,7 +644,8 @@ $server->register(
         'MuestraHoraInicioFinCaducidad',
         array(
             'CADUCIDADES_ID'=>'xsd:int',
-            'SUCURSAL_ID'=>'xsd:int'
+            'SUCURSAL_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MuestraHoraInicioFinCaducidadArray'),
         $namespace,
@@ -646,9 +653,9 @@ $server->register(
         'rpc',
         false,
         'Muestra la hora de inicio y fin de la tarea de caducidades');
-         function MostrarFechasCaducidadesArticulo($SUCURSAL_ID,$FECHA_REVISION,$ARTICULO_ID)
+         function MostrarFechasCaducidadesArticulo($SUCURSAL_ID,$FECHA_REVISION,$ARTICULO_ID, $BD)
         {
-            $conn = ABRIR_CONEXION_MYSQL(FALSE);
+            $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
             $result = null;
             $hostname=$_SERVER['SERVER_NAME'];
             if ($conn){
@@ -731,7 +738,8 @@ $server->register(
             array(
                 'SUCURSAL_ID'=>'xsd:int',
                 'FECHA_REVISION'=>'xsd:string',
-                'ARTICULO_ID'=>'xsd:int'
+                'ARTICULO_ID'=>'xsd:int',
+                'BD'=>'xsd:string'
             ),
             array('return'=> 'tns:MostrarFechasCaducidadesArticuloArray'),
             $namespace,
@@ -740,8 +748,8 @@ $server->register(
             false,
             'Devuelve un arreglo con las articulos a revisión de caducidad en sucursal determinada');
             
-function ActualizarPEPS($CADUCIDADES_DETALLE_ID,$ARTICULO_ID,$PEPS){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizarPEPS($CADUCIDADES_DETALLE_ID,$ARTICULO_ID,$PEPS,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     $EXISTENCIAS="";
     if ($conn){
@@ -771,7 +779,8 @@ $server->register(
     array(
         'CADUCIDADES_DETALLE_ID'=>'xsd:int',
         'ARTICULO_ID'=>'xsd:int',
-        'PEPS'=>'xsd:int'
+        'PEPS'=>'xsd:int',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -781,9 +790,9 @@ $server->register(
     'Actualiza primeras entradas primeras salidas de caducidades detalle');
     
 
-function InsertarCaducidadDetalle($usuario_id, $sucursal_id, $caducidad_id, $sku)
+function InsertarCaducidadDetalle($usuario_id, $sucursal_id, $caducidad_id, $sku, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($caducidad_id != 0) {
 
@@ -839,7 +848,8 @@ function InsertarCaducidadDetalle($usuario_id, $sucursal_id, $caducidad_id, $sku
             'usuario_id'=>'xsd:int',
             'sucursal_id'=>'xsd:int',
             'caducidad_id'=>'xsd:int',
-            'sku'=>'xsd:string'
+            'sku'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:string'),
         $namespace,

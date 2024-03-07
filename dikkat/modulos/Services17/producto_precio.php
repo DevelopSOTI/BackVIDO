@@ -1,7 +1,7 @@
 <?php
-function MostrarDetalleProductoPrecio($SUCURSAL_ID, $FECHA)
+function MostrarDetalleProductoPrecio($SUCURSAL_ID, $FECHA, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = null;
     if ($conn) {
         $select  = "SELECT AD.ASIGNACION_DETALLE_ID,AR.SKU,AR.NOMBRE,AR.DESCRIPCION,AD.ESTATUS,AD.SENALIZADO,A.SISTEMA_ORIGEN,CC.USUARIO_ASIGNADO ";
@@ -38,9 +38,9 @@ function MostrarDetalleProductoPrecio($SUCURSAL_ID, $FECHA)
         return null;
     }
 }
-function MostrarDetalleProductoPrecioChequeo($SUCURSAL_ID, $FECHA, $USUARIO)
+function MostrarDetalleProductoPrecioChequeo($SUCURSAL_ID, $FECHA, $USUARIO,$BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = null;
     if ($conn) {
         $select  = "SELECT AD.ASIGNACION_DETALLE_ID,AR.SKU,AR.NOMBRE,AR.DESCRIPCION,AD.ESTATUS,AD.SENALIZADO,A.SISTEMA_ORIGEN,CC.USUARIO_ASIGNADO ";
@@ -78,9 +78,9 @@ function MostrarDetalleProductoPrecioChequeo($SUCURSAL_ID, $FECHA, $USUARIO)
         return null;
     }
 }
-function MostrarArticuloProductoPrecio($SKU, $SUCURSAL_ID, $FECHA,$SISTEMA_ORIGEN)
+function MostrarArticuloProductoPrecio($SKU, $SUCURSAL_ID, $FECHA,$SISTEMA_ORIGEN, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     $hostname = $_SERVER['SERVER_NAME'];
     if ($conn) {
@@ -143,9 +143,10 @@ function ActualizaArticuloProductoPrecio(
     $FECHA_HORA_MODIFICACION,
     $UBICACION_ID,
     $UBICACION_NOMBRE,
-    $COMENTARIOS
+    $COMENTARIOS,
+    $BD
 ) {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn) {
         if (strlen($PRECIO_ETIQUETA) === 0) {
@@ -191,13 +192,13 @@ function ActualizaArticuloProductoPrecio(
     }
     return $result;
 }
-function SubirImgProductoPrecio($MODULO, $FECHA, $IMAGEN, $NOMBRE_IMAGEN, $ASIGNACION_DETALLE_ID)
+function SubirImgProductoPrecio($MODULO, $FECHA, $IMAGEN, $NOMBRE_IMAGEN, $ASIGNACION_DETALLE_ID, $BD)
 {
     $result = -1;
     $hostname = "../../../";
     $CLAVE_CLIENTE = "";
     $CLAVE_SUCURSAL = "";
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
     if ($conn) {
         $select  = " SELECT C.CLAVE AS CLAVE_CLIENTE ,S.CLAVE AS CLAVE_SUCURSAL ";
@@ -248,9 +249,9 @@ function SubirImgProductoPrecio($MODULO, $FECHA, $IMAGEN, $NOMBRE_IMAGEN, $ASIGN
     return $result;
 }
 
-function ActualizarHoraInicioFinProductoPrecio($TIPO, $HORA, $ASIGNACION_DETALLE_ID, $SUCURSAL_ID)
+function ActualizarHoraInicioFinProductoPrecio($TIPO, $HORA, $ASIGNACION_DETALLE_ID, $SUCURSAL_ID, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn) {
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
@@ -316,9 +317,9 @@ function ActualizarHoraInicioFinProductoPrecio($TIPO, $HORA, $ASIGNACION_DETALLE
 }
 
 
-function ExisteInicioProductoPrecio($ASIGNACION_ID, $SUCURSAL_ID)
+function ExisteInicioProductoPrecio($ASIGNACION_ID, $SUCURSAL_ID, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
     if ($conn) {
         $select  = "SELECT ASIGNACIONES_DETALLE_SUCURSALES_ID FROM ASIGNACIONES_DETALLE_SUCURSALES ";
@@ -338,9 +339,9 @@ function ExisteInicioProductoPrecio($ASIGNACION_ID, $SUCURSAL_ID)
     return $result;
 }
 
-function MuestraHoraInicioFinProductoPrecio($ASIGNACION_DETALLE_ID, $SUCURSAL_ID)
+function MuestraHoraInicioFinProductoPrecio($ASIGNACION_DETALLE_ID, $SUCURSAL_ID, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn) {
         $select  = "SELECT HORA_INICIO,HORA_FIN FROM ASIGNACIONES_DETALLE AS AD ";
@@ -395,7 +396,8 @@ $server->register(
     'MostrarDetalleProductoPrecio',
     array(
         'SUCURSAL_ID' => 'xsd:int',
-        'FECHA' => 'xsd:string'
+        'FECHA' => 'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'tns:MostrarDetalleProductoPrecioArray'),
     $namespace,
@@ -409,7 +411,8 @@ $server->register(
     array(
         'SUCURSAL_ID' => 'xsd:int',
         'FECHA' => 'xsd:string',
-        'USUARIO' => 'xsd:string'
+        'USUARIO' => 'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'tns:MostrarDetalleProductoPrecioArray'),
     $namespace,
@@ -442,7 +445,8 @@ $server->wsdl->addComplexType(
         'IMAGEN' => array('name' => 'IMAGEN', 'type' => 'xsd:string'),
         'UBICACION_ID' => array('name' => 'UBICACION_ID', 'type' => 'xsd:int'),
         'UBICACION_NOMBRE' => array('name' => 'UBICACION_NOMBRE', 'type' => 'xsd:string'),
-        'COMENTARIOS' => array('name' => 'COMENTARIOS', 'type' => 'xsd:string')
+        'COMENTARIOS' => array('name' => 'COMENTARIOS', 'type' => 'xsd:string'),
+        
     )
 );
 $server->wsdl->addComplexType(
@@ -461,7 +465,8 @@ $server->register(
         'SKU' => 'xsd:string',
         'SUCURSAL_ID' => 'xsd:int',
         'FECHA' => 'xsd:string',
-        'SISTEMA_ORIGEN' => 'xsd:string'
+        'SISTEMA_ORIGEN' => 'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'tns:MostrarArticuloProductoPrecioArray'),
     $namespace,
@@ -488,7 +493,8 @@ $server->register(
         'FECHA_HORA_MODIFICACION' => 'xsd:string',
         'UBICACION_ID' => 'xsd:string',
         'UBICACION_NOMBRE' => 'xsd:string',
-        'COMENTARIOS' => 'xsd:string'
+        'COMENTARIOS' => 'xsd:string',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'xsd:boolean'),
     $namespace,
@@ -506,7 +512,8 @@ $server->register(
         'FECHA' => 'xsd:string',
         'IMAGEN' => 'xsd:string',
         'NOMBRE_IMAGEN' => 'xsd:string',
-        'ASIGNACION_DETALLE_ID' => 'xsd:int'
+        'ASIGNACION_DETALLE_ID' => 'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'xsd:int'),
     $namespace,
@@ -521,7 +528,8 @@ $server->register(
         'TIPO' => 'xsd:string',
         'HORA' => 'xsd:string',
         'ASIGNACION_DETALLE_ID' => 'xsd:int',
-        'SUCURSAL_ID' => 'xsd:int'
+        'SUCURSAL_ID' => 'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'xsd:boolean'),
     $namespace,
@@ -534,7 +542,8 @@ $server->register(
     'ExisteInicioProductoPrecio',
     array(
         'ASIGNACION_ID' => 'xsd:int',
-        'SUCURSAL_ID' => 'xsd:int'
+        'SUCURSAL_ID' => 'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'xsd:boolean'),
     $namespace,
@@ -569,7 +578,8 @@ $server->register(
     'MuestraHoraInicioFinProductoPrecio',
     array(
         'ASIGNACION_DETALLE_ID' => 'xsd:int',
-        'SUCURSAL_ID' => 'xsd:int'
+        'SUCURSAL_ID' => 'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'tns:MuestraHoraInicioFinProductoPrecioArray'),
     $namespace,
@@ -582,9 +592,9 @@ $server->register(
 
 //WS PARA UBICACIONES--------------------------------------------------------------
 
-function MuestraUbicacionesSucursal($SUCURSAL_ID)
+function MuestraUbicacionesSucursal($SUCURSAL_ID, $BD)
 {
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     if ($conn) {
         $select  = "SELECT U.UBICACION_ID, U.NOMBRE ";
@@ -637,7 +647,8 @@ $server->register(
     'MuestraUbicacionesSucursal',
     array(
         
-        'SUCURSAL_ID' => 'xsd:int'
+        'SUCURSAL_ID' => 'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return' => 'tns:UbicacionesArray'),
     $namespace,
