@@ -48,21 +48,21 @@
 
 
         //MAURO------------------------------------------------------------
-    include './usuarios.php';
+    include './usuarios.php';//Done
     include './login.php'; //esta no modificar
-    include './sucursales.php';
-    include './direcciones_sucursales.php';
+    include './sucursales.php';//Done
+    include './direcciones_sucursales.php';//Done
     //include './clientes.php';
     //include './roles.php'; 
     //include './departamentos.php';
-    include './categorias.php'; 
-    include './sucursales_usuarios.php'; 
-    include './asistencia.php';
-    include './ausencias.php';
+    include './categorias.php'; //Done
+    include './sucursales_usuarios.php'; //Done
+    include './asistencia.php';//Done
+    include './ausencias.php';//Done
     // include './login2.php';
-    include './programacion_visita_det.php';
-    include './promotores.php';
-    include './sucursales_proveedores_dias.php';
+    include './programacion_visita_det.php';//
+    include './promotores.php';//Done
+    include './sucursales_proveedores_dias.php';//Done
           //MAURO------------------------------------------------------------
 
           //DARIO-------------------------------------------------------------
