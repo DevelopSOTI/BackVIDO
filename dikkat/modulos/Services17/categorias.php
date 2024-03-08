@@ -1,7 +1,7 @@
 <?php
 // <editor-fold defaultstate="collapsed" desc="Inserta las categorias del sistema">
-    function InsertarCategoria($NOMBRE,$CLAVE,$DEPARTAMENTO_ID,$BD){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+    function InsertarCategoria($NOMBRE,$CLAVE,$DEPARTAMENTO_ID){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE);
         $result = false;
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -28,8 +28,8 @@
     // </editor-fold>
 
  // <editor-fold defaultstate="collapsed" desc="Actualiza la categoría en el sistema">
- function ActualizaCategoria($CATEGORIA_ID,$NOMBRE,$CLAVE,$DEPARTAMENTO_ID,$BD){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+ function ActualizaCategoria($CATEGORIA_ID,$NOMBRE,$CLAVE,$DEPARTAMENTO_ID){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -59,8 +59,8 @@ return $result;
 }
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Muestra los datos de los categorias del sistema">
-function MostrarCategorias($DEPARTAMENTO_ID,$BD){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+function MostrarCategorias($DEPARTAMENTO_ID){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE);
     $result = null;
     if ($conn){  
                 // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">                 
@@ -93,8 +93,8 @@ function MostrarCategorias($DEPARTAMENTO_ID,$BD){
                     return null; 
                 }
 }
-function MostrarCategoriaDatos($CATEGORIA_ID,$BD){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+function MostrarCategoriaDatos($CATEGORIA_ID){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE);
     $result = null;
     if ($conn){  
                 // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">                 
@@ -136,8 +136,7 @@ function MostrarCategoriaDatos($CATEGORIA_ID,$BD){
         array(
             'NOMBRE'=>'xsd:string',
             'CLAVE'=>'xsd:string',
-            'DEPARTAMENTO_ID'=>'xsd:int',
-            'BD'=>'xsd:string'
+            'DEPARTAMENTO_ID'=>'xsd:int'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -152,8 +151,7 @@ function MostrarCategoriaDatos($CATEGORIA_ID,$BD){
                 'CATEGORIA_ID'=>'xsd:int',
                 'NOMBRE'=>'xsd:string',
                 'CLAVE'=>'xsd:string',
-                'DEPARTAMENTO_ID'=>'xsd:int',
-                'BD'=>'xsd:string'
+                'DEPARTAMENTO_ID'=>'xsd:int'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
@@ -187,10 +185,7 @@ function MostrarCategoriaDatos($CATEGORIA_ID,$BD){
             );
         $server->register(
             'MostrarCategorias',
-            array(
-                'DEPARTAMENTO_ID'=>'xsd:int',
-                'BD'=>'xsd:string'
-            ),
+            array('DEPARTAMENTO_ID'=>'xsd:int'),
             array('return'=> 'tns:MostrarCategoriasArray'),
             $namespace,
             false,
@@ -199,10 +194,7 @@ function MostrarCategoriaDatos($CATEGORIA_ID,$BD){
             'Devuelve un arreglo con las categorías del departamento del sistema');
         $server->register(
             'MostrarCategoriaDatos',
-            array(
-                'CATEGORIA_ID'=>'xsd:int',
-                'BD'=>'xsd:string'
-            ),
+            array('CATEGORIA_ID'=>'xsd:int'),
             array('return'=> 'tns:MostrarCategoriasArray'),
             $namespace,
             false,
