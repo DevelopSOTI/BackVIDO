@@ -335,7 +335,7 @@ $server->wsdl->addComplexType(
             $server->register(
                 'MostrarProveedoresSucursal',
                 array(
-                    'SUCURSAL_ID'=>'xsd:int'
+                    'SUCURSAL_ID'=>'xsd:int',
                     'BD'=>'xsd:string'
                 ),
                 array('return'=> 'tns:MostrarProveedoresSucursalArray'),
