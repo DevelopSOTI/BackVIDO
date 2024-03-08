@@ -1,7 +1,7 @@
 <?php header("Content-Type: text/html;charset=utf-8");
 // <editor-fold defaultstate="collapsed" desc="Inserta el promotor en la base de datos">
-function InsertarPromotor($NOMBRE,$FECHA_NACIMIENTO,$RFC,$NSS,$PROVEEDOR_ID,$CATEGORIA_PROMOTOR_ID,$TELEFONO,$CORREO,$PROMOTOR_JEFE,$CLAVE){
-    $conn = ABRIR_CONEXION_MYSQLI(FALSE);
+function InsertarPromotor($NOMBRE,$FECHA_NACIMIENTO,$RFC,$NSS,$PROVEEDOR_ID,$CATEGORIA_PROMOTOR_ID,$TELEFONO,$CORREO,$PROMOTOR_JEFE,$CLAVE,$BD){
+    $conn = ABRIR_CONEXION_MYSQLI(FALSE,$BD);
     $result = false;
     if ($conn){ 
                 // <editor-fold defaultstate="collapsed" desc="INSERSION EL PROMOTOR EN LA BASE DE DATOS">
@@ -48,8 +48,8 @@ return $result;
 }
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Actualiza los datos del promotor">
-function ActualizaPromotor($PROMOTOR_ID,$NOMBRE,$FECHA_NACIMIENTO,$RFC,$NSS,$PROVEEDOR_ID,$CATEGORIA_PROMOTOR_ID,$TELEFONO,$CORREO,$PROMOTOR_JEFE,$CLAVE){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaPromotor($PROMOTOR_ID,$NOMBRE,$FECHA_NACIMIENTO,$RFC,$NSS,$PROVEEDOR_ID,$CATEGORIA_PROMOTOR_ID,$TELEFONO,$CORREO,$PROMOTOR_JEFE,$CLAVE,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -85,8 +85,8 @@ function ActualizaPromotor($PROMOTOR_ID,$NOMBRE,$FECHA_NACIMIENTO,$RFC,$NSS,$PRO
 return $result;
 }
 // </editor-fold>
-function MostrarPromotoresProveedor($PROVEEDOR_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarPromotoresProveedor($PROVEEDOR_ID,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
             $select  =" SELECT P.PROMOTOR_ID, P.NOMBRE, P.FECHA_NACIMIENTO, P.RFC, P.NSS, P.CATEGORIA_PROMOTOR_ID, P.PROVEEDOR_ID ";
@@ -125,8 +125,8 @@ function MostrarPromotoresProveedor($PROVEEDOR_ID){
     }
     return $result;
 }
-function MostrarPromotorProveedor($PROMOTOR_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarPromotorProveedor($PROMOTOR_ID,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
             $select  =" SELECT P.PROMOTOR_ID, P.NOMBRE, P.FECHA_NACIMIENTO, P.RFC, P.NSS, P.CATEGORIA_PROMOTOR_ID, P.PROVEEDOR_ID ";
@@ -165,8 +165,8 @@ function MostrarPromotorProveedor($PROMOTOR_ID){
     }
     return $result;
 }
-function MostrarPromotorProveedorClave($CLAVE){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarPromotorProveedorClave($CLAVE,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
             $select  =" SELECT P.PROMOTOR_ID, P.NOMBRE, P.FECHA_NACIMIENTO, P.RFC, P.NSS, P.CATEGORIA_PROMOTOR_ID, P.PROVEEDOR_ID ";
@@ -205,8 +205,8 @@ function MostrarPromotorProveedorClave($CLAVE){
     }
     return $result;
 }
-function MostrarPromotorProveedorNombre($NOMBRE){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarPromotorProveedorNombre($NOMBRE,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
             $select  =" SELECT P.PROMOTOR_ID, P.NOMBRE, P.FECHA_NACIMIENTO, P.RFC, P.NSS, P.CATEGORIA_PROMOTOR_ID, P.PROVEEDOR_ID ";
@@ -245,8 +245,8 @@ function MostrarPromotorProveedorNombre($NOMBRE){
     }
     return $result;
 }
-function MostrarPromotorProveedorRFC($RFC){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarPromotorProveedorRFC($RFC,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
             $select  =" SELECT P.PROMOTOR_ID, P.NOMBRE, P.FECHA_NACIMIENTO, P.RFC, P.NSS, P.CATEGORIA_PROMOTOR_ID, P.PROVEEDOR_ID ";
@@ -321,8 +321,8 @@ function MostrarJefesPromotores($SUCURSAL_ID,$CLAVE_PROVEEDOR,$BD){
     }
     return $result;
 }
-function ExisteClavePromotor($CLAVE){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ExisteClavePromotor($CLAVE,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=0;
     if ($conn){                             
             $select  ="select PROMOTOR_ID from soticomm_INMEX.PROMOTORES WHERE CLAVE ='$CLAVE';";  
@@ -365,7 +365,8 @@ $server->register(
         'TELEFONO'=>'xsd:string',
         'CORREO'=>'xsd:string',
         'PROMOTOR_JEFE'=>'xsd:string',
-        'CLAVE'=>'xsd:string'
+        'CLAVE'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -387,7 +388,8 @@ $server->register(
             'TELEFONO'=>'xsd:string',
             'CORREO'=>'xsd:string',
             'PROMOTOR_JEFE'=>'xsd:string',
-            'CLAVE'=>'xsd:string'
+            'CLAVE'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -422,7 +424,8 @@ $server->register(
         'MostrarJefesPromotores',
         array(
             'SUCURSAL_ID'=>'xsd:int',
-            'CLAVE_PROVEEDOR'=>'xsd:string'
+            'CLAVE_PROVEEDOR'=>'xsd:string',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MostrarJefesPromotoresArray'),
         $namespace,
@@ -466,7 +469,8 @@ $server->register(
     $server->register(
         'MostrarPromotorProveedor',
         array(
-            'PROMOTOR_ID'=>'xsd:int'
+            'PROMOTOR_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MostrarPromotorProveedorArray'),
         $namespace,
@@ -477,7 +481,8 @@ $server->register(
     $server->register(
         'MostrarPromotorProveedorClave',
         array(
-            'CLAVE'=>'xsd:string'
+            'CLAVE'=>'xsd:string',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MostrarPromotorProveedorArray'),
         $namespace,
@@ -489,7 +494,8 @@ $server->register(
     $server->register(
         'MostrarPromotorProveedorNombre',
         array(
-            'NOMBRE'=>'xsd:string'
+            'NOMBRE'=>'xsd:string',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MostrarPromotorProveedorArray'),
         $namespace,
@@ -500,7 +506,8 @@ $server->register(
     $server->register(
         'MostrarPromotorProveedorRFC',
         array(
-            'RFC'=>'xsd:string'
+            'RFC'=>'xsd:string',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'tns:MostrarPromotorProveedorArray'),
         $namespace,
@@ -511,7 +518,8 @@ $server->register(
         $server->register(
             'MostrarPromotoresProveedor',
             array(
-                'PROVEEDOR_ID'=>'xsd:int'
+                'PROVEEDOR_ID'=>'xsd:int',
+                'BD'=>'xsd:string'
             ),
             array('return'=> 'tns:MostrarPromotorProveedorArray'),
             $namespace,
@@ -522,8 +530,8 @@ $server->register(
 
         
 
-        function MostrarCategoriasPromotores(){
-            $conn = ABRIR_CONEXION_MYSQL(FALSE);
+        function MostrarCategoriasPromotores($BD){
+            $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
             $result=null;
             if ($conn){                             
                     $select  ="SELECT CATEGORIA_PROMOTOR_ID, NOMBRE, CLAVE FROM CATEGORIAS_PROMOTOR";  
@@ -578,7 +586,7 @@ $server->register(
     
         $server->register(
             'MostrarCategoriasPromotores',
-            array(),
+            array('BD'=>'xsd:string'),
             array('return'=> 'tns:MostrarCategoriasPromotoresArray'),
             $namespace,
             false,
@@ -587,7 +595,8 @@ $server->register(
             'Devuelve un arreglo con las categorias de los promotores');
         $server->register(
             'ExisteClavePromotor',
-            array('CLAVE'=>'xsd:string'),
+            array('CLAVE'=>'xsd:string',
+                  'BD'=>'xsd:string'),
             array('return'=>'xsd:int'),
             $namespace,
             false,

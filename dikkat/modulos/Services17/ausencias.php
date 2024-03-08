@@ -1,6 +1,6 @@
 <?php
-function FechaUltimaProgramacion($PROVEEDOR_ID,$SUCURSAL_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function FechaUltimaProgramacion($PROVEEDOR_ID,$SUCURSAL_ID,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result="";
     if ($conn){                             
         $select  ="SELECT PV.FECHA_PROGRAMACION ";
@@ -31,8 +31,8 @@ function FechaUltimaProgramacion($PROVEEDOR_ID,$SUCURSAL_ID){
     return $result;
 }
 
-function UltimaFechaCompromiso($PROVEEDOR_ID,$SUCURSAL_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function UltimaFechaCompromiso($PROVEEDOR_ID,$SUCURSAL_ID,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result="";
     if ($conn){ 
         $select  ="SELECT A.FECHA_COMPROMISO FROM  AUSENCIAS AS A ";
@@ -104,8 +104,8 @@ function FechaActualServidorPHP($UTC,$BD)
     return $fecha_actual." ".$hora_actual;
 }
 // <editor-fold defaultstate="collapsed" desc="Inserta la ausencia del promotor">
-function ObtenerUsuarioIDClave($USUARIO_CLAVE){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ObtenerUsuarioIDClave($USUARIO_CLAVE,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=0;
     if ($conn){  
                 // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LA MARCA EN EL SISTEMA">                 
@@ -138,8 +138,8 @@ function ObtenerUsuarioIDClave($USUARIO_CLAVE){
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Inserta la ausencia del promotor">
 function InsertarAusencia($FECHA_ULT_VISITA,$FECHA_COMPROMISO,$USUARIO_CLAVE,$TELEFONO,$RAZON_AUSENCIA,$PROMOTOR_ID,$SUCURSAL_ID,$CALLCENTER,$PUESTO,$PROMOTOR_JEFE
-,$ESTATUS,$PROVEEDOR_ID,$FECHA_AUSENCIA,$USUARIO_CREADOR,$FECHA_HORA_CREACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+,$ESTATUS,$PROVEEDOR_ID,$FECHA_AUSENCIA,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     $USUARIO_ID=0;
     $USUARIO_ID=ObtenerUsuarioIDClave($USUARIO_CLAVE);
@@ -176,8 +176,8 @@ return $result;
 
 // <editor-fold defaultstate="collapsed" desc="Actualiza la ausencia del promotor">
 function ActualizaAusencia($FECHA_ULT_VISITA,$FECHA_COMPROMISO,$USUARIO_ID,$TELEFONO,$RAZON_AUSENCIA,$PROMOTOR_ID,$SUCURSAL_ID,$CALLCENTER,$PUESTO,$PROMOTOR_JEFE
-,$ESTATUS,$PROVEEDOR_ID,$FECHA_AUSENCIA,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+,$ESTATUS,$PROVEEDOR_ID,$FECHA_AUSENCIA,$USUARIO_MODIFICACION,$FECHA_HORA_MODIFICACION,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -217,8 +217,8 @@ function ActualizaAusencia($FECHA_ULT_VISITA,$FECHA_COMPROMISO,$USUARIO_ID,$TELE
 return $result;
 }
 // </editor-fold>
-function MostrarAusenciasPorSucursal($FECHA_PROGRAMACION,$SUCURSAL_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarAusenciasPorSucursal($FECHA_PROGRAMACION,$SUCURSAL_ID,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
 
@@ -253,8 +253,8 @@ function MostrarAusenciasPorSucursal($FECHA_PROGRAMACION,$SUCURSAL_ID){
         return null;
     }
 }
-function MostrarAusencia($FECHA_AUSENCIA,$SUCURSAL_ID,$PROVEEDOR_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarAusencia($FECHA_AUSENCIA,$SUCURSAL_ID,$PROVEEDOR_ID,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
 
@@ -310,7 +310,8 @@ $server->register(
     'FechaUltimaProgramacion',
     array(
         'PROMOTOR_ID'=>'xsd:int',
-        'SUCURSAL_ID'=>'xsd:int'
+        'SUCURSAL_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=>'xsd:string'),
     $namespace,
@@ -324,7 +325,8 @@ $server->register(
     'UltimaFechaCompromiso',
     array(
         'PROMOTOR_ID'=>'xsd:int',
-        'SUCURSAL_ID'=>'xsd:int'
+        'SUCURSAL_ID'=>'xsd:int',
+        'BD'=>'xsd:string'
     ),
     array('return'=>'xsd:string'),
     $namespace,
@@ -391,7 +393,8 @@ $server->register(
         'PROVEEDOR_ID'=>'xsd:int',
         'FECHA_AUSENCIA'=>'xsd:string',
         'USUARIO_CREADOR'=>'xsd:string',
-        'FECHA_HORA_CREACION'=>'xsd:string'
+        'FECHA_HORA_CREACION'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -417,7 +420,8 @@ $server->register(
             'PROVEEDOR_ID'=>'xsd:int',
             'FECHA_AUSENCIA'=>'xsd:string',
             'USUARIO_MODIFICACION'=>'xsd:string',
-            'FECHA_HORA_MODIFICACION'=>'xsd:string'
+            'FECHA_HORA_MODIFICACION'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -451,7 +455,8 @@ $server->register(
             'MostrarAusenciasPorSucursal',
             array(
                 'FECHA_PROGRAMACION'=>'xsd:string',
-                'SUCURSAL_ID'=>'xsd:int'),
+                'SUCURSAL_ID'=>'xsd:int',
+                'BD'=>'xsd:string'),
             array('return'=> 'tns:MostrarAusenciasPorSucursalArray'),
             $namespace,
             false,
@@ -500,7 +505,8 @@ $server->register(
             array(
                 'FECHA_AUSENCIA'=>'xsd:string',
                 'SUCURSAL_ID'=>'xsd:int',
-                'PROVEEDOR_ID'=>'xsd:int'
+                'PROVEEDOR_ID'=>'xsd:int',
+                'BD'=>'xsd:string'
             ),
             array('return'=> 'tns:MostrarAusenciaArray'),
             $namespace,

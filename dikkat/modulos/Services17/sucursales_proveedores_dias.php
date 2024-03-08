@@ -1,7 +1,7 @@
 <?php
 // <editor-fold defaultstate="collapsed" desc="Inserta los dias de la semana que asistirá un promotor a una sucursal">
-function InsertarSucursalProveedorDias($SUCURSAL_ID,$PROVEEDOR_ID,$LUN,$MAR,$MIE,$JUE,$VIE,$SAB,$DOM){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function InsertarSucursalProveedorDias($SUCURSAL_ID,$PROVEEDOR_ID,$LUN,$MAR,$MIE,$JUE,$VIE,$SAB,$DOM,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -27,8 +27,8 @@ return $result;
 }
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Actualiza los dias de la semana que asistirá un promotor a una sucursal">
-function ActualizaSucursalProveedorDias($SUCURSAL_ID,$PROVEEDOR_ID,$LUN,$MAR,$MIE,$JUE,$VIE,$SAB,$DOM,$ESTATUS){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaSucursalProveedorDias($SUCURSAL_ID,$PROVEEDOR_ID,$LUN,$MAR,$MIE,$JUE,$VIE,$SAB,$DOM,$ESTATUS,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -63,8 +63,8 @@ function ActualizaSucursalProveedorDias($SUCURSAL_ID,$PROVEEDOR_ID,$LUN,$MAR,$MI
 return $result;
 }
 // </editor-fold>
-function MostrarSucursalProveedorDias($SUCURSAL_ID,$PROVEEDOR_ID){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function MostrarSucursalProveedorDias($SUCURSAL_ID,$PROVEEDOR_ID,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result=null;
     if ($conn){                             
             $select  ="SELECT LUN,MAR,MIE,JUE,VIE,SAB,DOM FROM soticomm_INMEX.SUCURSALES_PROVEEDORES_DIAS ";
@@ -109,7 +109,8 @@ $server->register(
         'JUE'=>'xsd:string',
         'VIE'=>'xsd:string',
         'SAB'=>'xsd:string',
-        'DOM'=>'xsd:string'
+        'DOM'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -130,7 +131,8 @@ $server->register(
         'VIE'=>'xsd:string',
         'SAB'=>'xsd:string',
         'DOM'=>'xsd:string',
-        'ESTATUS'=>'xsd:string'
+        'ESTATUS'=>'xsd:string',
+        'BD'=>'xsd:string'
         ),
     array('return'=>'xsd:boolean'),
     $namespace,
@@ -169,7 +171,8 @@ $server->register(
             'MostrarSucursalProveedorDias',
             array(
                 'SUCURSAL_ID'=>'xsd:int',
-                'PROVEEDOR_ID'=>'xsd:int'
+                'PROVEEDOR_ID'=>'xsd:int',
+                'BD'=>'xsd:string'
             ),
             array('return'=> 'tns:MostrarSucursalProveedorDiasArray'),
             $namespace,

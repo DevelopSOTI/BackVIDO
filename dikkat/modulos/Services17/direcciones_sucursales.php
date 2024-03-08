@@ -1,7 +1,7 @@
 <?php
 // <editor-fold defaultstate="collapsed" desc="Inserta las sucursales del sistema">
-    function InsertarDireccionSucursal($NOMBRE,$CALLE,$COLONIA,$NUM_EXT,$NUM_INT,$RFC,$ESTADO,$PAIS,$CIUDAD,$COD_POSTAL,$CORREOS,$NUM_TELEFONO,$REFERENCIA){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function InsertarDireccionSucursal($NOMBRE,$CALLE,$COLONIA,$NUM_EXT,$NUM_INT,$RFC,$ESTADO,$PAIS,$CIUDAD,$COD_POSTAL,$CORREOS,$NUM_TELEFONO,$REFERENCIA,$BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -55,8 +55,8 @@
     }
     // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Actualiza las sucursales del sistema">
-function ActualizaDireccionSucursal($DIR_SUC_ID,$NOMBRE,$CALLE,$COLONIA,$NUM_EXT,$NUM_INT,$RFC,$ESTADO,$PAIS,$CIUDAD,$COD_POSTAL,$CORREOS,$NUM_TELEFONO,$REFERENCIA){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaDireccionSucursal($DIR_SUC_ID,$NOMBRE,$CALLE,$COLONIA,$NUM_EXT,$NUM_INT,$RFC,$ESTADO,$PAIS,$CIUDAD,$COD_POSTAL,$CORREOS,$NUM_TELEFONO,$REFERENCIA,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -96,8 +96,8 @@ return $result;
 }
 // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Muestra todas las sucursales por cliente">
-    function MostrarDireccionSucursal($DIR_SUC_ID){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function MostrarDireccionSucursal($DIR_SUC_ID,$BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         if ($conn){  
                     // <editor-fold defaultstate="collapsed" desc="SELECCION DE TODOS LAS SUCURSALES POR CLIENTE">                 
@@ -139,7 +139,8 @@ return $result;
             'COD_POSTAL'=>'xsd:string',
             'CORREOS'=>'xsd:string',
             'NUM_TELEFONO'=>'xsd:string',
-            'REFERENCIA'=>'xsd:string'
+            'REFERENCIA'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -164,7 +165,8 @@ return $result;
             'COD_POSTAL'=>'xsd:string',
             'CORREOS'=>'xsd:string',
             'NUM_TELEFONO'=>'xsd:string',
-            'REFERENCIA'=>'xsd:string'
+            'REFERENCIA'=>'xsd:string',
+            'BD'=>'xsd:string'
                 ),
             array('return'=>'xsd:boolean'),
             $namespace,
@@ -208,7 +210,10 @@ return $result;
                 );
                 $server->register(
                     'MostrarDireccionSucursal',
-                    array('DIR_SUC_ID'=>'xsd:int'),
+                    array(
+                        'DIR_SUC_ID'=>'xsd:int',
+                        'BD'=>'xsd:string'
+                         ),
                     array('return'=> 'tns:MostrarDireccionSucursalArray'),
                     $namespace,
                     false,

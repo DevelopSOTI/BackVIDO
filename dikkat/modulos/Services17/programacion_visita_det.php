@@ -1,7 +1,7 @@
 <?php
 // <editor-fold defaultstate="collapsed" desc="Inserta el detalle de la programación de visitas de proveedores">
-    function InsertarProgramacionVisitaDet($PROGRAMACION_VISITAS_ID,$SUCURSAL_ID,$PROVEEDOR_ID){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function InsertarProgramacionVisitaDet($PROGRAMACION_VISITAS_ID,$SUCURSAL_ID,$PROVEEDOR_ID,$BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -28,8 +28,8 @@
     // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Actualiza la programación de visitas de proveedores">
-function ActualizaProgramacionVisitaDet($PROGRAMACION_VISITAS_DET_ID,$PROGRAMACION_VISITAS_ID,$SUCURSAL_ID,$PROVEEDOR_ID,$ASISTIO,$HORA_ENTRADA1,$HORA_SALIDA1,$HORA_ENTRADA2,$HORA_SALIDA2){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+function ActualizaProgramacionVisitaDet($PROGRAMACION_VISITAS_DET_ID,$PROGRAMACION_VISITAS_ID,$SUCURSAL_ID,$PROVEEDOR_ID,$ASISTIO,$HORA_ENTRADA1,$HORA_SALIDA1,$HORA_ENTRADA2,$HORA_SALIDA2,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = false;
     if ($conn){
         mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -64,8 +64,8 @@ return $result;
 }
 // </editor-fold>
  // <editor-fold defaultstate="collapsed" desc="Muestra los datos de la programación de visitas de proveedores">
- function MostrarProgramacionVisitaSucursalFecha($SUCURSAL_ID,$FECHA_PROGRAMACION){
-    $conn = ABRIR_CONEXION_MYSQL(FALSE);
+ function MostrarProgramacionVisitaSucursalFecha($SUCURSAL_ID,$FECHA_PROGRAMACION,$BD){
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = null;
     if ($conn){  
                 // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE PROGRAMACION_VISITAS_DETALLE">                 
@@ -120,7 +120,8 @@ return $result;
         array(
             'PROGRAMACION_VISITAS_ID'=>'xsd:int',
             'SUCURSAL_ID'=>'xsd:int',
-            'PROVEEDOR_ID'=>'xsd:int'
+            'PROVEEDOR_ID'=>'xsd:int',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -139,7 +140,8 @@ return $result;
             'HORA_ENTRADA1'=>'xsd:string',
             'HORA_SALIDA1'=>'xsd:string',
             'HORA_ENTRADA2'=>'xsd:string',
-            'HORA_SALIDA2'=>'xsd:string'
+            'HORA_SALIDA2'=>'xsd:string',
+            'BD'=>'xsd:string'
             ),
         array('return'=>'xsd:boolean'),
         $namespace,
@@ -182,15 +184,16 @@ return $result;
             'MostrarProgramacionVisitaSucursalFecha',
             array(
                 'SUCURSAL_ID'=>'xsd:int',
-                'FECHA_PROGRAMACION'=>'xsd:string'),
+                'FECHA_PROGRAMACION'=>'xsd:string',
+                'BD'=>'xsd:string'),
             array('return'=> 'tns:MostrarProgramacionVisitaSucursalFechaArray'),
             $namespace,
             false,
             'rpc',
             false,
             'Devuelve un arreglo con la programación de visitas de proveedores');
-    function BuscarProgramacionID($FECHA_PROGRAMACION){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function BuscarProgramacionID($FECHA_PROGRAMACION,$BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = 0;
         if ($conn){
             // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE PROGRAMACION_VISITAS_DETALLE">                 
@@ -248,8 +251,8 @@ return $result;
                 return -1; 
             }
     }
-    function InsertarProgramacionVisitasProveedores($FECHA_PROGRAMACION,$USUARIO_CREADOR,$FECHA_HORA_CREACION){
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function InsertarProgramacionVisitasProveedores($FECHA_PROGRAMACION,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$BD){
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         if ($conn){
             mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);       
@@ -274,8 +277,8 @@ return $result;
         }
 	return $result;
     }
-    function InsertarProgramacionPorHorario($SUCURSAL_ID,$FECHA_PROGRAMACION,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$DIASEMANA){//Prueba
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function InsertarProgramacionPorHorario($SUCURSAL_ID,$FECHA_PROGRAMACION,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$DIASEMANA,$BD){//Prueba
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         $ProgNueva=false;
         $ProgVisId=-1;
@@ -374,8 +377,8 @@ return $result;
             return $result; //retorna el resultado en caso de que no se haya podido establecer la conexión
         }
     }
-    function InsertarProgramacionPorHorario2($SUCURSAL_ID,$FECHA_PROGRAMACION,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$PROVEEDORES){//Prueba
-        $conn = ABRIR_CONEXION_MYSQL(FALSE);
+    function InsertarProgramacionPorHorario2($SUCURSAL_ID,$FECHA_PROGRAMACION,$USUARIO_CREADOR,$FECHA_HORA_CREACION,$PROVEEDORES,$BD){//Prueba
+        $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
         $result = false;
         $ProgNueva=false;
         $ProgVisId=0;
@@ -481,7 +484,8 @@ return $result;
             'FECHA_PROGRAMACION'=>'xsd:string',
             'USUARIO_CREADOR'=>'xsd:string',
             'FECHA_HORA_CREACION'=>'xsd:string',
-            'DIASEMANA'=>'xsd:string'
+            'DIASEMANA'=>'xsd:string',
+            'BD'=>'xsd:string'
         ),
         array('return'=> 'xsd:boolean'),
         $namespace,
