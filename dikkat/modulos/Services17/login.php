@@ -5,12 +5,12 @@
 
 #region consultar el usuario en la tabla maestra
 
-function getBDEmpresa($USUARIO, $PASSWORD)
+function getBDEmpresa($USUARIO, $PASSWORD,$BIOMETRICO)
 {
     $con = ABRIR_CONEXION_MYSQL(FALSE, DB_MASTER);  //Conexion a base de datos
     if ($con) {
         //checamos el permiso
-        $tipoUsuario = getTipoUsuario($USUARIO, $PASSWORD);
+        $tipoUsuario = getTipoUsuario($USUARIO, $PASSWORD,$BIOMETRICO);
         $esSa = false;
         $tipos[] = null;
         $listadoCliente[] = null;
@@ -42,7 +42,8 @@ function getBDEmpresa($USUARIO, $PASSWORD)
         $select .= " where c.NOMBRE_DB is not null ";
         if(!$esSa){
             $select .= " and u.USUARIO = '" . $USUARIO . "' ";
-            $select .= " and u.PASS = '" . $PASSWORD . "' ";
+            if(!$BIOMETRICO)
+                $select .= " and u.PASS = '" . $PASSWORD . "' ";
         }
 
         //echo $select;
@@ -104,7 +105,8 @@ $server->register(
     'getBDEmpresa',
     array(
         'USUARIO' => 'xsd:string',
-        'PASS' => 'xsd:string'
+        'PASS' => 'xsd:string',
+        'BIOMETRICO'=>'xsd:boolean'
     ),
     array('return' => 'tns:listadoClienteArray'),
     $namespace,
@@ -114,7 +116,7 @@ $server->register(
     'Devuelve un arreglo con las empresas que debe acceder el cliente'
 );
 
-function getTipoUsuario($USUARIO, $PASSWORD)
+function getTipoUsuario($USUARIO, $PASSWORD,$BIOMETRICO)
 {
     $con = ABRIR_CONEXION_MYSQL(FALSE, DB_MASTER);  //Conexion a base de datos
     $tipoUsuario = [];
@@ -126,7 +128,8 @@ function getTipoUsuario($USUARIO, $PASSWORD)
         $select .= "join ROLES_USUARIOS ru on ru.USUARIO_ID = u.USUARIO_ID ";
         $select .= "join ROLES r on r.ROL_ID = ru.ROL_ID ";
         $select .= "where u.usuario = '" . $USUARIO . "' ";
-        $select .= "and u.PASS = '" . $PASSWORD . "' ";
+        if(!$BIOMETRICO)
+            $select .= "and u.PASS = '" . $PASSWORD . "' ";
         $select .= "";
 
         //echo $select;
@@ -186,7 +189,8 @@ $server->register(
     'getTipoUsuario',
     array(
         'USUARIO' => 'xsd:string',
-        'PASS' => 'xsd:string'
+        'PASS' => 'xsd:string',
+        'BIOMETRICO'=> 'xsd:boolean'  // Indica si se quiere o no mostrar la clave en el resultado
     ),
     array('return' => 'tns:tipoUsuarioArray'),
     $namespace,
