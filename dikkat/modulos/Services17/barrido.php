@@ -95,7 +95,7 @@ function InsertarBarrido($FECHA,$SUCURSAL_ID,$USUARIO_CREACION,$FECHA_HORA_CREAC
                 //Insertamos el detalle
                 $query   ="INSERT INTO BARRIDO_DETALLE (BARRIDO_ID,ARTICULO_ID,PRECIO/*,PRECIO_ARTICULO*/) ";
                 
-                $query   =" VALUES($BARRIDO_ID,$ARTICULO_ID,$PRECIO)";
+                $query   .=" VALUES($BARRIDO_ID,$ARTICULO_ID,$PRECIO)";
                 //$query   =" VALUES($BARRIDO_ID,$ARTICULO_ID,$PRECIO /*,$PRECIO_ARTICULO*/)";
 
                 //echo $query;
