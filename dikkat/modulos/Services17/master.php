@@ -4,12 +4,16 @@ function getClaveMaestraCliente($BD)
 {
     $CLAVE_CLIENTE_MASTER = "";
     $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_MASTER);
-    $select_Clave = "select CLAVE FROM soticomm_VIDO_MASTER.CLIENTES WHERE NOMBRE_DB = '$BD'";
-    $stmt = mysqli_query($conn, $select_Clave);
-    if ($stmt) {
-        while ($row = mysqli_fetch_assoc($stmt)) {
-            $CLAVE_CLIENTE_MASTER = $row["CLAVE"];
+    if ($conn) {
+        $select_Clave = "select CLAVE FROM soticomm_VIDO_MASTER.CLIENTES WHERE NOMBRE_DB = '$BD'";
+        $stmt = mysqli_query($conn, $select_Clave);
+        if ($stmt) {
+            while ($row = mysqli_fetch_assoc($stmt)) {
+                $CLAVE_CLIENTE_MASTER = $row["CLAVE"];
+            }
         }
+    } else {
+        $CLAVE_CLIENTE_MASTER = null;
     }
     mysqli_close($conn);
     return $CLAVE_CLIENTE_MASTER;
