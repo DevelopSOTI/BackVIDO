@@ -61,7 +61,7 @@ $server->register(
     'rpc',
     false,
     'Funcion que devuelve la clave de una base de datos'
-);
+); 
 
 
 $server->wsdl->addComplexType(
