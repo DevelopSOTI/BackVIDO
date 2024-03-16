@@ -100,7 +100,7 @@
                 )){
                 //buscamos el detalle
                 $FALTANTES_DETALLE_ID=0;
-                $FALTANTES_DETALLE_ID=BuscarFaltanteDetalleID($FALTANTES_ID,$ARTICULO_ID);
+                $FALTANTES_DETALLE_ID=BuscarFaltanteDetalleID($FALTANTES_ID,$ARTICULO_ID,$BD);
                 //echo " Faltantes detalle_id: ".$FALTANTES_DETALLE_ID." ";
                 if($FALTANTES_DETALLE_ID===0){
                     //Insertamos el detalle
