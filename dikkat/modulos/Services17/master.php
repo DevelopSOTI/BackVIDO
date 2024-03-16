@@ -37,7 +37,7 @@ function getModulosCliente($BD)
     $select_Clave .= " join MODULOS m on m.MODULO_ID = cm.MODULO_ID ";
     $select_Clave .= " join CLIENTES c on c.CLIENTE_ID = cm.CLIENTE_ID ";
     $select_Clave .= " where c.NOMBRE_DB = '$BD'";
-
+echo $select_Clave;
     $stmt = mysqli_query($conn, $select_Clave);
     if ($stmt) {
         while ($row = mysqli_fetch_assoc($stmt)) {            
