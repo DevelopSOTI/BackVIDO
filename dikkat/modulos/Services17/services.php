@@ -4,7 +4,8 @@
     //error_reporting(0);
     mb_internal_encoding('UTF-8');
     define("DB_MASTER","soticomm_VIDO_MASTER");
-    define("DB_KLYNS","soticomm_VIDO_KLYNS");
+    //define("DB_KLYNS","soticomm_VIDO_KLYNS");
+    define("HOSTNAME","../../../../");
     
     // <editor-fold defaultstate="collapsed" desc="ValidarConexion">
 
@@ -22,6 +23,20 @@
         {
             return FALSE;
         }
+    }
+
+    function getClaveMaestraCliente($BD){
+        $CLAVE_CLIENTE_MASTER = "";
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_MASTER);
+    $select_Clave = "select CLAVE FROM soticomm_VIDO_MASTER.CLIENTES WHERE NOMBRE_DB = '$BD'";
+    $stmt = mysqli_query($conn, $select_Clave);
+    if($stmt){
+        while($row = mysqli_fetch_assoc($stmt)){
+            $CLAVE_CLIENTE_MASTER = $row["CLAVE"];
+        }
+    }
+    mysqli_close($conn);
+    return $CLAVE_CLIENTE_MASTER;
     }
 
    // </editor-fold>
@@ -45,6 +60,17 @@
         'rpc',
         false,
         'Funcion que valida si hace la conexi��n al sistema de InMex.');
+
+        $server->register(
+            'getClaveMaestraCliente',
+            array('DB'=>'xsd:string'),
+            array('return'=>'xsd:string'),
+            $namespace,
+            false,
+            'rpc',
+            false,
+            'Funcion que devuelve la clave de una base de datos');
+    
 
 
         //MAURO------------------------------------------------------------

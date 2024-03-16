@@ -169,14 +169,19 @@ function MostrarMysteryShopperGrupoTarea($SUCURSAL_ID,$FECHA_REVISION,$USUARIO_A
 }*/
 function SubirImgMysteryShopper($FECHA, $IMAGEN, $NOMBRE_IMAGEN, $MYSTERY_SHOPPER_ID, $RESPUESTA_TAREA_DETALLE_ID, $BD)
 {
+    
     $result = -1;
-    $hostname = "../../../";
+    //$hostname = "../../../";
     $CLAVE_CLIENTE = "";
+    
     $CLAVE_SUCURSAL = "";
     $actualPath = "";
     $MODULO = "MYSTERY_SHOPPER";
     $RUTA_IMAGEN = "";
-    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
+
+    $CLAVE_CLIENTE_MASTER = getClaveMaestraCliente($BD);
+
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD); 
     mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
 
     if (!stristr($NOMBRE_IMAGEN, '/', true)) {
@@ -215,7 +220,7 @@ function SubirImgMysteryShopper($FECHA, $IMAGEN, $NOMBRE_IMAGEN, $MYSTERY_SHOPPE
                         }
                         $nombreImagen=substr ($RUTA_IMAGEN, -$cont); 
                         
-                        $actualPath = $hostname . "Evidencia/$path/$nombreImagen";
+                        $actualPath = HOSTNAME . "/Evidencia/$CLAVE_CLIENTE_MASTER/$path/$nombreImagen";
                         //echo " Actual path: ".$actualPath;
                         try{
                             if(file_exists($actualPath)){
@@ -254,7 +259,7 @@ function SubirImgMysteryShopper($FECHA, $IMAGEN, $NOMBRE_IMAGEN, $MYSTERY_SHOPPE
                         if (strlen($CLAVE_CLIENTE) > 0 && strlen($CLAVE_SUCURSAL) > 0) {
                             $path = "$MODULO/$CLAVE_CLIENTE/$CLAVE_SUCURSAL/$FECHA";
                             //Crear la ruta de la carpeta
-                            $actualPath = $hostname . "Evidencia/$path";
+                            $actualPath = HOSTNAME . "Evidencia/$CLAVE_CLIENTE_MASTER/$path";
                             if (!file_exists($actualPath)) {
                                 mkdir($actualPath, 0777, true);
                             }
@@ -264,7 +269,7 @@ function SubirImgMysteryShopper($FECHA, $IMAGEN, $NOMBRE_IMAGEN, $MYSTERY_SHOPPE
                                     //$conn = ABRIR_CONEXION_MYSQL(FALSE);
                                     if (file_exists($actualPath)) {
                                         //insertar imagen en la Tabla de Producto y prrecio
-                                        $actualPath =/*$_SERVER['SERVER_NAME'].*/ "/Evidencia/$path/$NOMBRE_IMAGEN";
+                                        $actualPath =/*$_SERVER['SERVER_NAME'].*/ "/Evidencia/$CLAVE_CLIENTE_MASTER/$path/$NOMBRE_IMAGEN";
                                         $insert = "INSERT INTO REPOSITORIO_IMAGEN(IMAGEN,ESTATUS,TIPO_TAREA,RESPUESTA_TAREA_DETALLE_ID)
                                         VALUES('$actualPath','A','$MODULO',$RESPUESTA_TAREA_DETALLE_ID);";
                                         $stmt = mysqli_query($conn, $insert);
