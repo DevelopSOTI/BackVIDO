@@ -104,6 +104,7 @@
     include './dominios.php';
     include './checar_asistencia.php';
               //DARIO-------------------------------------------------------------
+    include './master.php';
     
     $post = file_get_contents('php://input');
     $server->service($post);
