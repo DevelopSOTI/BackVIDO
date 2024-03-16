@@ -32,28 +32,34 @@ function getModulosCliente($BD)
 {
     $result = null;
     $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_MASTER);
-    $select_Clave = "select m.NOM_MODULO  ";
-    $select_Clave .= " from CLIENTES_MODULOS cm ";
-    $select_Clave .= " join MODULOS m on m.MODULO_ID = cm.MODULO_ID ";
-    $select_Clave .= " join CLIENTES c on c.CLIENTE_ID = cm.CLIENTE_ID ";
-    $select_Clave .= " where c.NOMBRE_DB = '$BD'";
-//echo $select_Clave;
-    $stmt = mysqli_query($conn, $select_Clave);
-    if ($stmt) {
-        while ($row = mysqli_fetch_assoc($stmt)) {            
-            $MODULO = $row["NOM_MODULO"];
-            $result[] = $MODULO;
+    if ($conn) {
+        $select_Clave = "select m.NOM_MODULO  ";
+        $select_Clave .= " from CLIENTES_MODULOS cm ";
+        $select_Clave .= " join MODULOS m on m.MODULO_ID = cm.MODULO_ID ";
+        $select_Clave .= " join CLIENTES c on c.CLIENTE_ID = cm.CLIENTE_ID ";
+        $select_Clave .= " where c.NOMBRE_DB = '$BD'";
+        //echo $select;
+        $stmt = mysqli_query($conn, $select_Clave);
+        if ($stmt) {
+            while ($row = mysqli_fetch_assoc($stmt)) {
+                $Modulos["NOM_MODULO"] = $row["NOM_MODULO"];
+                $result[] = $Modulos;
+            }
+        } else {
+            $result = null;
         }
+        mysqli_close($conn);
+    } else {
+        $result = null;
     }
-    mysqli_close($conn);
     return $result;
 }
 
 $server->register(
     'getModulosCliente',
     array(
-        
-        'BD'=>'xsd:string'
+
+        'BD' => 'xsd:string'
     ),
     array('return' => 'tns:ModulosArray'),
     $namespace,
@@ -61,7 +67,7 @@ $server->register(
     'rpc',
     false,
     'Funcion que devuelve los modulos de un cliente'
-); 
+);
 
 
 $server->wsdl->addComplexType(
@@ -71,7 +77,7 @@ $server->wsdl->addComplexType(
     'all',
     '',
     array(
-        'NOM_MODULO' => array('name' => 'NOM_MODULO', 'type' => 'xsd:string') 
+        'NOM_MODULO' => array('name' => 'NOM_MODULO', 'type' => 'xsd:string')
     )
 );
 $server->wsdl->addComplexType(
