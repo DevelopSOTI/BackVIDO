@@ -60,7 +60,7 @@ $server->register(
     false,
     'rpc',
     false,
-    'Funcion que devuelve la clave de una base de datos'
+    'Funcion que devuelve los modulos de un cliente'
 ); 
 
 
