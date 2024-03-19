@@ -47,6 +47,7 @@ function getModulosCliente($BD)
         if ($stmt) {
             while ($row = mysqli_fetch_assoc($stmt)) {
                 $Modulos["NOM_MODULO"] = $row["NOM_MODULO"];
+                $Modulos["CLAVE"] = $row["CLAVE"];
                 $result[] = $Modulos;
             }
         } else {
@@ -81,7 +82,8 @@ $server->wsdl->addComplexType(
     'all',
     '',
     array(
-        'NOM_MODULO' => array('name' => 'NOM_MODULO', 'type' => 'xsd:string')
+        'NOM_MODULO' => array('name' => 'NOM_MODULO', 'type' => 'xsd:string'),
+        'CLAVE' => array('name' => 'CLAVE', 'type' => 'xsd:string')
     )
 );
 $server->wsdl->addComplexType(
