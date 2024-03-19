@@ -37,7 +37,7 @@ function getModulosCliente($BD)
     $result = null;
     $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_MASTER);
     if ($conn) {
-        $select_Clave = "select m.NOM_MODULO  ";
+        $select_Clave = "select m.NOM_MODULO, m.CLAVE  ";
         $select_Clave .= " from CLIENTES_MODULOS cm ";
         $select_Clave .= " join MODULOS m on m.MODULO_ID = cm.MODULO_ID ";
         $select_Clave .= " join CLIENTES c on c.CLIENTE_ID = cm.CLIENTE_ID ";
