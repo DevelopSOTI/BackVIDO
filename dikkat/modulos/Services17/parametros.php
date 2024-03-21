@@ -32,7 +32,6 @@ function getParametro($NOMBRE,$MODULO,$BD){
 
 }
 
-
 $server->register(
     'getParametro',
     array(
