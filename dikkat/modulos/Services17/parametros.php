@@ -1,6 +1,6 @@
 <?php
 
-function getParametro($NOMBRE,$MODULO,$BD){
+function getParametross($NOMBRE,$MODULO,$BD){
     $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = "";
     if ($conn){
@@ -33,7 +33,7 @@ function getParametro($NOMBRE,$MODULO,$BD){
 }
 
 $server->register(
-    'getParametro',
+    'getParametross',
     array(
         'NOMBRE'=>'xsd:string',
         'MODULO'=>'xsd:string',
