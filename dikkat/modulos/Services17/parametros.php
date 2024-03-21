@@ -1,12 +1,12 @@
 <?php
 
-function getParametross($NOMBRE,$MODULO,$BD){
+function getParametros($NOMBRE,$MODULO,$BD){
     $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
     $result = "";
     if ($conn){
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
         $select  = "SELECT * FROM PARAMETROS WHERE NOMBRE='$NOMBRE' AND MODULO='$MODULO' ;";
-        echo $select;
+        //echo $select;
         // </editor-fold>  
         //echo " Consulta ".$select." ";
         $stmt = mysqli_query($conn, $select);
@@ -33,7 +33,7 @@ function getParametross($NOMBRE,$MODULO,$BD){
 }
 
 $server->register(
-    'getParametross',
+    'getParametros',
     array(
         'NOMBRE'=>'xsd:string',
         'MODULO'=>'xsd:string',
