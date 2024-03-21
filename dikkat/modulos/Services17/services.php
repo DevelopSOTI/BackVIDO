@@ -82,6 +82,7 @@
     include './checar_asistencia.php';
               //DARIO-------------------------------------------------------------
     include './master.php';
+    include './parametros.php';
     
     $post = file_get_contents('php://input');
     $server->service($post);
