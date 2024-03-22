@@ -83,6 +83,7 @@
               //DARIO-------------------------------------------------------------
     include './master.php';
     include './parametros.php';
+    include './solucion.php';
     
     $post = file_get_contents('php://input');
     $server->service($post);
