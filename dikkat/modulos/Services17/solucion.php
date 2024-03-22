@@ -134,8 +134,7 @@ $server->wsdl->addComplexType(
 $server->register(
     'getSolucionOpciones',
     array(
-        'FECHA' => 'xsd:string',
-        'SUCURSAL_ID' => 'xsd:int',
+        
         'BD' => 'xsd:string'
     ),
     array('return' => 'tns:SolucionOpcionesArray'),
