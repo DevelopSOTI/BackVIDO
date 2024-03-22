@@ -419,7 +419,7 @@ $server->register(
                         $WHERE_COMPLEMENTO=" AND HORA_INICIO IS NULL";
                     }
                     elseif($TIPO==="F") {
-                        $TIPO_ACTUALIZACION="HORA_FIN = '$HORA', ESTATUS = 'P'";
+                        $TIPO_ACTUALIZACION="HORA_FIN = '$HORA', ESTATUS = 'P',";
                         $WHERE_COMPLEMENTO=" AND HORA_FIN IS NULL";
                     }
                     $query  = "UPDATE FALTANTES ";
