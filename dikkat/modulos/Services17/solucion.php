@@ -174,6 +174,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
                 $faltante["PRECIO_ARTICULO"] = $row["PRECIO_ARTICULO"];
                 $faltante["IMAGEN"] = $hostname . "/articulos/" . $row["IMAGEN"];
                 $faltante["CATEGORIA"] = $row["CATEGORIA"];
+                $faltante["SOLUCION"] = "-";
                 $result[] = $faltante;
             }
             mysqli_close($conn);
@@ -206,7 +207,8 @@ $server->wsdl->addComplexType(
         'STOCK_FISICO' => array('name' => 'STOCK_FISICO', 'type' => 'xsd:string'),
         'PRECIO_ARTICULO' => array('name' => 'PRECIO_ARTICULO', 'type' => 'xsd:string'),
         'IMAGEN' => array('name' => 'IMAGEN', 'type' => 'xsd:string'),
-        'CATEGORIA' => array('name' => 'CATEGORIA', 'type' => 'xsd:string')
+        'CATEGORIA' => array('name' => 'CATEGORIA', 'type' => 'xsd:string'),
+        'SOLUCION' => array('name' => 'SOLUCION', 'type' => 'xsd:string')
     )
 );
 $server->wsdl->addComplexType(
