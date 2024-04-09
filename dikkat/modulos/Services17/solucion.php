@@ -174,7 +174,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
                 $faltante["PRECIO_ARTICULO"] = $row["PRECIO_ARTICULO"];
                 $faltante["IMAGEN"] = $hostname . "/articulos/" . $row["IMAGEN"];
                 $faltante["CATEGORIA"] = $row["CATEGORIA"];
-                $faltante["SOLUCION"] = "-";
+                $faltante["SOLUCION"] = "";
                 $result[] = $faltante;
             }
             mysqli_close($conn);
