@@ -396,7 +396,7 @@ $server->register(
     'Devuelve un arreglo con los articulos del sistema (usando "0" en articulo id, marca id y categoría id muestra todos los articulos del sistema)'
 );
 
-function ActualizarHoraInicioFinFaltantes($TIPO, $HORA, $FALTANTES_ID, $USARIO_MODIFICACION, $FECHA_HORA_MODIFICACION, $BD, $FALTA_SIN_SOL = "N")
+function ActualizarHoraInicioFinFaltantes($TIPO, $HORA, $FALTANTES_ID, $USARIO_MODIFICACION, $FECHA_HORA_MODIFICACION, $BD, $FALTA_SIN_SOL = "S")
 {
     $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = false;
