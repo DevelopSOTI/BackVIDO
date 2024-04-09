@@ -383,7 +383,8 @@ $server->register(
         'FALTANTES_ID' => 'xsd:int',
         'USARIO_MODIFICACION' => 'xsd:string',
         'FECHA_HORA_MODIFICACION' => 'xsd:string',
-        'BD' => 'xsd:string'
+        'BD' => 'xsd:string',
+        'FALTA_SIN_SOL'=>'xsd:string')
     ),
     array('return' => 'xsd:boolean'),
     $namespace,
