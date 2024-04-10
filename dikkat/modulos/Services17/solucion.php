@@ -292,8 +292,8 @@ function InsertarSolucion($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $USUARIO_CREACION
             //echo " Faltantes detalle_id: ".$FALTANTES_DETALLE_ID." ";
             if ($SOLUCION_DETALLE_ID === 0) {
                 //Insertamos el detalle
-                $query = "INSERT INTO SOLUCION_DETALLE (SOLUCION_ID,ARTICULO_ID,SOLUCION_OPCIONES_ID) ";
-                $query .= " VALUES($SOLUCION_ID,$ARTICULO_ID,$SOLUCION_OPCIONES_ID);";
+                $query = "INSERT INTO SOLUCION_DETALLE (ARTICULO_ID,SOLUCION_OPCIONES_ID,SOLUCION_ID) ";
+                $query .= " VALUES($ARTICULO_ID,$SOLUCION_OPCIONES_ID,$SOLUCION_ID);";
                 //echo $query;
                 if (mysqli_query($conn, $query)) {
                     $result = $SOLUCION_ID;
