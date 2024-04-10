@@ -421,7 +421,7 @@ function ActualizarHoraInicioFinSolucion($TIPO, $HORA,$FALTANTES_ID, $SOLUCION_I
             $query .= " USUARIO_MODIFICACION = '$USUARIO_MODIFICACION', ";
             $query .= " FECHA_HORA_MODIFICACION ='$FECHA_HORA_MODIFICACION' ";
             $query .= " WHERE SOLUCION_ID = $SOLUCION_ID AND FALTANTES_ID = $FALTANTES_ID $WHERE_COMPLEMENTO;";
-            echo $query;
+           // echo $query;
             if (mysqli_query($conn, $query)) {
                 $result = true;
                 mysqli_commit($conn);
