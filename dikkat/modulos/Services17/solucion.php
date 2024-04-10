@@ -261,6 +261,7 @@ function InsertarSolucion($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $USUARIO_CREACION
             //insertamos el encabezado 
             $query = "INSERT INTO SOLUCION (SUCURSAL_ID,ESTATUS,FECHA,USUARIO_CREACION,FECHA_HORA_CREACION,FALTANTES_ID) ";
             $query .= "VALUES ($SUCURSAL_ID,'A','$FECHA','$USUARIO_CREACION','$FECHA_HORA_CREACION',$FALTANTES_ID);";
+            echo $query;
             if (mysqli_query($conn, $query)) {
                 $result = 1;
             } else {
