@@ -367,6 +367,51 @@ function BuscarSolucionID($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $conn)
     }
 }
 
+function BuscarSolucionIDs($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $BD)
+{
+    $conn = ABRIR_CONEXION_MYSQL(FALSE,$BD);
+    $result = 0;
+    if ($conn) {
+        // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
+        $select = "SELECT SOLUCION_ID FROM SOLUCION WHERE FECHA='$FECHA' AND SUCURSAL_ID=$SUCURSAL_ID AND FALTANTES_ID = $FALTANTES_ID;";
+        // </editor-fold>  
+        //echo " Consulta ".$select." ";
+        $stmt = mysqli_query($conn, $select);
+        if ($stmt) {
+            while ($row = mysqli_fetch_assoc($stmt)) {
+                $solucion = $row["SOLUCION_ID"];
+                $result = $solucion;
+            }
+            //mysqli_close($conn);
+            return $result;
+        } else {
+            //mysqli_close($conn);
+            return 0;
+        }
+        //mysqli_close($conn);
+    } else {
+        // FALLO LA CONEXION
+        return -1;
+    }
+}
+
+$server->register(
+    'BuscarSolucionIDs',
+    array(
+        'FECHA' => 'xsd:string',
+        'SUCURSAL_ID' => 'xsd:int',
+        'FALTANTES_ID'=>'xsd:int',
+        'BD' => 'xsd:string'
+
+    ),
+    array('return' => 'xsd:int'),
+    $namespace,
+    false,
+    'rpc',
+    false,
+    'busca la solucion id'
+);
+
 
 function BuscarSolucionDetalleID($SOLUCION_ID, $ARTICULO_ID, $BD)
 {
