@@ -455,3 +455,63 @@ $server->register(
     false,
     'Actualiza la hora de inicio y la hora de fin de solucion'
 );
+
+function MuestraHoraInicioFinSolucion($SOLUCION_ID, $BD)
+{
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
+    $result = null;
+    if ($conn) {
+        $select = "SELECT HORA_INICIO,HORA_FIN FROM SOLUCION ";
+        $select .= " WHERE SOLUCION_ID = $SOLUCION_ID;";
+        $stmt = mysqli_query($conn, $select);
+        if ($stmt) {
+            while ($row = mysqli_fetch_assoc($stmt)) {
+                $caducidades["HORA_INICIO"] = $row["HORA_INICIO"];
+                $caducidades["HORA_FIN"] = $row["HORA_FIN"];
+                $result[] = $caducidades;
+            }
+        } else {
+            $result = null;
+        }
+        mysqli_close($conn);
+    } else {
+        // FALLO LA CONEXION
+        $result = null;
+    }
+    return $result;
+}
+$server->wsdl->addComplexType(
+    'MuestraHoraInicioFinSolucion',
+    'complexType',
+    'struct',
+    'all',
+    '',
+    array(
+        'HORA_INICIO' => array('name' => 'HORA_INICIO', 'type' => 'xsd:string'),
+        'HORA_FIN' => array('name' => 'HORA_FIN', 'type' => 'xsd:string')
+    )
+);
+
+$server->wsdl->addComplexType(
+    'MuestraHoraInicioFinSolucionArray',
+    'complexType',
+    'array',
+    '',
+    'SOAP-ENC:Array',
+    array(),
+    array(array('ref' => 'SOAP-ENC:arrayType', 'wsdl:arrayType' => 'tns:MuestraHoraInicioFinSolucion[]')),
+    'tns:MuestraHoraInicioFinSolucion'
+);
+$server->register(
+    'MuestraHoraInicioFinSolucion',
+    array(
+        'SOLUCION_ID' => 'xsd:int',
+        'BD' => 'xsd:string'
+    ),
+    array('return' => 'tns:MuestraHoraInicioFinSolucionArray'),
+    $namespace,
+    false,
+    'rpc',
+    false,
+    'Muestra la hora de inicio y fin de la tarea de faltantes'
+);
