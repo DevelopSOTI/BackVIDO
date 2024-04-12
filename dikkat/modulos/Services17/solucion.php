@@ -202,7 +202,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
                 $faltante["STOCK_FISICO"] = $row["STOCK_FISICO"];
                 $faltante["PRECIO_ARTICULO"] = $row["PRECIO_ARTICULO"];
                 $faltante["IMAGEN"] = $hostname . "/articulos/" . $row["IMAGEN"];                
-                $faltante["SOLUCION"] = "";
+                $faltante["SOLUCION"] = $row["SOLUCION"];
                 $faltante["FECHA"] = $row["FECHA"];
                 $faltante["EXISTENCIA_TEORICA"] = $row["EXISTENCIA_TEORICA"];
                 $result[] = $faltante;
