@@ -166,7 +166,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "         FD.PRECIO_ARTICULO,";
         $select .= "         A.IMAGEN,";
         $select .= "         ,SP.NOMBRE SOLUCION ";
-        $select .= "         F.FECHA,";
+        $select .= "         ,F.FECHA,";
         $select .= "         (";
         $select .= "             SELECT E.EXISTENCIA";
         $select .= "             FROM EXISTENCIAS E";
@@ -188,7 +188,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= " ) AS S";
         $select .= " WHERE (S.EXISTENCIA_TEORICA - S.STOCK_FISICO) > 0";
         $select .= " ORDER BY S.FALTANTES_DETALLE_ID DESC;";
-        echo $select;
+        //echo $select;
         // </editor-fold>    
         $stmt = mysqli_query($conn, $select);
         if ($stmt) {
