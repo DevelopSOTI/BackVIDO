@@ -165,7 +165,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "         FD.STOCK_FISICO,";
         $select .= "         FD.PRECIO_ARTICULO,";
         $select .= "         A.IMAGEN,";
-        $select .= "         ,SP.NOMBRE SOLUCION ";
+        $select .= "         SP.NOMBRE SOLUCION ";
         $select .= "         ,F.FECHA,";
         $select .= "         (";
         $select .= "             SELECT E.EXISTENCIA";
@@ -180,7 +180,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "     INNER JOIN FALTANTES_DETALLE AS FD ON F.FALTANTES_ID = FD.FALTANTES_ID";
         $select .= "     INNER JOIN ARTICULOS AS A ON FD.ARTICULO_ID = A.ARTICULO_ID";
         $select .= "     INNER JOIN SOLUCION SOL on SOL.FALTANTES_ID = F.FALTANTES_ID ";
-        $select .= "     INNER JOIN SOLUCION_DETALLE SD on SD.SOLUCION_ID = SOL.SOLUCION_ID AND SD.ARTICULO_ID = FD.ARTICULO_ID";
+        $select .= "     LEFT JOIN SOLUCION_DETALLE SD on SD.SOLUCION_ID = SOL.SOLUCION_ID AND SD.ARTICULO_ID = FD.ARTICULO_ID";
         $select .= "     LEFT JOIN SOLUCION_OPCIONES SP on SP.SOLUCION_OPCIONES_ID = SD.SOLUCION_OPCIONES_ID";
         $select .= "     WHERE F.FALTANTES_ID = $FALTANTES_ID ";
         $select .= "     AND F.SUCURSAL_ID = $SUCURSAL_ID ";
