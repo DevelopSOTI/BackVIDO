@@ -165,7 +165,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "         FD.STOCK_FISICO,";
         $select .= "         FD.PRECIO_ARTICULO,";
         $select .= "         A.IMAGEN,";
-        $select .= "         SP.NOMBRE SOLUCION ";
+        $select .= "         IFNULL(SP.NOMBRE,'') as SOLUCION ";
         $select .= "         ,F.FECHA,";
         $select .= "         (";
         $select .= "             SELECT E.EXISTENCIA";
