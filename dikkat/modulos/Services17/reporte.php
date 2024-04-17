@@ -44,7 +44,7 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
         if($FALTANTES_ID !== "0"){
             $select .= "     AND F.FALTANTES_ID in( $FALTANTES_ID )";
         }
-        if(isset($FECHA_INI_FAL) && isset($FECHA_FIN_FAL)){
+        if(isset($FECHA_INI_FAL) && isset($FECHA_FIN_FAL) && !empty($FECHA_INI_FAL) && !empty($FECHA_FIN_FAL)){
             $fecha_ini = date('Y-m-d', strtotime($FECHA_INI_FAL));
             $fecha_fin = date('Y-m-d', strtotime($FECHA_FIN_FAL));
             
@@ -57,7 +57,7 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
         $select .= " ) AS S";
         $select .= " WHERE (S.EXISTENCIA_TEORICA - S.STOCK_FISICO) > 0";
         $select .= " ORDER BY S.FALTANTES_DETALLE_ID DESC;";
-        echo $select;
+        //echo $select;
         // </editor-fold>    
         $stmt = mysqli_query($conn, $select);
         if ($stmt) {
