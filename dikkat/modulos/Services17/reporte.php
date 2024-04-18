@@ -57,7 +57,7 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
         $select .= " ) AS S";
         $select .= " WHERE (S.EXISTENCIA_TEORICA - S.STOCK_FISICO) > 0";
         $select .= " ORDER BY S.FALTANTES_DETALLE_ID DESC;";
-        //echo $select;
+        echo $select;
         // </editor-fold>    
         $stmt = mysqli_query($conn, $select);
         if ($stmt) {
