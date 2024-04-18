@@ -37,7 +37,7 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
         $select .= "     LEFT JOIN SOLUCION SOL on SOL.FALTANTES_ID = F.FALTANTES_ID ";
         $select .= "     LEFT JOIN SOLUCION_DETALLE SD on SD.SOLUCION_ID = SOL.SOLUCION_ID AND SD.ARTICULO_ID = FD.ARTICULO_ID";
         $select .= "     LEFT JOIN SOLUCION_OPCIONES SP on SP.SOLUCION_OPCIONES_ID = SD.SOLUCION_OPCIONES_ID";
-        $select .= "     WHERE F.ESTATUS = 'P'";
+        $select .= "     WHERE F.ESTATUS != 'P'";
         if ($SUCURSAL_ID !== "0") {
             $select .= "     AND F.SUCURSAL_ID in ( $SUCURSAL_ID )";
         }
