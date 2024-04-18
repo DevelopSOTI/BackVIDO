@@ -414,6 +414,8 @@ function BuscarSolucionIDs($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $BD)
             $select .= " AND FECHA='$FECHA' ";
         } 
         $select .= "ORDER BY SOLUCION_ID DESC LIMIT 1";
+
+        echo $select;
         // </editor-fold>  
         //echo " Consulta ".$select." ";
         $stmt = mysqli_query($conn, $select);
