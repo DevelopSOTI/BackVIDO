@@ -383,6 +383,7 @@ function BuscarSolucionID($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $conn)
         if($FECHA === "0"){
             $select .= " AND FECHA='$FECHA' ";
         } 
+        $select .= "ORDER BY SOLUCION_ID DESC LIMIT 1";
         // </editor-fold>  
         //echo " Consulta ".$select." ";
         $stmt = mysqli_query($conn, $select);
