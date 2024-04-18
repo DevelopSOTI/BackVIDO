@@ -184,7 +184,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "     LEFT JOIN SOLUCION_OPCIONES SP on SP.SOLUCION_OPCIONES_ID = SD.SOLUCION_OPCIONES_ID";
         $select .= "     WHERE F.FALTANTES_ID = $FALTANTES_ID ";
         $select .= "     AND F.SUCURSAL_ID = $SUCURSAL_ID ";
-        $select .= "     AND F.ESTATUS = 'P'";
+        $select .= "     AND (F.ESTATUS = 'P' OR F.ESTATUS = 'F' )";
         $select .= " ) AS S";
         $select .= " WHERE (S.EXISTENCIA_TEORICA - S.STOCK_FISICO) > 0";
         $select .= " ORDER BY S.FALTANTES_DETALLE_ID DESC;";
