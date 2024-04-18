@@ -163,7 +163,7 @@ function MostrarFaltantes($FECHA, $SUCURSAL_ID, $BD)
         $select .= " INNER JOIN ARTICULOS AS A ON FD.ARTICULO_ID=A.ARTICULO_ID ";
         $select .= " INNER JOIN CATEGORIAS AS C ON A.CATEGORIA_ID=C.CATEGORIA_ID";
         $select .= " INNER JOIN DEPARTAMENTOS AS D ON C.DEPARTAMENTO_ID=D.DEPARTAMENTO_ID ";
-        $select .= " WHERE F.FECHA='$FECHA' AND F.SUCURSAL_ID=$SUCURSAL_ID AND F.ESTATUS !='F' ORDER BY FD.FALTANTES_DETALLE_ID DESC;";
+        $select .= " WHERE F.FECHA='$FECHA' AND F.SUCURSAL_ID=$SUCURSAL_ID AND F.ESTATUS !='C' ORDER BY FD.FALTANTES_DETALLE_ID DESC;";
         // </editor-fold>    
         $stmt = mysqli_query($conn, $select);
         if ($stmt) {
