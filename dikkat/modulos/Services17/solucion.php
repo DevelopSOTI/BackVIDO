@@ -410,12 +410,12 @@ function BuscarSolucionIDs($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $BD)
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
         $select = "SELECT SOLUCION_ID FROM SOLUCION ";
         $select .= "WHERE SUCURSAL_ID=$SUCURSAL_ID AND FALTANTES_ID = $FALTANTES_ID ";
-        if($FECHA === "0"){
+        if($FECHA !== "0"){
             $select .= " AND FECHA='$FECHA' ";
         } 
         $select .= "ORDER BY SOLUCION_ID DESC LIMIT 1";
 
-        echo $select;
+        //echo $select;
         // </editor-fold>  
         //echo " Consulta ".$select." ";
         $stmt = mysqli_query($conn, $select);
