@@ -55,27 +55,45 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
         }
        
         $select .= " ) AS S";
-       // $select .= " WHERE (S.EXISTENCIA_TEORICA - S.STOCK_FISICO) > 0";
-        $select .= " ORDER BY S.FALTANTES_DETALLE_ID DESC;";
-        //echo $select;
+        $select .= " ORDER BY S.FALTANTES_ID, S.FALTANTES_DETALLE_ID DESC;";
         // </editor-fold>    
         $stmt = mysqli_query($conn, $select);
         if ($stmt) {
             $result = array();
+            $current_faltantes_id = null;
+            $current_faltantes_data = null;
             while ($row = mysqli_fetch_assoc($stmt)) {
-                $faltante["FALTANTES_ID"] = $row["FALTANTES_ID"];
-                $faltante["FALTANTES_DETALLE_ID"] = $row["FALTANTES_DETALLE_ID"];
-                $faltante["ARTICULO_ID"] = $row["ARTICULO_ID"];
-                $faltante["SKU"] = $row["SKU"];
-                $faltante["NOMBRE"] = $row["NOMBRE"];
-                $faltante["DESCRIPCION"] = $row["DESCRIPCION"];
-                $faltante["STOCK_FISICO"] = $row["STOCK_FISICO"];
-                $faltante["PRECIO_ARTICULO"] = $row["PRECIO_ARTICULO"];
-                $faltante["IMAGEN"] = $hostname . "/articulos/" . $row["IMAGEN"];
-                $faltante["SOLUCION"] = $row["SOLUCION"];
-                $faltante["FECHA"] = $row["FECHA"];
-                $faltante["EXISTENCIA_TEORICA"] = $row["EXISTENCIA_TEORICA"];
-                $result[] = $faltante;
+                if ($row['FALTANTES_ID'] !== $current_faltantes_id) {
+                    // Si el FALTANTES_ID actual es diferente al anterior,
+                    // almacenamos los datos del FALTANTES_ID anterior en el resultado
+                    if ($current_faltantes_id !== null) {
+                        $result[] = $current_faltantes_data;
+                    }
+                    // Inicializamos los datos del nuevo FALTANTES_ID
+                    $current_faltantes_id = $row['FALTANTES_ID'];
+                    $current_faltantes_data = array(
+                        "FALTANTES_ID" => $current_faltantes_id,
+                        "detalles" => array()
+                    );
+                }
+                // Almacenamos los detalles del FALTANTES_ID actual
+                $current_faltantes_data["detalles"][] = array(
+                    "FALTANTES_DETALLE_ID" => $row["FALTANTES_DETALLE_ID"],
+                    "ARTICULO_ID" => $row["ARTICULO_ID"],
+                    "SKU" => $row["SKU"],
+                    "NOMBRE" => $row["NOMBRE"],
+                    "DESCRIPCION" => $row["DESCRIPCION"],
+                    "STOCK_FISICO" => $row["STOCK_FISICO"],
+                    "PRECIO_ARTICULO" => $row["PRECIO_ARTICULO"],
+                    "IMAGEN" => $hostname . "/articulos/" . $row["IMAGEN"],
+                    "SOLUCION" => $row["SOLUCION"],
+                    "FECHA" => $row["FECHA"],
+                    "EXISTENCIA_TEORICA" => $row["EXISTENCIA_TEORICA"]
+                );
+            }
+            // Almacenamos los datos del último FALTANTES_ID en el resultado
+            if ($current_faltantes_id !== null) {
+                $result[] = $current_faltantes_data;
             }
             mysqli_close($conn);
             return json_encode(["results" => $result]); // Aquí se devuelve la respuesta en formato JSON
@@ -89,6 +107,7 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
         return json_encode(["results" => $result]); // Aquí se devuelve la respuesta en formato JSON
     }
 }
+
 
 $server->register(
     'ReporteFaltantesSolucion',
