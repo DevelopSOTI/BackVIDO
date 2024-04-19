@@ -73,6 +73,7 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
 
         $select .= " ) AS S";
         $select .= " ORDER BY S.FALTANTES_ID, S.FALTANTES_DETALLE_ID DESC;";
+        echo $select;
         // </editor-fold>    
         $stmt = mysqli_query($conn, $select);
         if ($stmt) {
