@@ -6,6 +6,23 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
     $result = null;
     $hostname = $_SERVER['SERVER_NAME'];
     if ($conn) {
+
+        if ($FALTANTES_ID == "-1") {
+            //buscamos el ultimo faltantes id
+            $faltantes = "SELECT FALTANTES_ID FROM FALTANTES order by FALTANTES_ID DESC limit 1";
+            $stmt = mysqli_query($conn, $faltantes);
+            if ($stmt) {
+                while ($row = mysqli_fetch_assoc($stmt)) {
+                    $solucion = $row["FALTANTES_ID"];
+                    $FALTANTES_ID = $solucion;
+                }
+                
+            } else {
+                //mysqli_close($conn);
+                $FALTANTES_ID = "0";
+            }
+        }
+
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
         $select = "SELECT S.*";
         $select .= " FROM(";
@@ -41,19 +58,19 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
         if ($SUCURSAL_ID !== "0") {
             $select .= "     AND F.SUCURSAL_ID in ( $SUCURSAL_ID )";
         }
-        if($FALTANTES_ID !== "0"){
+        if ($FALTANTES_ID !== "0") {
             $select .= "     AND F.FALTANTES_ID in( $FALTANTES_ID )";
         }
-        if(isset($FECHA_INI_FAL) && isset($FECHA_FIN_FAL) && !empty($FECHA_INI_FAL) && !empty($FECHA_FIN_FAL)){
+        if (isset($FECHA_INI_FAL) && isset($FECHA_FIN_FAL) && !empty($FECHA_INI_FAL) && !empty($FECHA_FIN_FAL)) {
             $fecha_ini = date('Y-m-d', strtotime($FECHA_INI_FAL));
             $fecha_fin = date('Y-m-d', strtotime($FECHA_FIN_FAL));
-            
+
             $select .= " AND F.FECHA BETWEEN '$fecha_ini' and '$fecha_fin'";
         }
-        if($ARTICULO_ID !=="0"){
+        if ($ARTICULO_ID !== "0") {
             $select .= " AND A.ARTICULO_ID IN( $ARTICULO_ID )";
         }
-       
+
         $select .= " ) AS S";
         $select .= " ORDER BY S.FALTANTES_ID, S.FALTANTES_DETALLE_ID DESC;";
         // </editor-fold>    
