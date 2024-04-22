@@ -52,7 +52,7 @@ function BuscarFaltanteDetalleID($FALTANTES_ID, $ARTICULO_ID, $BD)
         return -1;
     }
 }
-function InsertarFaltante($FECHA, $SUCURSAL_ID, $USUARIO_CREACION, $FECHA_HORA_CREACION, $ARTICULO_ID, $STOCK_FISICO, $PRECIO_ARTICULO, $BD)
+function InsertarFaltante($FECHA, $SUCURSAL_ID, $USUARIO_CREACION, $FECHA_HORA_CREACION, $ARTICULO_ID, $STOCK_FISICO, $PRECIO_ARTICULO, $BD,$TIEMPO)
 {
     $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
@@ -104,8 +104,8 @@ function InsertarFaltante($FECHA, $SUCURSAL_ID, $USUARIO_CREACION, $FECHA_HORA_C
             //echo " Faltantes detalle_id: ".$FALTANTES_DETALLE_ID." ";
             if ($FALTANTES_DETALLE_ID === 0) {
                 //Insertamos el detalle
-                $query = "INSERT INTO FALTANTES_DETALLE (FALTANTES_ID,ARTICULO_ID,STOCK_FISICO,PRECIO_ARTICULO) ";
-                $query .= " VALUES($FALTANTES_ID,$ARTICULO_ID,$STOCK_FISICO,'$PRECIO_ARTICULO');";
+                $query = "INSERT INTO FALTANTES_DETALLE (FALTANTES_ID,ARTICULO_ID,STOCK_FISICO,PRECIO_ARTICULO,TIEMPO) ";
+                $query .= " VALUES($FALTANTES_ID,$ARTICULO_ID,$STOCK_FISICO,'$PRECIO_ARTICULO','$TIEMPO');";
                 //echo $query;
                 if (mysqli_query($conn, $query)) {
                     $result = $FALTANTES_ID;
@@ -138,7 +138,8 @@ $server->register(
         'ARTICULO_ID' => 'xsd:string',
         'STOCK_FISICO' => 'xsd:string',
         'PRECIO_ARTICULO' => 'xsd:string',
-        'BD' => 'xsd:string'
+        'BD' => 'xsd:string',
+        'TIEMPO' => 'xsd:string'
 
     ),
     array('return' => 'xsd:int'),
