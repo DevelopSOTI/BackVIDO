@@ -176,6 +176,27 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "             ORDER BY E.FECHA";
         $select .= "             LIMIT 1";
         $select .= "         ) AS EXISTENCIA_TEORICA";
+        
+        $select .= "         ,(";
+        $select .= "             SELECT E.FECHA_ULT_RECIBO";
+        $select .= "             FROM EXISTENCIAS E";
+        $select .= "             WHERE E.ARTICULO_ID = FD.ARTICULO_ID";
+        $select .= "             AND E.SUCURSAL_ID = F.SUCURSAL_ID";
+        $select .= "             AND E.FECHA >= F.FECHA";
+        $select .= "             ORDER BY E.FECHA";
+        $select .= "             LIMIT 1";
+        $select .= "         ) AS FECHA_ULT_RECIBO";
+
+        $select .= "         ,(";
+        $select .= "             SELECT E.CAPACIDAD_EMPAQUE";
+        $select .= "             FROM EXISTENCIAS E";
+        $select .= "             WHERE E.ARTICULO_ID = FD.ARTICULO_ID";
+        $select .= "             AND E.SUCURSAL_ID = F.SUCURSAL_ID";
+        $select .= "             AND E.FECHA >= F.FECHA";
+        $select .= "             ORDER BY E.FECHA";
+        $select .= "             LIMIT 1";
+        $select .= "         ) AS CAPACIDAD_EMPAQUE";
+        
         $select .= "     FROM FALTANTES AS F";
         $select .= "     INNER JOIN FALTANTES_DETALLE AS FD ON F.FALTANTES_ID = FD.FALTANTES_ID";
         $select .= "     INNER JOIN ARTICULOS AS A ON FD.ARTICULO_ID = A.ARTICULO_ID";
@@ -205,6 +226,8 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
                 $faltante["SOLUCION"] = $row["SOLUCION"];
                 $faltante["FECHA"] = $row["FECHA"];
                 $faltante["EXISTENCIA_TEORICA"] = $row["EXISTENCIA_TEORICA"];
+                $faltante["FECHA_ULT_RECIBO"] = $row["FECHA_ULT_RECIBO"];
+                $faltante["CAPACIDAD_EMPAQUE"] = $row["CAPACIDAD_EMPAQUE"];
                 $result[] = $faltante;
             }
             mysqli_close($conn);
@@ -240,7 +263,9 @@ $server->wsdl->addComplexType(
         'CATEGORIA' => array('name' => 'CATEGORIA', 'type' => 'xsd:string'),
         'SOLUCION' => array('name' => 'SOLUCION', 'type' => 'xsd:string'),
         'FECHA' => array('name' => 'FECHA', 'type' => 'xsd:string'),
-        'EXISTENCIA_TEORICA' => array('name' => 'EXISTENCIA_TEORICA', 'type' => 'xsd:string')
+        'EXISTENCIA_TEORICA' => array('name' => 'EXISTENCIA_TEORICA', 'type' => 'xsd:string'),
+        'FECHA_ULT_RECIBO' => array('name' => 'FECHA_ULT_RECIBO', 'type' => 'xsd:string'),
+        'CAPACIDAD_EMPAQUE' => array('name' => 'CAPACIDAD_EMPAQUE', 'type' => 'xsd:string')
 
     )
 );

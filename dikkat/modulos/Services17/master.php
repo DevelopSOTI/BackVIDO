@@ -5,7 +5,7 @@ function getClaveMaestraCliente($BD)
     $CLAVE_CLIENTE_MASTER = "";
     $conn = ABRIR_CONEXION_MYSQL(FALSE, DB_MASTER);
     if ($conn) {
-        $select_Clave = "select CLAVE FROM soticomm_VIDO_MASTER.CLIENTES WHERE NOMBRE_DB = '$BD'";
+        $select_Clave = "select CLAVE FROM CLIENTES WHERE NOMBRE_DB = '$BD'";
         $stmt = mysqli_query($conn, $select_Clave);
         if ($stmt) {
             while ($row = mysqli_fetch_assoc($stmt)) {
