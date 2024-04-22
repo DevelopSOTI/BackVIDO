@@ -156,7 +156,7 @@ function MostrarFaltantes($FECHA, $SUCURSAL_ID, $BD)
     $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     $hostname = $_SERVER['SERVER_NAME'];
-    $resultado = getModulosCliente($BD);
+    $resultado = getClaveMaestraCliente($BD);
     $CLAVE = $resultado[0]['CLAVE'];
     if ($conn) {
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
@@ -299,7 +299,7 @@ function MostrarArticulos($ARTICULO_ID, $MARCA_ID, $CATEGORIA_ID, $SKU, $BD)
 {
     $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
-    $resultado = getModulosCliente($BD);
+    $resultado = getClaveMaestraCliente($BD);
     $CLAVE = $resultado[0]['CLAVE'];
     $where = "";
 
