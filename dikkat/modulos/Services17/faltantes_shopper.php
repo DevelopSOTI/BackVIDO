@@ -156,6 +156,8 @@ function MostrarFaltantes($FECHA, $SUCURSAL_ID, $BD)
     $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
     $hostname = $_SERVER['SERVER_NAME'];
+    $resultado = getModulosCliente($BD);
+    $CLAVE = $resultado[0]['CLAVE'];
     if ($conn) {
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
         $select = "SELECT F.FALTANTES_ID,FD.FALTANTES_DETALLE_ID,A.ARTICULO_ID,A.SKU,A.NOMBRE,A.DESCRIPCION,FD.STOCK_FISICO,FD.PRECIO_ARTICULO,A.IMAGEN,D.NOMBRE AS CATEGORIA ";
@@ -177,7 +179,7 @@ function MostrarFaltantes($FECHA, $SUCURSAL_ID, $BD)
                 $faltante["DESCRIPCION"] = $row["DESCRIPCION"];
                 $faltante["STOCK_FISICO"] = $row["STOCK_FISICO"];
                 $faltante["PRECIO_ARTICULO"] = $row["PRECIO_ARTICULO"];
-                $faltante["IMAGEN"] = $hostname . "/articulos/" . $row["IMAGEN"];
+                $faltante["IMAGEN"] = $hostname . "/articulos/" . $CLAVE . "/" . $row["IMAGEN"];
                 $faltante["CATEGORIA"] = $row["CATEGORIA"];
                 $result[] = $faltante;
             }
