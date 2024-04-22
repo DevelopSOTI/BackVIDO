@@ -299,6 +299,8 @@ function MostrarArticulos($ARTICULO_ID, $MARCA_ID, $CATEGORIA_ID, $SKU, $BD)
 {
     $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = null;
+    $resultado = getModulosCliente($BD);
+    $CLAVE = $resultado[0]['CLAVE'];
     $where = "";
 
     $hostname = $_SERVER['SERVER_NAME'];
@@ -331,7 +333,7 @@ function MostrarArticulos($ARTICULO_ID, $MARCA_ID, $CATEGORIA_ID, $SKU, $BD)
                 $roles["PRECIO"] = $row["PRECIO"];
                 $roles["SKU"] = $row["SKU"];
                 $roles["DESCRIPCION"] = $row["DESCRIPCION"];
-                $roles["IMAGEN"] = $hostname . "/articulos/" . $row["IMAGEN"];
+                $roles["IMAGEN"] = $hostname . "/articulos/" . $CLAVE . "/" . $row["IMAGEN"];
                 $roles["USUARIO_CREADOR"] = $row["USUARIO_CREADOR"];
                 $roles["FECHA_HORA_CREACION"] = $row["FECHA_HORA_CREACION"];
                 $roles["USUARIO_MODIFICACION"] = $row["USUARIO_MODIFICACION"];
