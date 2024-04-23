@@ -176,7 +176,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "             ORDER BY E.FECHA";
         $select .= "             LIMIT 1";
         $select .= "         ) AS EXISTENCIA_TEORICA";
-        
+
         $select .= "         ,(";
         $select .= "             SELECT E.FECHA_ULT_RECIBO";
         $select .= "             FROM EXISTENCIAS E";
@@ -196,7 +196,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "             ORDER BY E.FECHA";
         $select .= "             LIMIT 1";
         $select .= "         ) AS CAPACIDAD_EMPAQUE";
-        
+
         $select .= "     FROM FALTANTES AS F";
         $select .= "     INNER JOIN FALTANTES_DETALLE AS FD ON F.FALTANTES_ID = FD.FALTANTES_ID";
         $select .= "     INNER JOIN ARTICULOS AS A ON FD.ARTICULO_ID = A.ARTICULO_ID";
@@ -222,7 +222,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
                 $faltante["DESCRIPCION"] = $row["DESCRIPCION"];
                 $faltante["STOCK_FISICO"] = $row["STOCK_FISICO"];
                 $faltante["PRECIO_ARTICULO"] = $row["PRECIO_ARTICULO"];
-                $faltante["IMAGEN"] = $hostname . "/articulos/" . $row["IMAGEN"];                
+                $faltante["IMAGEN"] = $hostname . "/articulos/" . $row["IMAGEN"];
                 $faltante["SOLUCION"] = $row["SOLUCION"];
                 $faltante["FECHA"] = $row["FECHA"];
                 $faltante["EXISTENCIA_TEORICA"] = $row["EXISTENCIA_TEORICA"];
@@ -360,7 +360,13 @@ function InsertarSolucion($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $USUARIO_CREACION
                     $result = 0;
                 }
             } elseif ($SOLUCION_DETALLE_ID === -1 || $SOLUCION_DETALLE_ID > 0) {
-                $result = 0;
+                // Actualizar registro existente
+                $query = "UPDATE SOLUCION_DETALLE SET SOLUCION_OPCIONES_ID = $SOLUCION_OPCIONES_ID WHERE SOLUCION_DETALLE_ID = $SOLUCION_DETALLE_ID";
+                if (mysqli_query($conn, $query)) {
+                    $result = $SOLUCION_DETALLE_ID; // Devuelve el ID del detalle de solución actualizado
+                } else {
+                    $result = 0;
+                }
             }
         }
         if ($result > 0) {
@@ -404,7 +410,7 @@ function BuscarSolucionID($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $conn)
     if ($conn) {
         $select = "SELECT SOLUCION_ID FROM SOLUCION WHERE FECHA='$FECHA' AND SUCURSAL_ID=$SUCURSAL_ID AND FALTANTES_ID = $FALTANTES_ID;";
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
-        
+
         //echo $select;
         // </editor-fold>  
         //echo " Consulta ".$select." ";
@@ -435,9 +441,9 @@ function BuscarSolucionIDs($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $BD)
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
         $select = "SELECT SOLUCION_ID FROM SOLUCION ";
         $select .= "WHERE SUCURSAL_ID=$SUCURSAL_ID AND FALTANTES_ID = $FALTANTES_ID ";
-        if($FECHA !== "0"){
+        if ($FECHA !== "0") {
             $select .= " AND FECHA='$FECHA' ";
-        } 
+        }
         $select .= "ORDER BY SOLUCION_ID DESC LIMIT 1";
 
         //echo $select;
