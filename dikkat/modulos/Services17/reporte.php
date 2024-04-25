@@ -9,7 +9,7 @@ function ReporteFaltantesSolucion($FALTANTES_ID, $SUCURSAL_ID, $ARTICULO_ID, $FE
 
         if ($FALTANTES_ID == "-1") {
             //buscamos el ultimo faltantes id
-            $faltantes = "SELECT FALTANTES_ID FROM FALTANTES order by FALTANTES_ID DESC limit 1";
+            $faltantes = "SELECT FALTANTES_ID FROM FALTANTES WHERE SUCURSAL_ID = $SUCURSAL_ID order by FALTANTES_ID DESC limit 1";
             $stmt = mysqli_query($conn, $faltantes);
             if ($stmt) {
                 while ($row = mysqli_fetch_assoc($stmt)) {
