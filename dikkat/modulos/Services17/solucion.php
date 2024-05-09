@@ -196,7 +196,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "WHERE ";
         $select .= "    (E.EXISTENCIA - S.STOCK_FISICO) > 0 ";
         $select .= "ORDER BY ";
-        $select .= "    S.FALTANTES_DETALLE_ID ASC;";
+        $select .= "    S.FALTANTES_DETALLE_ID DESC;";
 
         //echo $select;
         // </editor-fold>    
