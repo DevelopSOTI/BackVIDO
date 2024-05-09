@@ -41,7 +41,7 @@ function getModulosCliente($BD)
         $select_Clave .= " from CLIENTES_MODULOS cm ";
         $select_Clave .= " join MODULOS m on m.MODULO_ID = cm.MODULO_ID ";
         $select_Clave .= " join CLIENTES c on c.CLIENTE_ID = cm.CLIENTE_ID ";
-        $select_Clave .= " where c.NOMBRE_DB = '$BD'";
+        $select_Clave .= " where c.NOMBRE_DB = '$BD' order by m.MODULO_ID ASC";
         //echo $select;
         $stmt = mysqli_query($conn, $select_Clave);
         if ($stmt) {
