@@ -287,7 +287,7 @@ $server->register(
 
 
 
-function InsertarSolucion($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $USUARIO_CREACION, $FECHA_HORA_CREACION, $ARTICULO_ID, $SOLUCION_OPCIONES_ID, $BD)
+function InsertarSolucion($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $USUARIO_CREACION, $FECHA_HORA_CREACION, $ARTICULO_ID, $SOLUCION_OPCIONES_ID, $SOLUCIONADO,  $BD)
 {
     $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $result = 0;
@@ -340,8 +340,8 @@ function InsertarSolucion($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $USUARIO_CREACION
             //echo " Faltantes detalle_id: ".$FALTANTES_DETALLE_ID." ";
             if ($SOLUCION_DETALLE_ID === 0) {
                 //Insertamos el detalle
-                $query = "INSERT INTO SOLUCION_DETALLE (ARTICULO_ID,SOLUCION_OPCIONES_ID,SOLUCION_ID) ";
-                $query .= " VALUES($ARTICULO_ID,$SOLUCION_OPCIONES_ID,$SOLUCION_ID);";
+                $query = "INSERT INTO SOLUCION_DETALLE (ARTICULO_ID,SOLUCION_OPCIONES_ID,SOLUCION_ID, SOLUCIONADO) ";
+                $query .= " VALUES($ARTICULO_ID,$SOLUCION_OPCIONES_ID,$SOLUCION_ID,$SOLUCIONADO);";
                 //echo $query;
                 if (mysqli_query($conn, $query)) {
                     $result = $SOLUCION_ID;
@@ -350,7 +350,7 @@ function InsertarSolucion($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $USUARIO_CREACION
                 }
             } elseif ($SOLUCION_DETALLE_ID === -1 || $SOLUCION_DETALLE_ID > 0) {
                 // Actualizar registro existente
-                $query = "UPDATE SOLUCION_DETALLE SET SOLUCION_OPCIONES_ID = $SOLUCION_OPCIONES_ID WHERE SOLUCION_DETALLE_ID = $SOLUCION_DETALLE_ID";
+                $query = "UPDATE SOLUCION_DETALLE SET SOLUCION_OPCIONES_ID = $SOLUCION_OPCIONES_ID, SOLUCIONADO = $SOLUCIONADO WHERE SOLUCION_DETALLE_ID = $SOLUCION_DETALLE_ID";
                 if (mysqli_query($conn, $query)) {
                     $result = $SOLUCION_DETALLE_ID; // Devuelve el ID del detalle de solución actualizado
                 } else {
@@ -380,6 +380,7 @@ $server->register(
         'FECHA_HORA_CREACION' => 'xsd:string',
         'ARTICULO_ID' => 'xsd:string',
         'SOLUCION_OPCIONES_ID' => 'xsd:int',
+        'SOLUCIONADO' => 'xsd:int',
         'BD' => 'xsd:string'
 
     ),
