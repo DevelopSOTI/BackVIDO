@@ -633,13 +633,16 @@ function getSolucionPendientes($SUCURSAL_ID, $BD)
     $result = null;
     if ($conn) {
 
-        $select = " SELECT FALTANTES_ID FROM FALTANTES ";
+        $select = " SELECT * FROM FALTANTES ";
         $select .= " where SUCURSAL_ID = $SUCURSAL_ID ";
         $select .= " and ESTATUS ='P' ";
         $stmt = mysqli_query($conn, $select);
         if ($stmt) {
             while ($row = mysqli_fetch_assoc($stmt)) {
                 $faltantes = $row["FALTANTES_ID"];
+                $faltantes = $row["FECHA"];
+                $faltantes = $row["HORA_INICIO"];
+                $faltantes = $row["HORA_FIN"];
                 $result[] = $faltantes;
             }
         } else {
