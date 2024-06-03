@@ -623,3 +623,67 @@ $server->register(
     false,
     'Muestra la hora de inicio y fin de la tarea de faltantes'
 );
+
+
+function getSolucionPendientes($SUCURSAL_ID, $BD)
+{
+    $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
+    $result = null;
+    if ($conn) {
+
+        $select = " SELECT FALTANTES_ID FROM FALTANTES ";
+        $select .= " where SUCURSAL_ID = $SUCURSAL_ID ";
+        $select .= " and ESTATUS ='P' ";
+        $stmt = mysqli_query($conn, $select);
+        if ($stmt) {
+            while ($row = mysqli_fetch_assoc($stmt)) {
+                $faltantes = $row["FALTANTES_ID"];
+                $result[] = $faltantes;
+            }
+        } else {
+            $result = 0;
+        }
+        mysqli_close($conn);
+    } else {
+        $result = 0;
+    }
+    return $result;
+}
+$server->wsdl->addComplexType(
+    'MostrarPendientes',
+    'complexType',
+    'struct',
+    'all',
+    '',
+    array(
+        'FALTANTES_ID' => array('name' => 'FALTANTES_ID', 'type' => 'xsd:int'),        
+        'FECHA' => array('name' => 'FECHA', 'type' => 'xsd:string'),
+        'HORA_INICIO' => array('name' => 'EXISTENCIA_TEORICA', 'type' => 'xsd:string'),
+        'HORA_FIN' => array('name' => 'FECHA_ULT_RECIBO', 'type' => 'xsd:string')
+
+    )
+);
+$server->wsdl->addComplexType(
+    'MostrarPendientesArray',
+    'complexType',
+    'array',
+    '',
+    'SOAP-ENC:Array',
+    array(),
+    array(array('ref' => 'SOAP-ENC:arrayType', 'wsdl:arrayType' => 'tns:MostrarPendientes[]')),
+    'tns:MostrarPendientes'
+);
+$server->register(
+    'getSolucionPendientes',
+    array(
+        
+        'SUCURSAL_ID' => 'xsd:int',
+        'BD' => 'xsd:string'
+    ),
+    array('return' => 'tns:MostrarPendientesArray'),
+    $namespace,
+    false,
+    'rpc',
+    false,
+    'Devuelve un arreglo con los articulos faltanes en el sistema en una fecha y sucursal determinada'
+);
