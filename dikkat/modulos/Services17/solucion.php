@@ -399,7 +399,10 @@ function BuscarSolucionID($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $conn)
     //$conn = ABRIR_CONEXION_MYSQL(FALSE);
     $result = 0;
     if ($conn) {
-        $select = "SELECT SOLUCION_ID FROM SOLUCION WHERE FECHA='$FECHA' AND SUCURSAL_ID=$SUCURSAL_ID AND FALTANTES_ID = $FALTANTES_ID;";
+        $select = "SELECT S.SOLUCION_ID FROM SOLUCION S";
+        $select .= " JOIN FALTANTES F ON F.FALTANTES_ID = S.FALTANTES_ID ";
+        $select .= "WHERE S.SUCURSAL_ID=$SUCURSAL_ID AND F.FALTANTES_ID = $FALTANTES_ID;";
+        $select .= "  AND F.ESTATUS = 'P' ORDER BY S.SOLUCION_ID DESC LIMIT 1 ";
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
 
         //echo $select;
