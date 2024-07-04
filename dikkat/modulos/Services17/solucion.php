@@ -190,7 +190,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         $select .= "    WHERE ";
         $select .= "        F.FALTANTES_ID = $FALTANTES_ID ";
         $select .= "        AND F.SUCURSAL_ID = $SUCURSAL_ID ";
-        $select .= "        AND (F.ESTATUS = 'P' OR F.ESTATUS = 'F') AND SOL.HORA_INICIO IS NOT NULL";
+        $select .= "        AND (F.ESTATUS = 'P' OR F.ESTATUS = 'F') ";
         $select .= ") AS S ";
         $select .= "JOIN EXISTENCIAS E ON (S.EXISTENCIA_ID = E.EXISTENCIA_ID) ";
         $select .= "WHERE ";
