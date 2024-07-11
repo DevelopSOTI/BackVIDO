@@ -153,7 +153,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
     $hostname = $_SERVER['SERVER_NAME'];
     if ($conn) {
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
-        $select = "SELECT ";
+        /*$select = "SELECT ";
         $select .= "    S.*, ";
         $select .= "    E.EXISTENCIA AS EXISTENCIA_TEORICA, ";
         $select .= "    E.FECHA_ULT_RECIBO, ";
@@ -197,7 +197,43 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
         // $select .= "    (E.EXISTENCIA - S.STOCK_FISICO) > 0 ";
         $select .= "    E.EXISTENCIA > 0 ";
         $select .= "ORDER BY ";
-        $select .= "    S.FALTANTES_DETALLE_ID ASC;";
+        $select .= "    S.FALTANTES_DETALLE_ID ASC;";*/
+        $select = "SELECT ";
+$select .= "F.FALTANTES_ID, ";
+$select .= "FD.FALTANTES_DETALLE_ID, ";
+$select .= "A.ARTICULO_ID, ";
+$select .= "A.SKU, ";
+$select .= "A.NOMBRE, ";
+$select .= "A.DESCRIPCION, ";
+$select .= "FD.STOCK_FISICO, ";
+$select .= "FD.PRECIO_ARTICULO, ";
+$select .= "A.IMAGEN, ";
+$select .= "F.FECHA, ";
+$select .= "IFNULL(SP.NOMBRE,'') AS SOLUCION, ";
+$select .= "EX.EXISTENCIA_ID, ";
+$select .= "EX.ARTICULO_ID, ";
+$select .= "EX.SUCURSAL_ID, ";
+$select .= "EX.FECHA, ";
+$select .= "EX.EXISTENCIA AS EXISTENCIA_TEORICA, ";
+$select .= "EX.FECHA_ULT_RECIBO, ";
+$select .= "EX.CAPACIDAD_EMPAQUE ";
+$select .= "FROM FALTANTES AS F ";
+$select .= "INNER JOIN FALTANTES_DETALLE AS FD ON F.FALTANTES_ID = FD.FALTANTES_ID ";
+$select .= "INNER JOIN ARTICULOS AS A ON FD.ARTICULO_ID = A.ARTICULO_ID ";
+$select .= "LEFT JOIN SOLUCION SOL ON SOL.FALTANTES_ID = F.FALTANTES_ID ";
+$select .= "LEFT JOIN SOLUCION_DETALLE SD ON SD.SOLUCION_ID = SOL.SOLUCION_ID AND SD.ARTICULO_ID = FD.ARTICULO_ID ";
+$select .= "LEFT JOIN SOLUCION_OPCIONES SP ON SP.SOLUCION_OPCIONES_ID = SD.SOLUCION_OPCIONES_ID ";
+$select .= "LEFT JOIN (SELECT E.EXISTENCIA_ID, E.ARTICULO_ID, E.SUCURSAL_ID, E.FECHA, E.EXISTENCIA, E.FECHA_ULT_RECIBO, E.CAPACIDAD_EMPAQUE ";
+$select .= "FROM EXISTENCIAS E ";
+$select .= "WHERE E.FECHA >= (SELECT FECHA FROM FALTANTES WHERE FALTANTES_ID = $FALTANTES_ID) ";
+$select .= "GROUP BY E.ARTICULO_ID ";
+$select .= "ORDER BY E.ARTICULO_ID, E.FECHA) EX ";
+$select .= "ON(EX.ARTICULO_ID = FD.ARTICULO_ID AND EX.SUCURSAL_ID = F.SUCURSAL_ID AND EX.FECHA >= F.FECHA) ";
+$select .= "WHERE F.FALTANTES_ID = $FALTANTES_ID ";
+$select .= "AND F.SUCURSAL_ID = $SUCURSAL_ID ";
+$select .= "AND (F.ESTATUS = 'P' OR F.ESTATUS = 'F') ";
+$select .= "AND EX.EXISTENCIA > 0 ";
+
 
         //echo $select;
         // </editor-fold>    
