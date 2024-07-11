@@ -13,9 +13,9 @@ class Faltantes_model extends CI_Model {
             'dsn'   => '',
             'hostname' => 'localhost', // Cambia esto si tu hostname es diferente
             'username' => 'soticomm_VIDO', // Cambia esto a tu usuario de la base de datos
-            //'username' => 'tu_usuario',
+            //'username' => 'nndoqbmy_admin',
             'password' => 'Vido_2024', // Cambia esto a tu contraseña de la base de datos
-            //'password' => 'tu_contraseña',
+            //'password' => 'V1d0D1kK@t2021',
             'database' => $bd,
             'dbdriver' => 'mysqli',
             'dbprefix' => '',
