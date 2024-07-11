@@ -55,3 +55,4 @@ $route['translate_uri_dashes'] = FALSE;
 $route['api/faltantes'] = 'faltantes/mostrarFaltantesPendiente';
 
 
+
