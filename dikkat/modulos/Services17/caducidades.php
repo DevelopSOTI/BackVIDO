@@ -818,7 +818,7 @@ function InsertarCaducidadDetalle($usuario_id, $sucursal_id, $caducidad_id, $sku
         $result_detalle = $conn->prepare("INSERT INTO CADUCIDADES_DETALLE(SUCURSAL_ID, CADUCIDAD_ID, ARTICULO_ID, PRECIO, CANTIDAD_PIEZAS, USUARIO_ID) VALUES (?, ?, (SELECT ARTICULO_ID FROM ARTICULOS WHERE SKU = ?), (SELECT PRECIO FROM ARTICULOS WHERE SKU = ?), 0, ?)");
 
         // Reemplazar los '?' por las variables correspondientes
-        $result_detalle->bind_param("issii", $sucursal_id, $caducidad_id, $sku, $sku, $usuario_id);
+        $result_detalle->bind_param("iissi", $sucursal_id, $caducidad_id, $sku, $sku, $usuario_id);
 
         // Ejecutar la consulta
         if ($result_detalle->execute()) {
