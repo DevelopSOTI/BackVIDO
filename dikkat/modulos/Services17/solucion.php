@@ -1,14 +1,15 @@
 <?php
 
-function getSolucionPendiente($SUCURSAL_ID, $BD)
+function getSolucionPendiente($SUCURSAL_ID, $FECHA, $BD)
 {
     $conn = ABRIR_CONEXION_MYSQL(FALSE, $BD);
     $faltante_id = 0;
     if ($conn) {
 
-        $select = " SELECT FALTANTES_ID FROM FALTANTES ";
-        $select .= " where SUCURSAL_ID = $SUCURSAL_ID ";
-        $select .= " and ESTATUS ='P' ";
+        $select = " SELECT F.FALTANTES_ID FROM FALTANTES F ";
+        $select .= " JOIN SOLUCION S on S.FALTANTES_ID = F.FALTANTES_ID ";
+        $select .= " where F.SUCURSAL_ID = $SUCURSAL_ID ";
+        $select .= " and (F.ESTATUS ='P' OR F.ESTATUS = 'F') AND S.FECHA = '$FECHA' ";
         $stmt = mysqli_query($conn, $select);
         if ($stmt) {
             while ($row = mysqli_fetch_assoc($stmt)) {
@@ -28,6 +29,7 @@ $server->register(
     'getSolucionPendiente',
     array(
         'SUCURSAL_ID' => 'xsd:int',
+        'FECHA' => 'xsd:string',
         'BD' => 'xsd:string'
     ),
     array('return' => 'xsd:int'),
@@ -153,7 +155,7 @@ function MostrarFaltantesPendiente($FALTANTES_ID, $SUCURSAL_ID, $BD)
     $hostname = $_SERVER['SERVER_NAME'];
     if ($conn) {
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
-        /*$select = "SELECT ";
+       /* $select = "SELECT ";
         $select .= "    S.*, ";
         $select .= "    E.EXISTENCIA AS EXISTENCIA_TEORICA, ";
         $select .= "    E.FECHA_ULT_RECIBO, ";
@@ -232,7 +234,7 @@ $select .= "ON(EX.ARTICULO_ID = FD.ARTICULO_ID AND EX.SUCURSAL_ID = F.SUCURSAL_I
 $select .= "WHERE F.FALTANTES_ID = $FALTANTES_ID ";
 $select .= "AND F.SUCURSAL_ID = $SUCURSAL_ID ";
 $select .= "AND (F.ESTATUS = 'P' OR F.ESTATUS = 'F') ";
-$select .= "AND EX.EXISTENCIA > 0 ";
+$select .= "AND EX.EXISTENCIA > 0 ORDER BY FD.FALTANTES_DETALLE_ID desc";
 
 
         //echo $select;
@@ -389,7 +391,7 @@ function InsertarSolucion($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $USUARIO_CREACION
                 // Actualizar registro existente
                 $query = "UPDATE SOLUCION_DETALLE SET SOLUCION_OPCIONES_ID = $SOLUCION_OPCIONES_ID, SOLUCIONADO = $SOLUCIONADO WHERE SOLUCION_DETALLE_ID = $SOLUCION_DETALLE_ID";
                 if (mysqli_query($conn, $query)) {
-                    $result = $SOLUCION_DETALLE_ID; // Devuelve el ID del detalle de solución actualizado
+                    $result = $SOLUCION_DETALLE_ID; // Devuelve el ID del detalle de soluci車n actualizado
                 } else {
                     $result = 0;
                 }
@@ -437,7 +439,7 @@ function BuscarSolucionID($FECHA, $SUCURSAL_ID, $FALTANTES_ID, $conn)
     if ($conn) {
         $select = "SELECT S.SOLUCION_ID FROM SOLUCION S";
         $select .= " JOIN FALTANTES F ON F.FALTANTES_ID = S.FALTANTES_ID ";
-        $select .= "WHERE S.SUCURSAL_ID=$SUCURSAL_ID AND F.FALTANTES_ID = $FALTANTES_ID";
+        $select .= "WHERE S.SUCURSAL_ID=$SUCURSAL_ID AND F.FALTANTES_ID = $FALTANTES_ID ";
         $select .= "  AND F.ESTATUS = 'P' ORDER BY S.SOLUCION_ID DESC LIMIT 1 ";
         // <editor-fold defaultstate="collapsed" desc="SELECCION DE LOS DATOS DE LAS CATEGORIAS DEL DEPARTAMETNO EN EL SISTEMA">
 
@@ -740,5 +742,5 @@ $server->register(
     false,
     'rpc',
     false,
-    'Devuelve un arreglo con los artículos faltantes en el sistema en una fecha y sucursal determinada'
+    'Devuelve un arreglo con los art赤culos faltantes en el sistema en una fecha y sucursal determinada'
 );
